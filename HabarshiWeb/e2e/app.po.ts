@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class HabarshiwebPage {
+export class HabarshiWebPage {
   navigateTo() {
     return browser.get('/');
   }

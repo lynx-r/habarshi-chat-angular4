@@ -1,10 +1,10 @@
-import { HabarshiwebPage } from './app.po';
+import { HabarshiWebPage } from './app.po';
 
-describe('habarshiweb App', () => {
-  let page: HabarshiwebPage;
+describe('habarshi-web App', () => {
+  let page: HabarshiWebPage;
 
   beforeEach(() => {
-    page = new HabarshiwebPage();
+    page = new HabarshiWebPage();
   });
 
   it('should display message saying app works', () => {
