@@ -1,0 +1,85 @@
+.navbar {
+  background-color: red;
+}
+
+.navbar-brand {
+  color: white !important;
+}
+
+#loginName {
+  width: 250px;
+}
+#messages {
+  height: 80vh;
+  overflow: auto;
+}
+
+.message {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.in-msg {
+  min-width: 50vh;
+  max-width: 70vh;
+  background: rgba(255, 0, 0, 0.4);
+}
+
+.out-msg {
+  max-width: 90vh;
+  background: rgba(200, 200, 200, 0.4);
+  float: right;
+  text-align: right;
+}
+
+.srv-msg {
+  text-align: center;
+  font-size: small;
+  font-style: italic;
+}
+
+#messages.hover {
+  background-color: rgba(0, 173, 255, 0.27);
+}
+#messages.drop {
+  background-color: dodgerblue;
+}
+#attachButton.error {
+  background-color: red;
+}
+
+#recordAudioPanel {
+  position: absolute;
+  right: 90px;
+  bottom: 40px;
+  background-color: rgba(128, 128, 128, 0.18);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+#closeRecordAudioPanel {
+  margin-top: 8px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.red, .red:hover, .red:focus {
+  background-color: red;
+}
+
+.check-success, .received.acknowledged .check-success {
+  display: none;
+}
+
+.double-check-success {
+  display: none;
+}
+
+.acknowledged .double-check-success {
+  display: inline-block;
+}
+
+.received .check-success {
+  display: inline-block;
+}
