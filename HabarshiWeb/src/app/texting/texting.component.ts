@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TextingComponent implements OnInit {
 
+  messages: string[] = [];
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onSendMessage(message: HTMLInputElement) {
+    if (message.value !== null) {
+      this.messages.push(message.value);
+      message.value = '';
+    }
   }
 
 }

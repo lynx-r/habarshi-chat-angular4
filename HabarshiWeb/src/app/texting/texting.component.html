@@ -1,9 +1,14 @@
 <div class="container">
   <div class="row">
     <div class="offset-2 col-md-8">
-      <div id="messages" class="form-control" title="Сообщения"></div>
+      <div id="messages" class="form-control" title="Сообщения">
+        <app-message *ngFor="let msg of messages" [message]="msg"></app-message>
+      </div>
       <div class="input-group">
-        <input id="messageInput" type="text" class="form-control" placeholder="Введите ваше сообщение">
+        <input #message type="text"
+               class="form-control"
+               (keyup.enter)="onSendMessage(message)"
+               placeholder="Введите ваше сообщение">
         <span class="input-group-btn">
             <button id="toggleRecordAudio" class="btn btn-default"><i class="fa fa-microphone"></i></button>
         </span>
@@ -13,7 +18,8 @@
                 <i id="attachIcon" class="fa fa-paperclip"></i></button>
         </span>
         <span class="input-group-btn">
-            <button id="sendButton" class="btn btn-primary"><i class="fa fa-send"></i></button>
+            <button (click)="onSendMessage(message)"
+                    class="btn btn-primary"><i class="fa fa-send"></i></button>
         </span>
       </div>
     </div>
