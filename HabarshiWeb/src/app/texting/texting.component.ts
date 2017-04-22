@@ -1,24 +1,47 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {TextingService} from "./texting.service";
 
 @Component({
   selector: 'app-texting',
   templateUrl: './texting.component.html',
-  styleUrls: ['./texting.component.css']
+  styleUrls: ['./texting.component.css'],
+  providers: [TextingService]
 })
 export class TextingComponent implements OnInit {
 
   messages: string[] = [];
+  errorMessage: string;
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private textingService: TextingService) {
   }
 
-  onSendMessage(message: HTMLInputElement) {
-    if (message.value !== null) {
-      this.messages.push(message.value);
-      message.value = '';
+  ngOnInit() {
+    this.getMessages();
+  }
+
+  getMessages() {
+    this.textingService.getMessages()
+      .subscribe(
+        messages =>{
+          console.log(messages);
+          // this.messages = messages;
+        } ,
+        error => this.errorMessage = error);
+  }
+
+  onSendMessage(messageInput: HTMLInputElement) {
+    if (!messageInput.value) {
+      return;
     }
+    let message = messageInput.value;
+    this.textingService.send(message)
+      .subscribe(
+        message => {
+          this.messages.push(message);
+          messageInput.value = '';
+        },
+        error => this.errorMessage = error
+      );
   }
 
 }
