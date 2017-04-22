@@ -12,6 +12,11 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "types": [
+      "jquery",
+      "bootstrap",
+      "node"
+    ],
     "lib": [
       "es2016",
       "dom"
