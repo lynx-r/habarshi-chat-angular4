@@ -21,12 +21,6 @@ export class TextingComponent implements OnInit {
     this.getMessages();
   }
 
-  auth(username: string, passwd: string) {
-    this.textingService.auth(username, passwd)
-      .subscribe(user => this.user = user,
-        error => this.errorMessage = error);
-  }
-
   getMessages() {
     if (this.user == null) {
       return;

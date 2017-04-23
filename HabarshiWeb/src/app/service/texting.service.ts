@@ -13,18 +13,6 @@ export class TextingService {
   constructor(private http: Http, private constants: ConstantsService) {
   }
 
-  auth(username: string, passwd: string) : Observable<User> {
-    const params: string[] = [
-      `username=${username}`,
-      `password=${passwd}`
-    ];
-    const queryUrl = `${this.constants.SERVER_URL}/auth/1?${params}`;
-    return this.http.get(queryUrl).map((resp: Response) => {
-      let body = resp.json();
-      return new User(body.session, body.username);
-    });
-  }
-
   sendMessage(session: string, message: string): Observable<string> {
     let to = 'kuku';
     let id: string = '123';
