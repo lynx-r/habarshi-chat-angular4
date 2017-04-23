@@ -13,8 +13,6 @@
       "node_modules/@types"
     ],
     "types": [
-      "jquery",
-      "bootstrap",
       "node"
     ],
     "lib": [

@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Message} from "../../model/message.model";
 
 @Component({
   selector: 'app-message',
@@ -7,11 +8,14 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class MessageComponent implements OnInit {
 
-  @Input() message: string;
+  @Input() message: Message;
 
   constructor() { }
 
   ngOnInit() {
+    if (this.message.text.startsWith('<HabarshiServiceMessage>')) {
+      this.message.text = 'Не поддерживается';
+    }
   }
 
 }

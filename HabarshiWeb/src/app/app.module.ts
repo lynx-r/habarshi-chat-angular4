@@ -6,12 +6,14 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { TextingComponent } from './texting/texting.component';
 import { MessageComponent } from './texting/message/message.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TextingComponent,
-    MessageComponent
+    MessageComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

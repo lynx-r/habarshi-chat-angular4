@@ -1,3 +1,20 @@
 <div>
-  {{ message }}
+  <!---->
+  <!--var formattedMsg = '<p><b>' + (type === IN_MESSAGE ? username : 'Я' ) + '</b> ' + date.toLocaleString() +-->
+  <!--'<span class="fa-lg check-success">' +-->
+        <!--'<i class="fa fa-check" style="margin-left:4px"></i>' +-->
+        <!--'</span>' +-->
+  <!--'<span class="fa-stack fa-lg double-check-success">' +-->
+        <!--'<i class="fa fa-check fa-stack-1x" style="margin-left:4px"></i>' +-->
+        <!--'<i class="fa fa-check  fa-stack-1x" style="margin-left:-4px"></i>' +-->
+        <!--'</span>' +-->
+  <!--'</p>'-->
+  <!--+ '<div>' + message + '</div>'-->
+  <!--+ '</div>';-->
+<!--return '<div style="overflow: hidden;" data-id="' + id + '">' +-->
+  <!--<div [ngClass]="{in-msg: message.marker}" class="' + (type === IN_MESSAGE ? 'in' : 'out') + '-msg message">'-->
+    <!--+ formattedMsg-->
+    <!--+ '</div>';-->
+
+  {{ message.text }}
 </div>

@@ -3,29 +3,39 @@ import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-
-class User {
-}
+import {Message} from "../model/message.model";
+import {ConstantsService} from "../shared/constants.service";
+import {User} from "../model/user.model";
 
 @Injectable()
 export class TextingService {
-  session = 'aaa62d15-ee1c-4e3f-bafe-eb15e9b1a974';
-  SERVER_URL = 'https://test.habarshi.com:11999';
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private constants: ConstantsService) {
   }
 
-  send(message: string): Observable<string> {
+  auth(username: string, passwd: string) : Observable<User> {
+    const params: string[] = [
+      `username=${username}`,
+      `password=${passwd}`
+    ];
+    const queryUrl = `${this.constants.SERVER_URL}/auth/1?${params}`;
+    return this.http.get(queryUrl).map((resp: Response) => {
+      let body = resp.json();
+      return new User(body.session, body.username);
+    });
+  }
+
+  sendMessage(session: string, message: string): Observable<string> {
     let to = 'kuku';
     let id: string = '123';
     let params: string[] = [
-      `session=${this.session}`,
+      `session=${session}`,
       `text=${message}`,
       `id=${id}`,
       `with=to`,
       `to=${to}`
     ];
-    let queryUrl = `${this.SERVER_URL}/v1/chat/send?${params}`;
+    let queryUrl = `${this.constants.SERVER_URL}/v1/chat/send?${params}`;
     return this.http.get(queryUrl)
       .map(this.extractMessage)
       .catch(this.handleError);
@@ -36,9 +46,9 @@ export class TextingService {
     return body;
   }
 
-  getMessages(): Observable<string[]> {
-    let params: string[] = [`session=${this.session}`];
-    let queryUrl = `${this.SERVER_URL}/user/mam?${params}`;
+  getMessages(session: string): Observable<string[]> {
+    let params: string[] = [`session=${session}`];
+    let queryUrl = `${this.constants.SERVER_URL}/user/mam?${params}`;
     return this.http.get(queryUrl)
       .map(this.extractMessages)
       .catch(this.handleError);
@@ -46,8 +56,9 @@ export class TextingService {
 
 
   private extractMessages(response: Response): string[]{
-    let body = response.json() as string[];
-    return body;
+    return response.json().mam.history
+      .map(item =>
+        new Message(item.from, item.id, item.jid, item.marker, item.stamp, item.text, item.time, item.to));
   }
 
   private handleError (error: Response | any) {

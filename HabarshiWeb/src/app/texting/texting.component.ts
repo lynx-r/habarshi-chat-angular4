@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {TextingService} from "./texting.service";
+import {TextingService} from "../service/texting.service";
+import {User} from "../model/user.model";
 
 @Component({
   selector: 'app-texting',
@@ -11,6 +12,7 @@ export class TextingComponent implements OnInit {
 
   messages: string[] = [];
   errorMessage: string;
+  user: User;
 
   constructor(private textingService: TextingService) {
   }
@@ -19,13 +21,19 @@ export class TextingComponent implements OnInit {
     this.getMessages();
   }
 
+  auth(username: string, passwd: string) {
+    this.textingService.auth(username, passwd)
+      .subscribe(user => this.user = user,
+        error => this.errorMessage = error);
+  }
+
   getMessages() {
-    this.textingService.getMessages()
+    if (this.user == null) {
+      return;
+    }
+    this.textingService.getMessages(this.user.session)
       .subscribe(
-        messages =>{
-          console.log(messages);
-          // this.messages = messages;
-        } ,
+        messages => this.messages = messages,
         error => this.errorMessage = error);
   }
 
@@ -34,7 +42,7 @@ export class TextingComponent implements OnInit {
       return;
     }
     let message = messageInput.value;
-    this.textingService.send(message)
+    this.textingService.sendMessage(this.user.session, message)
       .subscribe(
         message => {
           this.messages.push(message);
