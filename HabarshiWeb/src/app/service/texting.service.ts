@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import {Message} from "../model/message.model";
 import {ConstantsService} from "../shared/constants.service";
 import {User} from "../model/user.model";
+import {Utils} from "../util/util";
 
 @Injectable()
 export class TextingService {
@@ -26,7 +27,7 @@ export class TextingService {
     let queryUrl = `${this.constants.SERVER_URL}/v1/chat/send?${params}`;
     return this.http.get(queryUrl)
       .map(this.extractMessage)
-      .catch(this.handleError);
+      .catch(Utils.handleError);
   }
 
   private extractMessage(response: Response) : string {
@@ -39,7 +40,7 @@ export class TextingService {
     let queryUrl = `${this.constants.SERVER_URL}/user/mam?${params}`;
     return this.http.get(queryUrl)
       .map(this.extractMessages)
-      .catch(this.handleError);
+      .catch(Utils.handleError);
   }
 
 
@@ -47,19 +48,5 @@ export class TextingService {
     return response.json().mam.history
       .map(item =>
         new Message(item.from, item.id, item.jid, item.marker, item.stamp, item.text, item.time, item.to));
-  }
-
-  private handleError (error: Response | any) {
-    // In a real world app, you might use a remote logging infrastructure
-    let errMsg: string;
-    if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = (<any>body).error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-    } else {
-      errMsg = error.message ? error.message : error.toString();
-    }
-    console.error(errMsg);
-    return Observable.throw(errMsg);
   }
 }

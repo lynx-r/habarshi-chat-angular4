@@ -8,7 +8,6 @@ import { TextingComponent } from './texting/texting.component';
 import { MessageComponent } from './texting/message/message.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import {AuthService} from "./service/auth.service";
 import {TextingService} from "./service/texting.service";
 import {UserService} from "./service/user.service";
 import {ConstantsService} from "./shared/constants.service";
@@ -27,7 +26,7 @@ import {ConstantsService} from "./shared/constants.service";
     ReactiveFormsModule,
     HttpModule
   ],
-  providers: [AuthService, ConstantsService, TextingService, UserService],
+  providers: [ConstantsService, TextingService, UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,6 @@
 <main class="container">
   <div class="row">
-    <div class="offset-2 col-md-8">
+    <div class="offset-3 col-6">
       <div id="messages" class="form-control" title="Сообщения">
         <app-message *ngFor="let msg of messages" [message]="msg"></app-message>
       </div>
@@ -13,7 +13,7 @@
             <button id="toggleRecordAudio" class="btn btn-default"><i class="fa fa-microphone"></i></button>
         </span>
         <span class="input-group-btn">
-            <input id="uploadFile" name="file" type="file" class="hidden-md-up">
+            <input id="uploadFile" name="file" type="file" class="hidden-xs-up ">
             <button id="attachButton" class="btn btn-default">
                 <i id="attachIcon" class="fa fa-paperclip"></i></button>
         </span>

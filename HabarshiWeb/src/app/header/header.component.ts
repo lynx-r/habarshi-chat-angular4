@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "../model/user.model";
-import {AuthService} from "../service/auth.service";
+import {UserService} from "../service/user.service";
 
 @Component({
   selector: 'app-header',
@@ -12,13 +12,28 @@ export class HeaderComponent implements OnInit {
   user: User;
   errorMessage;
 
-  constructor(private authService: AuthService) { }
-
-  ngOnInit() {
+  constructor(private userService: UserService) {
   }
 
-  auth(username: string, passwd: string) {
-    this.authService.auth(username, passwd)
+  ngOnInit() {
+    if (this.userService.isLoggedIn()) {
+      this.userService.sessionConfig()
+        .subscribe(user => this.user = user,
+          error => this.errorMessage);
+      return;
+    }
+  }
+
+  isLoggedIn() {
+    return this.userService.isLoggedIn();
+  }
+
+  auth(username: HTMLInputElement, passwd: HTMLInputElement) {
+    if (!(username.value && passwd.value)) {
+      this.errorMessage = 'Укажите логин и пароль';
+      return;
+    }
+    this.userService.auth(username.value, passwd.value)
       .subscribe(user => this.user = user,
         error => this.errorMessage = error);
   }
