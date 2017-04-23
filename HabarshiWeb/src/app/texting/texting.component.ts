@@ -5,6 +5,7 @@ import {UserService} from "../service/user.service";
 import {Message} from "../model/message.model";
 import {GUID} from "../util/guid";
 import {UsersService} from "../service/users.service";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'app-texting',
@@ -21,7 +22,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
 
   constructor(private textingService: TextingService,
               private userService: UserService,
-  private usersService: UsersService) {
+              private usersService: UsersService) {
   }
 
   ngOnInit() {
@@ -47,10 +48,8 @@ export class TextingComponent implements OnInit, AfterViewChecked {
 
   private scrollBottom() {
     let nativeElement = this.messagesRef.nativeElement;
-    if (nativeElement.scrollTop == 0) {
-      nativeElement.scrollTop = nativeElement.scrollTop +
-        nativeElement.scrollHeight * 2;
-    }
+    nativeElement.scrollTop = nativeElement.scrollTop +
+      nativeElement.scrollHeight * 2;
   }
 
   onSendMessage(messageInput: HTMLInputElement) {
@@ -72,7 +71,6 @@ export class TextingComponent implements OnInit, AfterViewChecked {
           } else {
             this.errorMessage = data.comment;
           }
-          this.scrollBottom();
         },
         error => this.errorMessage = error
       );
