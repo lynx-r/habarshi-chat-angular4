@@ -5,11 +5,11 @@ export class Message {
   marker: string;
   stamp: number;
   text: string;
-  time: string;
+  time: Date;
   to: string;
 
 
-  constructor(from: string, id: string, jid: string, marker: string, stamp: number, text: string, time: string, to: string) {
+  constructor(from: string, id: string, jid: string, stamp: number, text: string, time: Date, to: string, marker?: string) {
     this.from = from;
     this.id = id;
     this.jid = jid;

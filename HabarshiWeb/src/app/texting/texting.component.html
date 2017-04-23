@@ -1,7 +1,7 @@
 <main class="container">
   <div class="row">
     <div class="offset-3 col-6">
-      <div id="messages" class="form-control" title="Сообщения">
+      <div #messagesRef id="messages" class="form-control" title="Сообщения">
         <app-message *ngFor="let msg of messages" [message]="msg"></app-message>
       </div>
       <div class="input-group">

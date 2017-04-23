@@ -9,30 +9,32 @@ import {Store} from "../util/store";
 @Injectable()
 export class UserService implements OnInit {
 
-  private static USER_KEY: string = 'user';
-  private loggedIn = false;
+  private static SESSION_KEY: string = 'session';
+  public loggedIn = false;
+  public user: User;
 
   @Output() userLoggedInEvent = new EventEmitter<User>();
 
   constructor(private http: Http, private constants: ConstantsService) {
-    this.loggedIn = !!Store.get(UserService.USER_KEY);
+    this.loggedIn = !!Store.get(UserService.SESSION_KEY);
   }
 
   ngOnInit() {
   }
 
   sessionConfig(): Observable<User> {
-    if (this.loggedIn) {
-      const user: User = Store.get(UserService.USER_KEY);
-      const queryUrl = `${this.constants.SERVER_URL}/session-config?session=${user.session}`;
-      return this.http.get(queryUrl).map((resp: Response) => {
-        this.extractUser(resp);
-        this.loggedIn = true;
-      }).catch(Utils.handleError)
-    }
+    const session = Store.get(UserService.SESSION_KEY);
+    const queryUrl = `${this.constants.SERVER_URL}/session-config?session=${session}`;
+    return this.http.get(queryUrl).map((resp: Response) => {
+      this.extractUser(resp);
+      this.loggedIn = true;
+    }).catch(Utils.handleError)
   }
 
   auth(username: string, passwd: string): Observable<User> {
+    if (this.loggedIn) {
+      return Observable.of(this.user);
+    }
     const params: string = [
       `username=${username}`,
       `password=${passwd}`
@@ -45,17 +47,14 @@ export class UserService implements OnInit {
   }
 
   logout(): Observable<void> {
-    if (this.loggedIn) {
-      const user: User = Store.get(UserService.USER_KEY);
-      const queryUrl = `${this.constants.SERVER_URL}/logout?session=${user.session}`;
-      return this.http.get(queryUrl)
-        .map((resp: Response) => this.loggedIn = false)
-        .catch(Utils.handleError)
+    if (!this.loggedIn) {
+      return;
     }
-  }
-
-  isLoggedIn() {
-    return this.loggedIn;
+    const user: User = Store.get(UserService.SESSION_KEY);
+    const queryUrl = `${this.constants.SERVER_URL}/logout?session=${user.session}`;
+    return this.http.get(queryUrl)
+      .map((resp: Response) => this.loggedIn = false)
+      .catch(Utils.handleError)
   }
 
   private extractUser(resp: Response) {
@@ -68,21 +67,18 @@ export class UserService implements OnInit {
         throw new Error(body.comment);
       }
     } finally {
-      Store.put(UserService.USER_KEY, null);
+      Store.put(UserService.SESSION_KEY, null);
       this.loggedIn = false;
+      this.user = null;
     }
-    let user = new User(body.session, body.username);
-    Store.put(UserService.USER_KEY, user);
-    this.userLoggedInEvent.emit(user);
-    return user;
+    this.user = new User(body.session, body.username);
+    Store.put(UserService.SESSION_KEY, this.user.session);
+    this.userLoggedInEvent.emit(this.user);
+    return this.user;
   }
 
   public static getSession() {
-    const user: User = Store.get(UserService.USER_KEY);
-    if (user == null) {
-      return null;
-    }
-    return user.session;
+    return Store.get(UserService.SESSION_KEY);
   }
 
 }

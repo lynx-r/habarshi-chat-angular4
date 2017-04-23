@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {TextingService} from "../service/texting.service";
 import {User} from "../model/user.model";
 import {UserService} from "../service/user.service";
+import {Message} from "../model/message.model";
+import {GUID} from "../util/guid";
+import {UsersService} from "../service/users.service";
 
 @Component({
   selector: 'app-texting',
@@ -9,13 +12,16 @@ import {UserService} from "../service/user.service";
   styleUrls: ['./texting.component.css'],
   providers: [TextingService]
 })
-export class TextingComponent implements OnInit {
+export class TextingComponent implements OnInit, AfterViewChecked {
 
-  messages: string[] = [];
+  @ViewChild('messagesRef') messagesRef: ElementRef;
+  messages: Message[] = [];
   errorMessage: string;
   user: User;
 
-  constructor(private textingService: TextingService, private userService: UserService) {
+  constructor(private textingService: TextingService,
+              private userService: UserService,
+  private usersService: UsersService) {
   }
 
   ngOnInit() {
@@ -23,6 +29,10 @@ export class TextingComponent implements OnInit {
       this.getMessages();
       this.user = user;
     })
+  }
+
+  ngAfterViewChecked() {
+    this.scrollBottom();
   }
 
   public getMessages() {
@@ -35,11 +45,23 @@ export class TextingComponent implements OnInit {
       );
   }
 
+  private scrollBottom() {
+    let nativeElement = this.messagesRef.nativeElement;
+    if (nativeElement.scrollTop == 0) {
+      nativeElement.scrollTop = nativeElement.scrollTop +
+        nativeElement.scrollHeight * 2;
+    }
+  }
+
   onSendMessage(messageInput: HTMLInputElement) {
     if (!messageInput.value) {
       return;
     }
-    const message = messageInput.value;
+    const text = messageInput.value;
+    const user = this.userService.user;
+    const selectedUser = this.usersService.selectedUser;
+    const id: string = new GUID().toString();
+    const message = new Message(user.username, id, user.jid, new Date().getTime(), text, new Date(), selectedUser.username);
     this.textingService.sendMessage(message)
       .subscribe(
         data => {
@@ -50,6 +72,7 @@ export class TextingComponent implements OnInit {
           } else {
             this.errorMessage = data.comment;
           }
+          this.scrollBottom();
         },
         error => this.errorMessage = error
       );

@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.userService.isLoggedIn()) {
+    if (this.userService.loggedIn) {
       this.userService.sessionConfig()
         .subscribe(user => {
             this.user = user;
@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
   }
 
   isLoggedIn() {
-    return this.userService.isLoggedIn();
+    return this.userService.loggedIn;
   }
 
   auth(username: HTMLInputElement, passwd: HTMLInputElement) {

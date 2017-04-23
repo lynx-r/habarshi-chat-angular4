@@ -16,16 +16,14 @@ export class TextingService {
   constructor(private http: Http, private constants: ConstantsService) {
   }
 
-  sendMessage(message: string): Observable<ServerStatus> {
-    const to = 'kuku';
-    const id: string = new GUID().toString();
+  sendMessage(message: Message): Observable<ServerStatus> {
     const session = UserService.getSession();
     let params: string = [
       `session=${session}`,
-      `text=${message}`,
-      `id=${id}`,
+      `text=${message.text}`,
+      `id=${message.id}`,
       `with=to`,
-      `to=${to}`
+      `to=${message.to}`
     ].join('&');
     let queryUrl = `${this.constants.SERVER_URL}/v1/chat/send?${params}`;
     return this.http.get(queryUrl)
@@ -38,7 +36,7 @@ export class TextingService {
     return new ServerStatus(body.comment, body.ok);
   }
 
-  getMessages(): Observable<string[]> {
+  getMessages(): Observable<Message[]> {
     const session = UserService.getSession();
     const params: string = `session=${session}`;
     const queryUrl = `${this.constants.SERVER_URL}/user/mam?${params}`;
@@ -49,8 +47,14 @@ export class TextingService {
 
 
   private extractMessages(response: Response): string[] {
-    return response.json().mam.history
+    let body = response.json();
+    if (!body.ok) {
+      throw new Error(body.comment);
+    }
+
+    console.log(body);
+    return body.mam.history
       .map(item =>
-        new Message(item.from, item.id, item.jid, item.marker, item.stamp, item.text, item.time, item.to));
+        new Message(item.from, item.id, item.jid, item.stamp, item.text, item.time, item.to, item.marker));
   }
 }
