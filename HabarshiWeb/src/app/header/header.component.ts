@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../model/user.model";
 import {UserService} from "../service/user.service";
 import {Observable} from 'rxjs/Rx';
+import {TextingComponent} from "../texting/texting.component";
 
 @Component({
   selector: 'app-header',
@@ -39,7 +40,6 @@ export class HeaderComponent implements OnInit {
     this.userService.auth(username.value, passwd.value)
       .subscribe(user => {
         this.user = user;
-        console.log(user);
         this.errorMessage = '';
       }, error => this.errorMessage = error);
   }

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TextingService} from "../service/texting.service";
 import {User} from "../model/user.model";
+import {UserService} from "../service/user.service";
 
 @Component({
   selector: 'app-texting',
@@ -14,33 +15,41 @@ export class TextingComponent implements OnInit {
   errorMessage: string;
   user: User;
 
-  constructor(private textingService: TextingService) {
+  constructor(private textingService: TextingService, private userService: UserService) {
   }
 
   ngOnInit() {
-    this.getMessages();
+    this.userService.userLoggedInEvent.subscribe((user) => {
+      this.getMessages();
+      this.user = user;
+    })
   }
 
-  getMessages() {
-    if (this.user == null) {
-      return;
-    }
-    this.textingService.getMessages(this.user.session)
+  public getMessages() {
+    this.textingService.getMessages()
       .subscribe(
-        messages => this.messages = messages,
-        error => this.errorMessage = error);
+        messages => {
+          this.messages = messages
+          this.errorMessage = ''
+        }, error => this.errorMessage = error
+      );
   }
 
   onSendMessage(messageInput: HTMLInputElement) {
     if (!messageInput.value) {
       return;
     }
-    let message = messageInput.value;
-    this.textingService.sendMessage(this.user.session, message)
+    const message = messageInput.value;
+    this.textingService.sendMessage(message)
       .subscribe(
-        message => {
-          this.messages.push(message);
-          messageInput.value = '';
+        data => {
+          if (data.ok) {
+            this.messages.push(message);
+            messageInput.value = '';
+            this.errorMessage = '';
+          } else {
+            this.errorMessage = data.comment;
+          }
         },
         error => this.errorMessage = error
       );

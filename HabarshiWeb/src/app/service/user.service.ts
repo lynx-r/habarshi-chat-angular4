@@ -1,4 +1,4 @@
-import {Injectable, OnInit} from '@angular/core';
+import {EventEmitter, Injectable, OnInit, Output} from '@angular/core';
 import {User} from "../model/user.model";
 import {Observable} from "rxjs/Observable";
 import {Http, Response} from "@angular/http";
@@ -9,8 +9,10 @@ import {Store} from "../util/store";
 @Injectable()
 export class UserService implements OnInit {
 
-  private loggedIn = false;
   private static USER_KEY: string = 'user';
+  private loggedIn = false;
+
+  @Output() userLoggedInEvent = new EventEmitter<User>();
 
   constructor(private http: Http, private constants: ConstantsService) {
     this.loggedIn = !!Store.get(UserService.USER_KEY);
@@ -44,7 +46,7 @@ export class UserService implements OnInit {
 
   logout(): Observable<void> {
     if (this.loggedIn) {
-      const user:User = Store.get(UserService.USER_KEY);
+      const user: User = Store.get(UserService.USER_KEY);
       const queryUrl = `${this.constants.SERVER_URL}/logout?session=${user.session}`;
       return this.http.get(queryUrl)
         .map((resp: Response) => this.loggedIn = false)
@@ -71,7 +73,16 @@ export class UserService implements OnInit {
     }
     let user = new User(body.session, body.username);
     Store.put(UserService.USER_KEY, user);
+    this.userLoggedInEvent.emit(user);
     return user;
+  }
+
+  public static getSession() {
+    const user: User = Store.get(UserService.USER_KEY);
+    if (user == null) {
+      return null;
+    }
+    return user.session;
   }
 
 }
