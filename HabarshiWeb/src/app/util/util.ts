@@ -1,5 +1,7 @@
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/throw";
+import {Message} from "../model/message.model";
+import {MessageType} from "../shared/message-type.enum";
 
 export class Utils {
 
@@ -15,6 +17,17 @@ export class Utils {
     }
     console.error(errMsg);
     return Observable.throw(errMsg);
+  }
+
+  public static getMessageType(message:Message, originFrom: string): MessageType {
+    console.log(`FROM ${message.from}, TO ${message.to}, ORIGIN: ${originFrom}`);
+    if (message.from == originFrom) {
+      return MessageType.OUT;
+    } else if (message.to == originFrom) {
+      return MessageType.IN;
+    } else {
+      return MessageType.SERVICE;
+    }
   }
 
 }

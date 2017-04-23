@@ -1,3 +1,5 @@
+import {MessageType} from "../shared/message-type.enum";
+import {el} from "@angular/platform-browser/testing/src/browser_util";
 export class Message {
   from: string;
   id: string;
@@ -8,8 +10,14 @@ export class Message {
   time: Date;
   to: string;
 
-
-  constructor(from: string, id: string, jid: string, stamp: number, text: string, time: Date, to: string, marker?: string) {
+  constructor(from: string,
+              id: string,
+              jid: string,
+              stamp: number,
+              text: string,
+              time: Date,
+              to: string,
+              marker?: string) {
     this.from = from;
     this.id = id;
     this.jid = jid;
@@ -19,4 +27,5 @@ export class Message {
     this.time = time;
     this.to = to;
   }
+
 }

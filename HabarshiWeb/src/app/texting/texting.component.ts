@@ -6,6 +6,8 @@ import {Message} from "../model/message.model";
 import {GUID} from "../util/guid";
 import {UsersService} from "../service/users.service";
 import {Observable} from "rxjs/Observable";
+import {ConstantsService} from "../shared/constants.service";
+import "rxjs/add/observable/timer";
 
 @Component({
   selector: 'app-texting',
@@ -22,14 +24,19 @@ export class TextingComponent implements OnInit, AfterViewChecked {
 
   constructor(private textingService: TextingService,
               private userService: UserService,
-              private usersService: UsersService) {
+              private usersService: UsersService,
+              private constants: ConstantsService) {
   }
 
   ngOnInit() {
-    this.userService.userLoggedInEvent.subscribe((user) => {
-      this.getMessages();
+    this.userService.userLoggedInEvent.subscribe((user)=>{
       this.user = user;
-    })
+      this.getMessages();
+    });
+    Observable.timer(0, this.constants.REFRESH_MESSAGES_MILLISEC)
+      .subscribe(() => this.getLatestMessages());
+    Observable.timer(1000, this.constants.REFRESH_ROSTER_MILLISEC)
+      .subscribe(() => this.usersService.getRoster());
   }
 
   ngAfterViewChecked() {
@@ -46,6 +53,10 @@ export class TextingComponent implements OnInit, AfterViewChecked {
       );
   }
 
+  public getLatestMessages() {
+
+  }
+
   private scrollBottom() {
     let nativeElement = this.messagesRef.nativeElement;
     nativeElement.scrollTop = nativeElement.scrollTop +
@@ -57,10 +68,9 @@ export class TextingComponent implements OnInit, AfterViewChecked {
       return;
     }
     const text = messageInput.value;
-    const user = this.userService.user;
     const selectedUser = this.usersService.selectedUser;
     const id: string = new GUID().toString();
-    const message = new Message(user.username, id, user.jid, new Date().getTime(), text, new Date(), selectedUser.username);
+    const message = new Message(this.user.username, id, this.user.jid, new Date().getTime(), text, new Date(), selectedUser.username);
     this.textingService.sendMessage(message)
       .subscribe(
         data => {

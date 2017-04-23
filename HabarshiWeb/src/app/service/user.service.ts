@@ -9,21 +9,20 @@ import {Store} from "../util/store";
 @Injectable()
 export class UserService implements OnInit {
 
-  private static SESSION_KEY: string = 'session';
   public loggedIn = false;
   public user: User;
 
   @Output() userLoggedInEvent = new EventEmitter<User>();
 
   constructor(private http: Http, private constants: ConstantsService) {
-    this.loggedIn = !!Store.get(UserService.SESSION_KEY);
+    this.loggedIn = !!Store.get(this.constants.SESSION_KEY);
   }
 
   ngOnInit() {
   }
 
   sessionConfig(): Observable<User> {
-    const session = Store.get(UserService.SESSION_KEY);
+    const session = Store.get(this.constants.SESSION_KEY);
     const queryUrl = `${this.constants.SERVER_URL}/session-config?session=${session}`;
     return this.http.get(queryUrl).map((resp: Response) => {
       this.extractUser(resp);
@@ -50,7 +49,7 @@ export class UserService implements OnInit {
     if (!this.loggedIn) {
       return;
     }
-    const user: User = Store.get(UserService.SESSION_KEY);
+    const user: User = Store.get(this.constants.SESSION_KEY);
     const queryUrl = `${this.constants.SERVER_URL}/logout?session=${user.session}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => this.loggedIn = false)
@@ -61,24 +60,22 @@ export class UserService implements OnInit {
     const body = resp.json();
     console.log(body);
     try {
-      if (body.session == false) {
-        throw new Error(body.comment);
-      } else if (body.ok == false) {
+      if (body.session == false || body.ok == false) {
         throw new Error(body.comment);
       }
     } finally {
-      Store.put(UserService.SESSION_KEY, null);
+      Store.put(this.constants.SESSION_KEY, null);
       this.loggedIn = false;
       this.user = null;
     }
     this.user = new User(body.session, body.username);
-    Store.put(UserService.SESSION_KEY, this.user.session);
+    Store.put(this.constants.SESSION_KEY, this.user.session);
     this.userLoggedInEvent.emit(this.user);
     return this.user;
   }
 
-  public static getSession() {
-    return Store.get(UserService.SESSION_KEY);
+  getSession() {
+    return Store.get(this.constants.SESSION_KEY);
   }
 
 }

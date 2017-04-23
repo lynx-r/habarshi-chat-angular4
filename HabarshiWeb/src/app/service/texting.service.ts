@@ -7,17 +7,16 @@ import {Message} from "../model/message.model";
 import {ConstantsService} from "../shared/constants.service";
 import {Utils} from "../util/util";
 import {UserService} from "./user.service";
-import {GUID} from "../util/guid";
 import {ServerStatus} from "../model/server-status";
 
 @Injectable()
 export class TextingService {
 
-  constructor(private http: Http, private constants: ConstantsService) {
+  constructor(private http: Http, private userService:UserService,private constants: ConstantsService) {
   }
 
   sendMessage(message: Message): Observable<ServerStatus> {
-    const session = UserService.getSession();
+    const session = this.userService.getSession();
     let params: string = [
       `session=${session}`,
       `text=${message.text}`,
@@ -37,7 +36,7 @@ export class TextingService {
   }
 
   getMessages(): Observable<Message[]> {
-    const session = UserService.getSession();
+    const session = this.userService.getSession();
     const params: string = `session=${session}`;
     const queryUrl = `${this.constants.SERVER_URL}/user/mam?${params}`;
     return this.http.get(queryUrl)
