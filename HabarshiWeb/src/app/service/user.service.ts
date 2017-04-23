@@ -4,14 +4,16 @@ import {Observable} from "rxjs/Observable";
 import {Http, Response} from "@angular/http";
 import {ConstantsService} from "../shared/constants.service";
 import {Utils} from "../util/util";
+import {Store} from "../util/store";
 
 @Injectable()
 export class UserService implements OnInit {
 
   private loggedIn = false;
+  private static USER_KEY: string = 'user';
 
   constructor(private http: Http, private constants: ConstantsService) {
-    this.loggedIn = !!localStorage.getItem('session');
+    this.loggedIn = !!Store.get(UserService.USER_KEY);
   }
 
   ngOnInit() {
@@ -19,10 +21,12 @@ export class UserService implements OnInit {
 
   sessionConfig(): Observable<User> {
     if (this.loggedIn) {
-      const session = localStorage.getItem('session');
-      const queryUrl = `${this.constants.SERVER_URL}/session-config?session=${session}`;
-      return this.http.get(queryUrl).map(UserService.extractUser)
-        .catch(Utils.handleError)
+      const user: User = Store.get(UserService.USER_KEY);
+      const queryUrl = `${this.constants.SERVER_URL}/session-config?session=${user.session}`;
+      return this.http.get(queryUrl).map((resp: Response) => {
+        this.extractUser(resp);
+        this.loggedIn = true;
+      }).catch(Utils.handleError)
     }
   }
 
@@ -32,18 +36,42 @@ export class UserService implements OnInit {
       `password=${passwd}`
     ].join('&');
     const queryUrl = `${this.constants.SERVER_URL}/auth/1?${params}`;
-    return this.http.get(queryUrl).map(UserService.extractUser)
-      .catch(Utils.handleError);
+    return this.http.get(queryUrl).map((resp: Response) => {
+      this.extractUser(resp);
+      this.loggedIn = true;
+    }).catch(Utils.handleError);
+  }
+
+  logout(): Observable<void> {
+    if (this.loggedIn) {
+      const user:User = Store.get(UserService.USER_KEY);
+      const queryUrl = `${this.constants.SERVER_URL}/logout?session=${user.session}`;
+      return this.http.get(queryUrl)
+        .map((resp: Response) => this.loggedIn = false)
+        .catch(Utils.handleError)
+    }
   }
 
   isLoggedIn() {
     return this.loggedIn;
   }
 
-  private static extractUser(resp: Response) {
+  private extractUser(resp: Response) {
     const body = resp.json();
-    localStorage.setItem('session', body.session);
-    return new User(body.session, body.username);
+    console.log(body);
+    try {
+      if (body.session == false) {
+        throw new Error(body.comment);
+      } else if (body.ok == false) {
+        throw new Error(body.comment);
+      }
+    } finally {
+      Store.put(UserService.USER_KEY, null);
+      this.loggedIn = false;
+    }
+    let user = new User(body.session, body.username);
+    Store.put(UserService.USER_KEY, user);
+    return user;
   }
 
 }

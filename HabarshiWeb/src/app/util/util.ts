@@ -1,4 +1,6 @@
 import {Observable} from "rxjs/Observable";
+import "rxjs/add/observable/throw";
+
 export class Utils {
 
   public static handleError(error: Response | any) {

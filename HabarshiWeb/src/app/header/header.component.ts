@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../model/user.model";
 import {UserService} from "../service/user.service";
+import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-header',
@@ -18,9 +19,11 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     if (this.userService.isLoggedIn()) {
       this.userService.sessionConfig()
-        .subscribe(user => this.user = user,
-          error => this.errorMessage);
-      return;
+        .subscribe(user => {
+            this.user = user;
+            this.errorMessage = '';
+          }, error => this.errorMessage
+        );
     }
   }
 
@@ -34,8 +37,20 @@ export class HeaderComponent implements OnInit {
       return;
     }
     this.userService.auth(username.value, passwd.value)
-      .subscribe(user => this.user = user,
-        error => this.errorMessage = error);
+      .subscribe(user => {
+        this.user = user;
+        console.log(user);
+        this.errorMessage = '';
+      }, error => this.errorMessage = error);
+  }
+
+  logout() {
+    this.userService.logout()
+      .subscribe(() => {
+          this.user = null;
+          this.errorMessage = '';
+        }, error => this.errorMessage = error
+      );
   }
 
 }

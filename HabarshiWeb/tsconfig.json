@@ -14,6 +14,9 @@
     ],
     "types": [
       "node",
+      "jasmin",
+      "selenium-webdriver",
+      "q",
       "@types/storejs"
     ],
     "lib": [
