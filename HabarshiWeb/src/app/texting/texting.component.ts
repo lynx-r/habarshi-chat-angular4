@@ -8,6 +8,7 @@ import {UsersService} from "../service/users.service";
 import {Observable} from "rxjs/Observable";
 import {ConstantsService} from "../shared/constants.service";
 import "rxjs/add/observable/timer";
+import {Roster} from "../model/roster.model";
 
 @Component({
   selector: 'app-texting',
@@ -21,6 +22,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   messages: Message[] = [];
   errorMessage: string;
   user: User;
+  roster: Roster[];
 
   constructor(private textingService: TextingService,
               private userService: UserService,
@@ -29,21 +31,26 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.userService.userLoggedInEvent.subscribe((user)=>{
+    this.userService.userLoggedInEvent.subscribe((user) => {
       this.user = user;
-      this.getMessages();
     });
-    Observable.timer(0, this.constants.REFRESH_MESSAGES_MILLISEC)
+    Observable.timer(1000, this.constants.REFRESH_MESSAGES_MILLISEC)
       .subscribe(() => this.getLatestMessages());
     Observable.timer(1000, this.constants.REFRESH_ROSTER_MILLISEC)
-      .subscribe(() => this.usersService.getRoster());
+      .subscribe(() => {
+        this.usersService.getRoster()
+          .subscribe((roster) => {
+            this.roster = roster;
+            this.getMessages();
+          });
+      });
   }
 
   ngAfterViewChecked() {
     this.scrollBottom();
   }
 
-  public getMessages() {
+  getMessages() {
     this.textingService.getMessages()
       .subscribe(
         messages => {
@@ -53,11 +60,12 @@ export class TextingComponent implements OnInit, AfterViewChecked {
       );
   }
 
-  public getLatestMessages() {
-
+  getLatestMessages() {
+    console.log('sdf');
   }
 
-  private scrollBottom() {
+  private
+  scrollBottom() {
     let nativeElement = this.messagesRef.nativeElement;
     nativeElement.scrollTop = nativeElement.scrollTop +
       nativeElement.scrollHeight * 2;

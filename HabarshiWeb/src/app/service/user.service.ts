@@ -24,10 +24,11 @@ export class UserService implements OnInit {
   sessionConfig(): Observable<User> {
     const session = Store.get(this.constants.SESSION_KEY);
     const queryUrl = `${this.constants.SERVER_URL}/session-config?session=${session}`;
-    return this.http.get(queryUrl).map((resp: Response) => {
-      this.extractUser(resp);
-      this.loggedIn = true;
-    }).catch(Utils.handleError)
+    return this.http.get(queryUrl)
+      .map((resp: Response) => {
+        this.extractUser(resp);
+        this.loggedIn = true;
+      }).catch(Utils.handleError)
   }
 
   auth(username: string, passwd: string): Observable<User> {
@@ -39,10 +40,11 @@ export class UserService implements OnInit {
       `password=${passwd}`
     ].join('&');
     const queryUrl = `${this.constants.SERVER_URL}/auth/1?${params}`;
-    return this.http.get(queryUrl).map((resp: Response) => {
-      this.extractUser(resp);
-      this.loggedIn = true;
-    }).catch(Utils.handleError);
+    return this.http.get(queryUrl)
+      .map((resp: Response) => {
+        this.extractUser(resp);
+        this.loggedIn = true;
+      }).catch(Utils.handleError);
   }
 
   logout(): Observable<void> {

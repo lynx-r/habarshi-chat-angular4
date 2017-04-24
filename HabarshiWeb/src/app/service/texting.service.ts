@@ -7,7 +7,7 @@ import {Message} from "../model/message.model";
 import {ConstantsService} from "../shared/constants.service";
 import {Utils} from "../util/util";
 import {UserService} from "./user.service";
-import {ServerStatus} from "../model/server-status";
+import {ServerStatus} from "../model/server-status.enum";
 
 @Injectable()
 export class TextingService {
