@@ -5,6 +5,7 @@ import {UserService} from "../../service/user.service";
 import {MessageType} from "../../shared/message-type.enum";
 import {ConstantsService} from "../../shared/constants.service";
 import {Utils} from "../../util/util";
+import {UsersService} from "../../service/users.service";
 
 @Component({
   selector: 'app-message',
@@ -18,8 +19,9 @@ export class MessageComponent implements OnInit {
   @Input() message: Message;
   dateFormat: string;
   messageType: MessageType;
+  fromFull: string;
 
-  constructor(private userService: UserService, private constants: ConstantsService) {
+  constructor(private userService: UserService, private usersService: UsersService, private constants: ConstantsService) {
     this.dateFormat = constants.DATE_FORMAT;
   }
 
@@ -27,7 +29,10 @@ export class MessageComponent implements OnInit {
     if (this.message.text.startsWith('<HabarshiServiceMessage>')) {
       this.message.text = 'Не поддерживается';
     }
+    console.log(this.message);
     this.user = this.userService.user;
+    const users: Map<string, User> = this.usersService.users;
+    this.fromFull = users[this.message.from.split('@')[0]].name;
     this.messageType = Utils.getMessageType(this.message, this.user.jid, this.constants.SECURITY_BOT_JID);
   }
 

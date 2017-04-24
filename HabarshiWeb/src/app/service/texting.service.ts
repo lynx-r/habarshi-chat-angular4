@@ -35,15 +35,17 @@ export class TextingService {
     return new ServerStatus(body.comment, body.ok);
   }
 
-  getMessages(): Observable<Message[]> {
+  getMessages(after?: string): Observable<Message[]> {
     const session = this.userService.getSession();
-    const params: string = `session=${session}`;
+    let params: string = `session=${session}`;
+    if (after != null) {
+      params = params.concat(`&after=${after}`);
+    }
     const queryUrl = `${this.constants.SERVER_URL}/user/mam?${params}`;
     return this.http.get(queryUrl)
       .map(this.extractMessages)
       .catch(Utils.handleError);
   }
-
 
   private extractMessages(response: Response): string[] {
     let body = response.json();

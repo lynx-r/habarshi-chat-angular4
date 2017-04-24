@@ -21,6 +21,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   @ViewChild('messagesRef') messagesRef: ElementRef;
   messages: Message[] = [];
   newMessage: boolean;
+  initScroll: boolean = true;
   errorMessage: string;
   roster: Roster[];
 
@@ -58,16 +59,28 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   }
 
   getLatestMessages() {
-    console.log('sdf');
+    if (this.messages.length == 0) {
+      return;
+    }
+    let after = this.messages[this.messages.length - 1].id;
+    this.textingService.getMessages(after).subscribe((latest) => {
+      if (latest.length != 0) {
+        this.messages = this.messages.concat(latest);
+        this.newMessage = true;
+      }
+    });
   }
 
   private
   scrollBottom() {
     let nativeElement = this.messagesRef.nativeElement;
-    if (nativeElement.scrollTop == 0 || this.newMessage) {
+    if (this.newMessage || this.initScroll) {
       nativeElement.scrollTop = nativeElement.scrollTop +
         nativeElement.scrollHeight * 2;
       this.newMessage = false;
+      if (nativeElement.scrollTop > 0) {
+        this.initScroll = false;
+      }
     }
   }
 
