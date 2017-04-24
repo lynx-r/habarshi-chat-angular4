@@ -8,11 +8,15 @@ import {ConstantsService} from "../shared/constants.service";
 import {Utils} from "../util/util";
 import {UserService} from "./user.service";
 import {ServerStatus} from "../model/server-status.enum";
+import {UsersService} from "./users.service";
 
 @Injectable()
 export class TextingService {
 
-  constructor(private http: Http, private userService:UserService,private constants: ConstantsService) {
+  constructor(private http: Http,
+              private userService:UserService,
+              private usersService: UsersService,
+              private constants: ConstantsService) {
   }
 
   sendMessage(message: Message): Observable<ServerStatus> {
@@ -21,7 +25,6 @@ export class TextingService {
       `session=${session}`,
       `text=${message.text}`,
       `id=${message.id}`,
-      `with=to`,
       `to=${message.to}`
     ].join('&');
     let queryUrl = `${this.constants.SERVER_URL}/v1/chat/send?${params}`;
@@ -37,7 +40,11 @@ export class TextingService {
 
   getMessages(after?: string): Observable<Message[]> {
     const session = this.userService.getSession();
-    let params: string = `session=${session}`;
+    if (session == null) {
+      return Observable.of([]);
+    }
+    const buddy = this.usersService.selectedUser;
+    let params: string = `session=${session}&with=${buddy.jid}`;
     if (after != null) {
       params = params.concat(`&after=${after}`);
     }

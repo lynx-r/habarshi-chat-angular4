@@ -51,8 +51,8 @@ export class UserService implements OnInit {
     if (!this.loggedIn) {
       return;
     }
-    const user: User = Store.get(this.constants.SESSION_KEY);
-    const queryUrl = `${this.constants.SERVER_URL}/logout?session=${user.session}`;
+    const session: string = Store.get(this.constants.SESSION_KEY);
+    const queryUrl = `${this.constants.SERVER_URL}/logout?session=${session}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => this.loggedIn = false)
       .catch(Utils.handleError)
