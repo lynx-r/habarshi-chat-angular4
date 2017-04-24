@@ -60,7 +60,6 @@ export class UserService implements OnInit {
 
   private extractUser(resp: Response) {
     const body = resp.json();
-    console.log(body);
     try {
       if (body.session == false || body.ok == false) {
         throw new Error(body.comment);

@@ -29,15 +29,10 @@ export class MessageComponent implements OnInit {
     if (this.message.text.startsWith('<HabarshiServiceMessage>')) {
       this.message.text = 'Не поддерживается';
     }
-    console.log(this.message);
     this.user = this.userService.user;
     const users: Map<string, User> = this.usersService.users;
     this.fromFull = users[this.message.from.split('@')[0]].name;
     this.messageType = Utils.getMessageType(this.message, this.user.jid, this.constants.SECURITY_BOT_JID);
-  }
-
-  getMessageType() {
-    return this.messageType;
   }
 
 }

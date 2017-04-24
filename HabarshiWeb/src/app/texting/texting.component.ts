@@ -32,16 +32,19 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    Observable.timer(1000, this.constants.REFRESH_MESSAGES_MILLISEC)
-      .subscribe(() => this.getLatestMessages());
-    Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
-      .subscribe(() => {
-        this.usersService.getRoster()
-          .subscribe((roster) => {
-            this.roster = roster;
-            this.getMessages();
-          });
-      });
+    this.userService.userLoggedInEvent.subscribe(()=>{
+      Observable.timer(1000, this.constants.REFRESH_MESSAGES_MILLISEC)
+        .subscribe(() => this.getLatestMessages());
+      Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
+        .subscribe(() => {
+          this.usersService.getRoster()
+            .subscribe((roster) => {
+              this.roster = roster;
+              this.getMessages();
+              this.userService.user = this.usersService.users[this.userService.user.username];
+            });
+        });
+    });
   }
 
   ngAfterViewChecked() {

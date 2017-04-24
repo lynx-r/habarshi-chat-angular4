@@ -20,7 +20,6 @@ export class Utils {
   }
 
   public static getMessageType(message:Message, originFrom: string, securityBot:string): MessageType {
-    console.log(message);
     if (message.from == securityBot) {
       return MessageType.SERVICE;
     } else if (message.from == originFrom) {

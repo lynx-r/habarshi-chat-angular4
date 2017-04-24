@@ -1,8 +1,9 @@
 <div style="overflow: hidden;" data-id="{{message.id}}">
-  <div [ngClass]="{'in-msg': getMessageType() == MessageType.IN,
-  'out-msg': getMessageType() == MessageType.OUT,
-   'srv-msg': getMessageType() == MessageType.SERVICE}" class="message">
-    <p><b> {{ getMessageType() == MessageType.IN ? fromFull : (getMessageType() == MessageType.OUT ? 'Я' : message.jid) }}</b> {{ message.time | date: dateFormat}}
+  <div [ngClass]="{'in-msg': messageType == MessageType.IN,
+  'out-msg': messageType == MessageType.OUT,
+   'srv-msg': messageType == MessageType.SERVICE}" class="message {{message.marker}}">
+    <p><b> {{ messageType == MessageType.IN ? fromFull : (messageType == MessageType.OUT ? 'Я' : message.jid) }}</b>
+      {{ message.time | date: dateFormat}}
       <span class="fa-lg check-success">
         <i class="fa fa-check" style="margin-left:4px"></i>
         </span>

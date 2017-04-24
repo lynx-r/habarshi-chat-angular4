@@ -35,7 +35,6 @@ export class UsersService {
 
   private extractRoster(resp: Response) {
     const body = resp.json();
-    console.log(body);
     try {
       if (body.ok == false) {
         throw new Error(body.comment);
@@ -45,7 +44,6 @@ export class UsersService {
     }
     this.roster = body;
     this.parseUsers(this.roster);
-    this.userService.user = this.users[this.userService.user.username];
     return this.roster;
   }
 

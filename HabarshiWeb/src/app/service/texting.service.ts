@@ -53,7 +53,6 @@ export class TextingService {
       throw new Error(body.comment);
     }
 
-    console.log(body);
     return body.mam.history
       .map(item =>
         new Message(item.from, item.id, item.jid, item.stamp, item.text, item.time, item.to, item.marker));
