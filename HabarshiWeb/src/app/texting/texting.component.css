@@ -1,12 +1,12 @@
-#messages {
+.messages {
   height: 70vh;
   overflow: auto;
 }
 
-#messages.hover {
+.messages.hover {
   background-color: rgba(0, 173, 255, 0.27);
 }
-#messages.drop {
+.messages.drop {
   background-color: dodgerblue;
 }
 #attachButton.error {
