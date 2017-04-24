@@ -4,7 +4,7 @@ import {User} from "../model/user.model";
 import {UserService} from "../service/user.service";
 import {Message} from "../model/message.model";
 import {GUID} from "../util/guid";
-import {UsersService} from "../service/users.service";
+import {RosterService} from "../service/users.service";
 import {Observable} from "rxjs/Observable";
 import {ConstantsService} from "../shared/constants.service";
 import "rxjs/add/observable/timer";
@@ -27,7 +27,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
 
   constructor(private textingService: TextingService,
               private userService: UserService,
-              private usersService: UsersService,
+              private rosterService: RosterService,
               private constants: ConstantsService) {
   }
 
@@ -37,11 +37,11 @@ export class TextingComponent implements OnInit, AfterViewChecked {
         .subscribe(() => this.getLatestMessages());
       Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
         .subscribe(() => {
-          this.usersService.getRoster()
+          this.rosterService.getRoster()
             .subscribe((roster) => {
               this.roster = roster;
               this.getMessages();
-              this.userService.user = this.usersService.users[this.userService.user.username];
+              this.userService.user = this.rosterService.users[this.userService.user.username];
             });
         });
     });
@@ -92,7 +92,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
       return;
     }
     const text = messageInput.value;
-    const selectedUser = this.usersService.selectedUser;
+    const selectedUser = this.rosterService.selectedUser;
     const user = this.userService.user;
     const id: string = new GUID().toString();
     const message = new Message(user.jid, id, user.jid, new Date().getTime(), text, new Date(), selectedUser.username);

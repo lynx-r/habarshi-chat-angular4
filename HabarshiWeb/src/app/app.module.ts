@@ -11,7 +11,7 @@ import { FooterComponent } from './footer/footer.component';
 import {TextingService} from "./service/texting.service";
 import {UserService} from "./service/user.service";
 import {ConstantsService} from "./shared/constants.service";
-import {UsersService} from "./service/users.service";
+import {RosterService} from "./service/users.service";
 
 @NgModule({
   declarations: [
@@ -27,7 +27,7 @@ import {UsersService} from "./service/users.service";
     ReactiveFormsModule,
     HttpModule
   ],
-  providers: [ConstantsService, TextingService, UserService, UsersService],
+  providers: [ConstantsService, TextingService, UserService, RosterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

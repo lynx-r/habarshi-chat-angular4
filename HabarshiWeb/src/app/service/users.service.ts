@@ -10,7 +10,7 @@ import {Roster} from "../model/roster.model";
 import {UserService} from "./user.service";
 
 @Injectable()
-export class UsersService {
+export class RosterService {
 
   public roster: Roster[];
   public users: Map<string, User> = new Map<string, User>();
@@ -27,7 +27,6 @@ export class UsersService {
       return;
     }
     const queryUrl = `${this.constants.SERVER_URL}/user/roster?session=${session}`;
-    console.log(queryUrl);
     return this.http.get(queryUrl)
       .map((resp: Response) => {
         this.extractRoster(resp);

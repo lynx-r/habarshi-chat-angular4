@@ -5,7 +5,7 @@ import {UserService} from "../../service/user.service";
 import {MessageType} from "../../shared/message-type.enum";
 import {ConstantsService} from "../../shared/constants.service";
 import {Utils} from "../../util/util";
-import {UsersService} from "../../service/users.service";
+import {RosterService} from "../../service/users.service";
 
 @Component({
   selector: 'app-message',
@@ -21,7 +21,7 @@ export class MessageComponent implements OnInit {
   messageType: MessageType;
   fromFull: string;
 
-  constructor(private userService: UserService, private usersService: UsersService, private constants: ConstantsService) {
+  constructor(private userService: UserService, private rosterService: RosterService, private constants: ConstantsService) {
     this.dateFormat = constants.DATE_FORMAT;
   }
 
@@ -30,7 +30,7 @@ export class MessageComponent implements OnInit {
       this.message.text = 'Не поддерживается';
     }
     this.user = this.userService.user;
-    const users: Map<string, User> = this.usersService.users;
+    const users: Map<string, User> = this.rosterService.users;
     this.fromFull = users[this.message.from.split('@')[0]].name;
     this.messageType = Utils.getMessageType(this.message, this.user.jid, this.constants.SECURITY_BOT_JID);
   }

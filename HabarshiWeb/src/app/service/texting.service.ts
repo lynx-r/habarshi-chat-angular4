@@ -8,14 +8,14 @@ import {ConstantsService} from "../shared/constants.service";
 import {Utils} from "../util/util";
 import {UserService} from "./user.service";
 import {ServerStatus} from "../model/server-status.enum";
-import {UsersService} from "./users.service";
+import {RosterService} from "./users.service";
 
 @Injectable()
 export class TextingService {
 
   constructor(private http: Http,
               private userService:UserService,
-              private usersService: UsersService,
+              private usersService: RosterService,
               private constants: ConstantsService) {
   }
 
