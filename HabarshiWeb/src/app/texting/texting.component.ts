@@ -20,8 +20,8 @@ export class TextingComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('messagesRef') messagesRef: ElementRef;
   messages: Message[] = [];
+  newMessage: boolean;
   errorMessage: string;
-  user: User;
   roster: Roster[];
 
   constructor(private textingService: TextingService,
@@ -31,12 +31,9 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.userService.userLoggedInEvent.subscribe((user) => {
-      this.user = user;
-    });
     Observable.timer(1000, this.constants.REFRESH_MESSAGES_MILLISEC)
       .subscribe(() => this.getLatestMessages());
-    Observable.timer(1000, this.constants.REFRESH_ROSTER_MILLISEC)
+    Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
       .subscribe(() => {
         this.usersService.getRoster()
           .subscribe((roster) => {
@@ -67,8 +64,11 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   private
   scrollBottom() {
     let nativeElement = this.messagesRef.nativeElement;
-    nativeElement.scrollTop = nativeElement.scrollTop +
-      nativeElement.scrollHeight * 2;
+    if (nativeElement.scrollTop == 0 || this.newMessage) {
+      nativeElement.scrollTop = nativeElement.scrollTop +
+        nativeElement.scrollHeight * 2;
+      this.newMessage = false;
+    }
   }
 
   onSendMessage(messageInput: HTMLInputElement) {
@@ -77,8 +77,9 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     }
     const text = messageInput.value;
     const selectedUser = this.usersService.selectedUser;
+    const user = this.userService.user;
     const id: string = new GUID().toString();
-    const message = new Message(this.user.username, id, this.user.jid, new Date().getTime(), text, new Date(), selectedUser.username);
+    const message = new Message(user.jid, id, user.jid, new Date().getTime(), text, new Date(), selectedUser.username);
     this.textingService.sendMessage(message)
       .subscribe(
         data => {
@@ -89,6 +90,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
           } else {
             this.errorMessage = data.comment;
           }
+          this.newMessage = true;
         },
         error => this.errorMessage = error
       );
