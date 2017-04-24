@@ -6,6 +6,7 @@ import {MessageType} from "../../shared/message-type.enum";
 import {ConstantsService} from "../../shared/constants.service";
 import {Utils} from "../../util/util";
 import {RosterService} from "../../service/roster.service";
+import {HabarshiText} from "../../model/habarshi-text.model";
 
 @Component({
   selector: 'app-message',
@@ -20,14 +21,15 @@ export class MessageComponent implements OnInit {
   dateFormat: string;
   messageType: MessageType;
   fromFull: string;
+  habarshiText: HabarshiText;
 
   constructor(private userService: UserService, private rosterService: RosterService, private constants: ConstantsService) {
     this.dateFormat = constants.DATE_FORMAT;
   }
 
   ngOnInit() {
-    if (this.message.text.startsWith('<HabarshiServiceMessage>')) {
-      this.message.text = 'Не поддерживается';
+    if (this.message.text.startsWith(HabarshiText.HABARSHI_HEADER)) {
+      this.habarshiText = new HabarshiText(this.message.text);
     }
     this.user = this.userService.user;
     const users: Map<string, User> = this.rosterService.users;

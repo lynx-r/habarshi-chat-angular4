@@ -10,6 +10,23 @@
         <i class="fa fa-check  fa-stack-1x" style="margin-left:-4px"></i>
       </span>
     </p>
-    <div [innerHTML]="message.text"></div>
+    <div *ngIf="!habarshiText; else habarshiMessage" [innerHTML]="message.text"></div>
+    <ng-template #habarshiMessage>
+      <ng-template [ngIf]="habarshiText.type.startsWith('audio')">
+        <div class="audio">
+          <audio [src]="habarshiText.full_url" controls></audio>
+        </div>
+      </ng-template>
+      <ng-template [ngIf]="habarshiText.type.startsWith('image')">
+        <div class="image">
+          <a [href]="habarshiText.full_url" target="_blank"><img [src]="habarshiText.preview_url"/></a>
+        </div>
+      </ng-template>
+      <ng-template [ngIf]="!habarshiText.type.startsWith('audio') && !habarshiText.type.startsWith('image')">
+        <div class="doc">
+          <a [href]="habarshiText.full_url" target="_blank">{{habarshiText.file_name}}</a>
+        </div>
+      </ng-template>
+    </ng-template>
   </div>
 </div>
