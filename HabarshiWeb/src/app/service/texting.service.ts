@@ -8,13 +8,14 @@ import {ConstantsService} from "../shared/constants.service";
 import {Utils} from "../util/util";
 import {UserService} from "./user.service";
 import {ServerStatus} from "../model/server-status.enum";
-import {RosterService} from "./users.service";
+import {RosterService} from "./roster.service";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
 @Injectable()
 export class TextingService {
 
   constructor(private http: Http,
-              private userService:UserService,
+              private userService: UserService,
               private usersService: RosterService,
               private constants: ConstantsService) {
   }
@@ -41,7 +42,7 @@ export class TextingService {
   getMessages(after?: string): Observable<Message[]> {
     const session = this.userService.getSession();
     if (session == null) {
-      return Observable.of([]);
+      return new EmptyObservable();
     }
     const buddy = this.usersService.selectedUser;
     let params: string = `session=${session}&with=${buddy.jid}`;
@@ -50,11 +51,12 @@ export class TextingService {
     }
     const queryUrl = `${this.constants.SERVER_URL}/user/mam?${params}`;
     return this.http.get(queryUrl)
-      .map(this.extractMessages)
-      .catch(Utils.handleError);
+      .map((resp: Response) => {
+        return this.extractMessages(resp);
+      }).catch(Utils.handleError);
   }
 
-  private extractMessages(response: Response): string[] {
+  private extractMessages(response: Response): Message[] {
     let body = response.json();
     if (!body.ok) {
       throw new Error(body.comment);
@@ -64,4 +66,40 @@ export class TextingService {
       .map(item =>
         new Message(item.from, item.id, item.jid, item.stamp, item.text, item.time, item.to, item.marker));
   }
+
+  updateMessageStatuses(latestMessages: Message[], originMessages: Message[]): Observable<Message[]> {
+    if (latestMessages.length == 0) {
+      return new EmptyObservable();
+    }
+    const session = this.userService.getSession();
+    const ids = latestMessages.map((message) => {
+      return message.id;
+    });
+    const params = [
+      `session=${session}`,
+      `ids=${ids}`
+    ].join('&');
+    const queryUrl = `${this.constants.SERVER_URL}/user/mam_ack?${params}`;
+    return this.http.get(queryUrl)
+      .map((resp: Response) => {
+        const body = resp.json();
+        console.log(body);
+        if (!body.ok) {
+          throw new Error(body.comment);
+        }
+        Object.entries(body.ack).forEach(([id, marker]) => {
+          let msgs = originMessages.filter((m) => m.id == id);
+          if (msgs.length == 1) {
+            msgs[0].marker = marker;
+            if (marker == 'acknowledged' || marker == 'markable') {
+              const index = latestMessages.indexOf(msgs[0]);
+              latestMessages.splice(index, 1);
+            }
+          }
+        });
+        return latestMessages;
+      })
+      .catch(Utils.handleError);
+  }
+
 }

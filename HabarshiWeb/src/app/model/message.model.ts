@@ -1,10 +1,8 @@
-import {MessageType} from "../shared/message-type.enum";
-import {el} from "@angular/platform-browser/testing/src/browser_util";
 export class Message {
   from: string;
   id: string;
   jid: string;
-  marker: string;
+  marker: string = 'markable';
   stamp: number;
   text: string;
   time: Date;

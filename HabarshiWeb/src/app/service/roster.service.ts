@@ -17,8 +17,8 @@ export class RosterService {
   public selectedUser: User;
 
   constructor(private http: Http, private userService: UserService, private constants: ConstantsService) {
-    this.selectedUser = new User(null, 'kuku');
-    this.selectedUser.jid = 'kuku@habarshi.com';
+    this.selectedUser = new User(null, '1');
+    this.selectedUser.jid = '1@conference.habarshi.com';
   }
 
   getRoster() {

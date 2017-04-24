@@ -4,11 +4,12 @@ import {User} from "../model/user.model";
 import {UserService} from "../service/user.service";
 import {Message} from "../model/message.model";
 import {GUID} from "../util/guid";
-import {RosterService} from "../service/users.service";
+import {RosterService} from "../service/roster.service";
 import {Observable} from "rxjs/Observable";
 import {ConstantsService} from "../shared/constants.service";
 import "rxjs/add/observable/timer";
 import {Roster} from "../model/roster.model";
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-texting',
@@ -24,6 +25,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   initScroll: boolean = true;
   errorMessage: string;
   roster: Roster[];
+  private latestMessages: Message[] = [];
 
   constructor(private textingService: TextingService,
               private userService: UserService,
@@ -32,9 +34,9 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit() {
-    this.userService.userLoggedInEvent.subscribe(()=>{
+    this.userService.userLoggedInEvent.subscribe(() => {
       Observable.timer(1000, this.constants.REFRESH_MESSAGES_MILLISEC)
-        .subscribe(() => this.getLatestMessages());
+        .subscribe(() => this.refreshMessages());
       Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
         .subscribe(() => {
           this.rosterService.getRoster()
@@ -55,22 +57,26 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     this.textingService.getMessages()
       .subscribe(
         messages => {
-          this.messages = messages
-          this.errorMessage = ''
+          this.messages = messages;
+          this.errorMessage = '';
+          this.latestMessages = messages.slice();
         }, error => this.errorMessage = error
       );
   }
 
-  getLatestMessages() {
+  refreshMessages() {
     if (this.messages.length == 0) {
       return;
     }
-    let after = this.messages[this.messages.length - 1].id;
+    const after = this.messages[this.messages.length - 1].id;
     this.textingService.getMessages(after).subscribe((latest) => {
       if (latest.length != 0) {
         this.messages = this.messages.concat(latest);
         this.newMessage = true;
       }
+    });
+    this.textingService.updateMessageStatuses(this.latestMessages, this.messages).subscribe((messages) => {
+      this.latestMessages = messages;
     });
   }
 
@@ -95,12 +101,13 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     const selectedUser = this.rosterService.selectedUser;
     const user = this.userService.user;
     const id: string = new GUID().toString();
-    const message = new Message(user.jid, id, user.jid, new Date().getTime(), text, new Date(), selectedUser.username);
+    const message = new Message(user.jid, id, user.jid, new Date().getTime(), text, new Date(), selectedUser.jid);
     this.textingService.sendMessage(message)
       .subscribe(
         data => {
           if (data.ok) {
             this.messages.push(message);
+            this.latestMessages.push(message);
             messageInput.value = '';
             this.errorMessage = '';
           } else {

@@ -5,20 +5,19 @@
 }
 
 /* message types */
-.in-msg {
-  min-width: 50vh;
+.msg-IN {
   max-width: 70vh;
   background: rgba(255, 0, 0, 0.4);
 }
 
-.out-msg {
+.msg-OUT {
   max-width: 90vh;
   background: rgba(200, 200, 200, 0.4);
   float: right;
   text-align: right;
 }
 
-.srv-msg {
+.msg-SERVICE {
   text-align: center;
   font-size: small;
   font-style: italic;

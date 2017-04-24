@@ -1,7 +1,5 @@
-<div style="overflow: hidden;" data-id="{{message.id}}">
-  <div [ngClass]="{'in-msg': messageType == MessageType.IN,
-  'out-msg': messageType == MessageType.OUT,
-   'srv-msg': messageType == MessageType.SERVICE}" class="message {{message.marker}}">
+<div style="overflow: hidden;">
+  <div class="message {{'msg-' + MessageType[messageType]}} {{message.marker}}">
     <p><b> {{ messageType == MessageType.IN ? fromFull : (messageType == MessageType.OUT ? 'Я' : message.jid) }}</b>
       {{ message.time | date: dateFormat}}
       <span class="fa-lg check-success">

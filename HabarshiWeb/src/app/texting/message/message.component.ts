@@ -5,7 +5,7 @@ import {UserService} from "../../service/user.service";
 import {MessageType} from "../../shared/message-type.enum";
 import {ConstantsService} from "../../shared/constants.service";
 import {Utils} from "../../util/util";
-import {RosterService} from "../../service/users.service";
+import {RosterService} from "../../service/roster.service";
 
 @Component({
   selector: 'app-message',
@@ -31,7 +31,12 @@ export class MessageComponent implements OnInit {
     }
     this.user = this.userService.user;
     const users: Map<string, User> = this.rosterService.users;
-    this.fromFull = users[this.message.from.split('@')[0]].name;
+    let userFromRoster = users[this.message.from.split('@')[0]];
+    if (userFromRoster != null) {
+      this.fromFull = userFromRoster.name;
+    } else {
+      this.fromFull = 'Не в сети';
+    }
     this.messageType = Utils.getMessageType(this.message, this.user.jid, this.constants.SECURITY_BOT_JID);
   }
 
