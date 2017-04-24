@@ -1,6 +1,5 @@
-import {AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {TextingService} from "../service/texting.service";
-import {User} from "../model/user.model";
 import {UserService} from "../service/user.service";
 import {Message} from "../model/message.model";
 import {GUID} from "../util/guid";
@@ -9,7 +8,10 @@ import {Observable} from "rxjs/Observable";
 import {ConstantsService} from "../shared/constants.service";
 import "rxjs/add/observable/timer";
 import {Roster} from "../model/roster.model";
-import * as _ from "lodash";
+import {FileItem, FileUploader, ParsedResponseHeaders} from "ng2-file-upload";
+import {Store} from "../util/store";
+import {HabarshiText} from "../model/habarshi-text.model";
+import {Utils} from "../util/util";
 
 @Component({
   selector: 'app-texting',
@@ -20,12 +22,17 @@ import * as _ from "lodash";
 export class TextingComponent implements OnInit, AfterViewChecked {
 
   @ViewChild('messagesRef') messagesRef: ElementRef;
+  @ViewChild('messageRef') messageRef: ElementRef;
+
   messages: Message[] = [];
   newMessage: boolean;
   initScroll: boolean = true;
   errorMessage: string;
   roster: Roster[];
   private latestMessages: Message[] = [];
+  uploader: FileUploader;
+  hasBaseDropZoneOver: boolean = false;
+  hasAnotherDropZoneOver: boolean = false;
 
   constructor(private textingService: TextingService,
               private userService: UserService,
@@ -35,6 +42,31 @@ export class TextingComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.userService.userLoggedInEvent.subscribe(() => {
+      // after login we have upload_url in store
+      this.uploader = new FileUploader({
+        url: Store.get(this.constants.SERVER_UPLOAD_URL),
+        autoUpload: true
+      });
+      this.uploader.onAfterAddingFile = (file) => {
+        file.withCredentials = false;
+      };
+      this.uploader.onSuccessItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
+        const body = JSON.parse(response);
+        if (!body.ok) {
+          Utils.handleError(body.comment);
+          return;
+        }
+
+        const selectedUser = this.rosterService.selectedUser;
+        const user = this.userService.user;
+        const id: string = new GUID().toString();
+        const habarshiText: HabarshiText = new HabarshiText(item.file.name, body.full_url, body.preview_url);
+        const message = new Message(user.jid, id, user.jid, new Date().getTime(), habarshiText.toString(),
+          new Date(), selectedUser.jid);
+        this.textingService.sendMessage(message).subscribe((data)=>{
+          this.messageSent(data, message);
+        });
+      };
       Observable.timer(1000, this.constants.REFRESH_MESSAGES_MILLISEC)
         .subscribe(() => this.refreshMessages());
       Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
@@ -93,11 +125,11 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  onSendMessage(messageInput: HTMLInputElement) {
-    if (!messageInput.value) {
+  onSendMessage() {
+    if (!this.messageRef.nativeElement.value) {
       return;
     }
-    const text = messageInput.value;
+    const text = this.messageRef.nativeElement.value;
     const selectedUser = this.rosterService.selectedUser;
     const user = this.userService.user;
     const id: string = new GUID().toString();
@@ -105,18 +137,26 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     this.textingService.sendMessage(message)
       .subscribe(
         data => {
-          if (data.ok) {
-            this.messages.push(message);
-            this.latestMessages.push(message);
-            messageInput.value = '';
-            this.errorMessage = '';
-          } else {
-            this.errorMessage = data.comment;
-          }
-          this.newMessage = true;
+          this.messageSent(data, message);
         },
         error => this.errorMessage = error
       );
+  }
+
+  private messageSent(data, message: Message) {
+    if (data.ok) {
+      this.messages.push(message);
+      this.latestMessages.push(message);
+      this.messageRef.nativeElement.value = '';
+      this.errorMessage = '';
+    } else {
+      this.errorMessage = data.comment;
+    }
+    this.newMessage = true;
+  }
+
+  onFileOver(e: any) {
+    this.hasBaseDropZoneOver = e;
   }
 
 }

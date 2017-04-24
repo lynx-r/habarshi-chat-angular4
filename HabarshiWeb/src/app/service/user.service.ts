@@ -72,6 +72,9 @@ export class UserService implements OnInit {
     this.user = new User(body.session, body.username);
     Store.put(this.constants.SESSION_KEY, this.user.session);
     this.userLoggedInEvent.emit(this.user);
+
+    const uploadUrl = `http://${body.uploads.address}:${body.uploads.port}/upload`;
+    Store.put(this.constants.SERVER_UPLOAD_URL, uploadUrl);
     return this.user;
   }
 

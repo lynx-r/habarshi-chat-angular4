@@ -29,7 +29,7 @@ export class MessageComponent implements OnInit {
 
   ngOnInit() {
     if (this.message.text.startsWith(HabarshiText.HABARSHI_HEADER)) {
-      this.habarshiText = new HabarshiText(this.message.text);
+      this.habarshiText = HabarshiText.fromText(this.message.text);
     }
     this.user = this.userService.user;
     const users: Map<string, User> = this.rosterService.users;
@@ -39,7 +39,7 @@ export class MessageComponent implements OnInit {
     } else {
       this.fromFull = 'Не в сети';
     }
-    this.messageType = Utils.getMessageType(this.message, this.user.jid, this.constants.SECURITY_BOT_JID);
+    this.messageType = Utils.getMessageType(this.message, this.user.jid);
   }
 
 }

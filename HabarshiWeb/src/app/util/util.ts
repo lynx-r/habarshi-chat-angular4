@@ -19,13 +19,13 @@ export class Utils {
     return Observable.throw(errMsg);
   }
 
-  public static getMessageType(message:Message, originFrom: string, securityBot:string): MessageType {
-    if (message.from == securityBot) {
-      return MessageType.SERVICE;
-    } else if (message.from == originFrom) {
+  public static getMessageType(message: Message, originFrom: string): MessageType {
+    if (message.from == originFrom) {
       return MessageType.OUT;
-    } else {
+    } else if (message.to == originFrom) {
       return MessageType.IN;
+    } else {
+      return MessageType.SERVICE;
     }
   }
 

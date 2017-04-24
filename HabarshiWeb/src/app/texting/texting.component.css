@@ -31,3 +31,7 @@
 .red, .red:hover, .red:focus {
   background-color: red;
 }
+
+.nv-file-over {
+  background-color: rgba(0, 179, 238, 0.22);
+}

@@ -1,13 +1,19 @@
 <main class="container">
   <div class="row">
     <div class="offset-3 col-6">
-      <div #messagesRef id="messages" class="form-control" title="Сообщения">
+      <div #messagesRef
+           class="form-control"
+           title="Сообщения"
+           ng2FileDrop
+           [uploader]="uploader"
+           [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+           (fileOver)="onFileOver($event)">
         <app-message *ngFor="let msg of messages" [message]="msg"></app-message>
       </div>
       <div class="input-group">
-        <input #message type="text"
+        <input #messageRef type="text"
                class="form-control"
-               (keyup.enter)="onSendMessage(message)"
+               (keyup.enter)="onSendMessage()"
                placeholder="Введите ваше сообщение">
         <span class="input-group-btn">
             <button id="toggleRecordAudio" class="btn btn-default"><i class="fa fa-microphone"></i></button>
@@ -18,7 +24,7 @@
                 <i id="attachIcon" class="fa fa-paperclip"></i></button>
         </span>
         <span class="input-group-btn">
-            <button (click)="onSendMessage(message)"
+            <button (click)="onSendMessage()"
                     class="btn btn-primary"><i class="fa fa-send"></i></button>
         </span>
       </div>

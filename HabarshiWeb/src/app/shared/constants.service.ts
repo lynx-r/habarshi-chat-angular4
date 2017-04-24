@@ -9,6 +9,7 @@ export class ConstantsService {
   readonly REFRESH_ROSTER_MILLISEC: number = 24 * 60 * 60 * 1000;
   readonly REFRESH_MESSAGES_MILLISEC: number = 2500;
   readonly SECURITY_BOT_JID = 'security_bot@habarshi.com';
+  readonly SERVER_UPLOAD_URL = 'uploadto';
 
   constructor() { }
 

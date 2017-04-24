@@ -12,6 +12,7 @@ import {TextingService} from "./service/texting.service";
 import {UserService} from "./service/user.service";
 import {ConstantsService} from "./shared/constants.service";
 import {RosterService} from "./service/roster.service";
+import {FileUploadModule} from "ng2-file-upload";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {RosterService} from "./service/roster.service";
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule
+    HttpModule,
+    FileUploadModule
   ],
   providers: [ConstantsService, TextingService, UserService, RosterService],
   bootstrap: [AppComponent]
