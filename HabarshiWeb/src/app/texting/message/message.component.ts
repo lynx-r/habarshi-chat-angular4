@@ -28,7 +28,7 @@ export class MessageComponent implements OnInit {
       this.message.text = 'Не поддерживается';
     }
     this.user = this.userService.user;
-    this.messageType = Utils.getMessageType(this.message, this.user.jid);
+    this.messageType = Utils.getMessageType(this.message, this.user.jid, this.constants.SECURITY_BOT_JID);
   }
 
   getMessageType() {

@@ -8,6 +8,7 @@ export class ConstantsService {
   readonly SESSION_KEY: string = 'session';
   readonly REFRESH_ROSTER_MILLISEC: number = 24 * 60 * 60 * 1000;
   readonly REFRESH_MESSAGES_MILLISEC: number = 2000;
+  readonly SECURITY_BOT_JID = 'security_bot@habarshi.com';
 
   constructor() { }
 
