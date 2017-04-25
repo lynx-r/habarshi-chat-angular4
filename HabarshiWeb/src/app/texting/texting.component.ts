@@ -26,9 +26,12 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   _messageRef: ElementRef;
   private blinkTitle: boolean;
   private blinkSubscription: Subscription;
+  private doBlink: boolean;
+
   @ViewChild('messageRef') set messageRef(content: ElementRef) {
     this._messageRef = content;
   };
+
   get messageRef(): ElementRef {
     return this._messageRef;
   }
@@ -37,6 +40,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   @ViewChild('messagesRef') set messagesRef(content: ElementRef) {
     this._messagesRef = content;
   }
+
   get messagesRef(): ElementRef {
     return this._messagesRef;
   }
@@ -66,16 +70,37 @@ export class TextingComponent implements OnInit, AfterViewChecked {
       this.initFileUploader();
       Observable.timer(1000, this.constants.REFRESH_MESSAGES_MILLISEC)
         .subscribe(() => this.refreshMessages());
-        Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
-          .subscribe(() => {
-            this.rosterService.getRoster()
-              .subscribe((roster) => {
-                this.roster = roster;
-                this.getMessages();
-                this.userService.user = this.rosterService.users[this.userService.user.username];
-              });
-          });
+      Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
+        .subscribe(() => {
+          this.rosterService.getRoster()
+            .subscribe((roster) => {
+              this.roster = roster;
+              this.getMessages();
+              this.userService.user = this.rosterService.users[this.userService.user.username];
+            });
+        });
     });
+  }
+
+  onBlur() {
+    this.blinkSubscription = Observable.timer(0, 1000).subscribe(() => {
+      if (this.newMessage) {
+        if (this.blinkTitle) {
+          document.title = this.constants.TITLE_NEW_MESSAGE;
+          this.blinkTitle = false;
+        } else {
+          document.title = this.constants.TITLE;
+          this.blinkTitle = true;
+        }
+      }
+    });
+  }
+
+  onFocus() {
+    document.title = this.constants.TITLE;
+    if (this.blinkSubscription) {
+      this.blinkSubscription.unsubscribe();
+    }
   }
 
   private initFileUploader() {
@@ -129,22 +154,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     if (this.messages.length == 0) {
       return;
     }
-    if (this.newMessage) {
-      if (!document.hasFocus()) {
-        this.blinkSubscription = Observable.timer(0, 1000).subscribe(() => {
-          if (this.blinkTitle) {
-            document.title = 'Новое сообщение';
-            this.blinkTitle = false;
-          } else {
-            document.title = 'Habarshi';
-            this.blinkTitle = true;
-          }
-        });
-        document.title = 'Habarshi';
-      } else {
-        this.blinkSubscription.unsubscribe();
-      }
-    }
+
     const after = this.messages[this.messages.length - 1].id;
     this.textingService.getMessages(after).subscribe((latest) => {
       if (latest.length != 0) {
@@ -166,18 +176,20 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     if (this.newMessage || this.initScroll) {
       nativeElement.scrollTop = nativeElement.scrollTop +
         nativeElement.scrollHeight * 2;
-      this.newMessage = false;
+      if (document.hasFocus()) {
+        this.newMessage = false;
+      }
       if (nativeElement.scrollTop > 0) {
         this.initScroll = false;
       }
     }
   }
 
-  onSendMessage() {
-    if (!this.messageRef.nativeElement.value) {
+  onSendMessage(event: KeyboardEvent) {
+    const text = this.messageRef.nativeElement.innerHTML;
+    if (!text || event != null && event.keyCode != 13 || event.keyCode == 13 && event.shiftKey) {
       return;
     }
-    const text = this.messageRef.nativeElement.value;
     const selectedUser = this.rosterService.selectedUser;
     const user = this.userService.user;
     const id: string = new GUID().toString();
@@ -195,7 +207,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     if (data.ok) {
       this.messages.push(message);
       this.latestMessages.push(message);
-      this.messageRef.nativeElement.value = '';
+      this.messageRef.nativeElement.innerText = '';
       this.errorMessage = '';
     } else {
       this.errorMessage = data.comment;
@@ -235,7 +247,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     return '';
   }
 
-  isLoggedIn(){
+  isLoggedIn() {
     return this.userService.loggedIn;
   }
 

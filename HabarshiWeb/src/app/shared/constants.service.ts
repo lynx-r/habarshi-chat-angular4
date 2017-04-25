@@ -12,6 +12,8 @@ export class ConstantsService {
   readonly QUERY_PARAMS: string = 'queryparams';
   readonly HABARSHI_HEADER: string = '<HabarshiServiceMessage>';
   readonly ROBOT_ROOMS: string = 'robot.rooms@habarshi.com';
+  readonly TITLE: string = 'Habarshi';
+  readonly TITLE_NEW_MESSAGE: string = 'Новое сообщение';
 
   constructor() { }
 

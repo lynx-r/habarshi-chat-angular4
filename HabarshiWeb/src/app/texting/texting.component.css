@@ -35,3 +35,8 @@
 .nv-file-over {
   background-color: rgba(14, 238, 35, 0.22);
 }
+
+[contenteditable] {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+}
