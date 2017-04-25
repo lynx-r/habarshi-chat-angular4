@@ -83,7 +83,6 @@ export class TextingService {
     return this.http.get(queryUrl)
       .map((resp: Response) => {
         const body = resp.json();
-        console.log(body);
         if (!body.ok) {
           throw new Error(body.comment);
         }

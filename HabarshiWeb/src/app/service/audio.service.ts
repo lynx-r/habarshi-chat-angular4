@@ -1,40 +1,27 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable, Output} from '@angular/core';
 import {Utils} from "../util/util";
-import {any} from "codelyzer/util/function";
 
-declare var MediaRecorder: any;
+declare const MediaRecorder: any;
 
 @Injectable()
 export class AudioService {
 
-  private audioCtx: AudioContext;
   private chunks = [];
-
   private constraints = {audio: true};
   private mediaRecorder: any;
   private recording: boolean;
+  @Output() blobReady = new EventEmitter<Blob>();
 
   constructor() {
     navigator.getUserMedia(this.constraints, (stream) => {
       this.mediaRecorder = new MediaRecorder(stream);
-      this.mediaRecorder.onstop = (e) => {
-        const blob = new Blob(this.chunks, {'type': 'audio/ogg; codecs=opus'});
-        this.chunks = [];
-        const audioURL = URL.createObjectURL(blob);
-        const audio = document.createElement('audio');
-        document.body.appendChild(audio);
-        audio.setAttribute('controls', '');
-        audio.src = audioURL;
-        console.log("recorder stopped");
-        this.recording = false;
-      };
       this.mediaRecorder.ondataavailable = (e) => {
-        this.chunks.push(e.data);
+        this.blobReady.emit(e.data);
       };
     }, Utils.handleError);
   }
 
-  toggle(): Promise<File> {
+  toggle(): Promise<any> {
     if (this.recording) {
       return this.stop();
     } else {
@@ -42,19 +29,26 @@ export class AudioService {
     }
   }
 
-  start(): Promise<any> {
+  private start(): Promise<any> {
     this.mediaRecorder.start();
     this.recording = true;
-    console.log(this.mediaRecorder.state);
-    console.log("recorder started");
     return Promise.resolve(false);
   }
 
-  stop() {
+  private stop(): Promise<File> {
     this.mediaRecorder.stop();
-    console.log(this.mediaRecorder.state);
-    console.log("recorder started");
-    return Promise.resolve(new File([], 'a'));
+    return new Promise((resolve, reject) => {
+      this.blobReady.subscribe((blob) => {
+        const file = new File([blob], 'audio-' + (new Date).toISOString().replace(/[:.]/g, '-') + '.webm',
+          {'type': 'video/webm'});
+        this.chunks = [];
+        this.recording = false;
+        resolve(file);
+      }, (error) => {
+        Utils.handleError(error);
+        reject(null);
+      })
+    });
   }
 
   public static isSupportRecording(): boolean {

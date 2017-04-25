@@ -8,7 +8,7 @@ import {Observable} from "rxjs/Observable";
 import {ConstantsService} from "../shared/constants.service";
 import "rxjs/add/observable/timer";
 import {Roster} from "../model/roster.model";
-import {FileItem, FileUploader, ParsedResponseHeaders} from "ng2-file-upload";
+import {FileItem, FileUploader, FileUploaderOptions, ParsedResponseHeaders} from "ng2-file-upload";
 import {Store} from "../util/store";
 import {HabarshiText} from "../model/habarshi-text.model";
 import {Utils} from "../util/util";
@@ -34,6 +34,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   roster: Roster[];
   private latestMessages: Message[] = [];
   uploader: FileUploader;
+  private fileUploaderOptions: FileUploaderOptions;
   hasBaseDropZoneOver: boolean = false;
   private toggleRed: boolean;
   private toggleRedSubscription: Subscription;
@@ -48,30 +49,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   ngOnInit() {
     this.userService.userLoggedInEvent.subscribe(() => {
       // after login we have upload_url in store
-      this.uploader = new FileUploader({
-        url: Store.get(this.constants.SERVER_UPLOAD_URL),
-        autoUpload: true
-      });
-      this.uploader.onAfterAddingFile = (file) => {
-        file.withCredentials = false;
-      };
-      this.uploader.onSuccessItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
-        const body = JSON.parse(response);
-        if (!body.ok) {
-          Utils.handleError(body.comment);
-          return;
-        }
-
-        const selectedUser = this.rosterService.selectedUser;
-        const user = this.userService.user;
-        const id: string = new GUID().toString();
-        const habarshiText: HabarshiText = new HabarshiText(item.file.name, body.full_url, body.preview_url);
-        const message = new Message(user.jid, id, user.jid, new Date().getTime(), habarshiText.toString(),
-          new Date(), selectedUser.jid);
-        this.textingService.sendMessage(message).subscribe((data) => {
-          this.messageSent(data, message);
-        });
-      };
+      this.initFileUploader();
       Observable.timer(1000, this.constants.REFRESH_MESSAGES_MILLISEC)
         .subscribe(() => this.refreshMessages());
       Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
@@ -84,6 +62,37 @@ export class TextingComponent implements OnInit, AfterViewChecked {
             });
         });
     });
+  }
+
+  private initFileUploader() {
+    this.fileUploaderOptions = {
+      url: Store.get(this.constants.SERVER_UPLOAD_URL),
+      autoUpload: true
+    };
+    this.uploader = new FileUploader(this.fileUploaderOptions);
+    this.uploader.onAfterAddingFile = (file) => {
+      file.withCredentials = false;
+    };
+    this.uploader.onSuccessItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
+      const body = JSON.parse(response);
+      if (!body.ok) {
+        Utils.handleError(body.comment);
+        return;
+      }
+      const message = this.createHabarshiMessage(item, body);
+      this.textingService.sendMessage(message).subscribe((data) => {
+        this.messageSent(data, message);
+      });
+    };
+  }
+
+  private createHabarshiMessage(item: FileItem, body: any) {
+    const selectedUser = this.rosterService.selectedUser;
+    const user = this.userService.user;
+    const id: string = new GUID().toString();
+    const habarshiText: HabarshiText = new HabarshiText(item.file.name, body.full_url, body.preview_url);
+    return new Message(user.jid, id, user.jid, new Date().getTime(), habarshiText.toString(),
+      new Date(), selectedUser.jid);
   }
 
 
@@ -166,6 +175,10 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   }
 
   onSendAudioMessage() {
+    if (!AudioService.isSupportRecording()) {
+      Utils.handleError('Запись аудио не поддерживается');
+      return;
+    }
     this.audioService.toggle().then((file) => {
       if (!file) { // start
         let timer = Observable.timer(0, 1000);
@@ -175,8 +188,10 @@ export class TextingComponent implements OnInit, AfterViewChecked {
         return;
       }
       // got file
+      this.toggleRed = false;
       this.toggleRedSubscription.unsubscribe();
-      console.log(file);
+      this.uploader.addToQueue([file]);
+      this.uploader.uploadAll();
     });
   }
 

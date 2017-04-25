@@ -11,7 +11,6 @@ export class Store {
     }
     let data = JSON.stringify(value);
     localStorage.setItem(key, data);
-    console.log('Put in store: ' + data)
   }
 
   public static get(key: string): any {
@@ -19,7 +18,6 @@ export class Store {
     if (value === "undefined" || value === "null") {
       return null;
     }
-    console.log('Get from store: ' + value);
     return value;
   }
 }

@@ -12,7 +12,7 @@
     </p>
     <div *ngIf="!habarshiText; else habarshiMessage" [innerHTML]="message.text"></div>
     <ng-template #habarshiMessage>
-      <ng-template [ngIf]="habarshiText.type.startsWith('audio')">
+      <ng-template [ngIf]="habarshiText.type.startsWith('video/webm')">
         <div class="audio">
           <audio [src]="habarshiText.full_url" controls></audio>
         </div>
@@ -22,7 +22,7 @@
           <a [href]="habarshiText.full_url" target="_blank"><img [src]="habarshiText.preview_url"/></a>
         </div>
       </ng-template>
-      <ng-template [ngIf]="!habarshiText.type.startsWith('audio') && !habarshiText.type.startsWith('image')">
+      <ng-template [ngIf]="!habarshiText.type.startsWith('video/webm') && !habarshiText.type.startsWith('image')">
         <div class="doc">
           <a [href]="habarshiText.full_url" target="_blank">{{habarshiText.file_name}}</a>
         </div>
