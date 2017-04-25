@@ -12,12 +12,15 @@ import {FileItem, FileUploader, ParsedResponseHeaders} from "ng2-file-upload";
 import {Store} from "../util/store";
 import {HabarshiText} from "../model/habarshi-text.model";
 import {Utils} from "../util/util";
+import {AudioService} from "../service/audio.service";
+import {log} from "util";
+import {Subscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-texting',
   templateUrl: './texting.component.html',
   styleUrls: ['./texting.component.css'],
-  providers: [TextingService]
+  providers: [AudioService, TextingService]
 })
 export class TextingComponent implements OnInit, AfterViewChecked {
 
@@ -32,11 +35,13 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   private latestMessages: Message[] = [];
   uploader: FileUploader;
   hasBaseDropZoneOver: boolean = false;
-  hasAnotherDropZoneOver: boolean = false;
+  private toggleRed: boolean;
+  private toggleRedSubscription: Subscription;
 
   constructor(private textingService: TextingService,
               private userService: UserService,
               private rosterService: RosterService,
+              private audioService: AudioService,
               private constants: ConstantsService) {
   }
 
@@ -63,7 +68,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
         const habarshiText: HabarshiText = new HabarshiText(item.file.name, body.full_url, body.preview_url);
         const message = new Message(user.jid, id, user.jid, new Date().getTime(), habarshiText.toString(),
           new Date(), selectedUser.jid);
-        this.textingService.sendMessage(message).subscribe((data)=>{
+        this.textingService.sendMessage(message).subscribe((data) => {
           this.messageSent(data, message);
         });
       };
@@ -80,6 +85,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
         });
     });
   }
+
 
   ngAfterViewChecked() {
     this.scrollBottom();
@@ -157,6 +163,28 @@ export class TextingComponent implements OnInit, AfterViewChecked {
 
   onFileOver(e: any) {
     this.hasBaseDropZoneOver = e;
+  }
+
+  onSendAudioMessage() {
+    this.audioService.toggle().then((file) => {
+      if (!file) { // start
+        let timer = Observable.timer(0, 1000);
+        this.toggleRedSubscription = timer.subscribe(() => {
+          this.toggleRed = !this.toggleRed;
+        });
+        return;
+      }
+      // got file
+      this.toggleRedSubscription.unsubscribe();
+      console.log(file);
+    });
+  }
+
+  getRed() {
+    if (this.toggleRed) {
+      return 'red';
+    }
+    return '';
   }
 
 }
