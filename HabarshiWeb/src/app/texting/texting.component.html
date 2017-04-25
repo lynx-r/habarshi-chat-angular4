@@ -1,33 +1,46 @@
 <main class="container">
   <div class="row">
     <div class="offset-3 col-6">
-      <div #messagesRef
-           class="form-control messages"
-           title="Сообщения"
-           ng2FileDrop
-           [uploader]="uploader"
-           [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
-           (fileOver)="onFileOver($event)">
-        <app-message *ngFor="let msg of messages" [message]="msg"></app-message>
-      </div>
-      <div class="input-group">
-        <input #messageRef type="text"
-               class="form-control"
-               (keyup.enter)="onSendMessage()"
-               placeholder="Введите ваше сообщение">
-        <span class="input-group-btn">
-            <button (click)="onSendAudioMessage()" class="btn btn-default" [style.background-color]="getRed()"><i class="fa fa-microphone"></i></button>
+      <div *ngIf="isLoggedIn(); else pleaseAuth">
+        <div *ngIf="messages.length != 0; else loading">
+          <div #messagesRef
+               class="form-control messages"
+               title="Сообщения"
+               ng2FileDrop
+               [uploader]="uploader"
+               [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+               (fileOver)="onFileOver($event)">
+            <app-message *ngFor="let msg of messages" [message]="msg"></app-message>
+          </div>
+          <div class="input-group">
+            <input #messageRef type="text"
+                   class="form-control"
+                   (keyup.enter)="onSendMessage()"
+                   placeholder="Введите ваше сообщение">
+            <span class="input-group-btn">
+            <button (click)="onSendAudioMessage()" class="btn btn-default" [style.background-color]="getRed()"><i
+              class="fa fa-microphone"></i></button>
         </span>
-        <span class="input-group-btn">
+            <span class="input-group-btn">
             <input id="uploadFile" name="file" type="file" class="hidden-xs-up ">
             <button id="attachButton" class="btn btn-default">
                 <i id="attachIcon" class="fa fa-paperclip"></i></button>
         </span>
-        <span class="input-group-btn">
+            <span class="input-group-btn">
             <button (click)="onSendMessage()"
-                    class="btn btn-primary"><img src="../../assets/images/send_amber.png" class="img-fluid" style="width: 19px;"/></button>
+                    class="btn btn-primary"><img src="../../assets/images/send_amber.png" class="img-fluid"
+                                                 style="width: 19px;"/></button>
         </span>
+          </div>
+
+        </div>
+        <ng-template #loading>
+          Загрузка…
+        </ng-template>
       </div>
+      <ng-template #pleaseAuth>
+        Пожалуйста авторизуйтесь
+      </ng-template>
     </div>
   </div>
 </main>

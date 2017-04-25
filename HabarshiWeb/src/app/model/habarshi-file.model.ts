@@ -1,7 +1,6 @@
 import * as mime from "mime";
 
-export class HabarshiText {
-  public static HABARSHI_HEADER: string = '<HabarshiServiceMessage>'
+export class HabarshiFile {
   file_name: string;
   full_url: string;
   preview_url: string;
@@ -18,6 +17,10 @@ export class HabarshiText {
   static fromText(text: string) {
     const rx = /<file_name>\|<([^>]+)>,<full_url>\|<([^>]+)>(?:,<preview_url>\|<([^>]+)>)?/g;
     const match = rx.exec(text);
+    if (!match) {
+      console.log(text);
+      return null;
+    }
     const file_name = match[1];
     const full_url = match[2];
     const preview_url = match[3];

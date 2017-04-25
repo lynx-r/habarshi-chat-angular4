@@ -8,7 +8,7 @@ export class QueryParamsService {
   constructor(private constants: ConstantsService) { }
 
   getServerUrl() {
-    return Store.get(this.constants.SERVER_URL);
+    return `https://${Store.get(this.constants.SERVER_URL)}`;
   }
 
 }

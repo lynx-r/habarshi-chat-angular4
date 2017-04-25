@@ -8,15 +8,12 @@ import {Observable} from "rxjs/Observable";
 import {ConstantsService} from "../shared/constants.service";
 import "rxjs/add/observable/timer";
 import {Roster} from "../model/roster.model";
-import {FileItem, FileUploader, FileUploaderOptions, ParsedResponseHeaders} from "ng2-file-upload";
+import {FileItem, FileUploader, FileUploaderOptions} from "ng2-file-upload";
 import {Store} from "../util/store";
-import {HabarshiText} from "../model/habarshi-text.model";
+import {HabarshiFile} from "../model/habarshi-file.model";
 import {Utils} from "../util/util";
 import {AudioService} from "../service/audio.service";
-import {log} from "util";
 import {Subscription} from "rxjs/Subscription";
-import {ActivatedRoute} from "@angular/router";
-import {AuthGuard} from "../auth.guard";
 
 @Component({
   selector: 'app-texting',
@@ -26,8 +23,14 @@ import {AuthGuard} from "../auth.guard";
 })
 export class TextingComponent implements OnInit, AfterViewChecked {
 
-  @ViewChild('messagesRef') messagesRef: ElementRef;
+  _messagesRef: ElementRef;
   @ViewChild('messageRef') messageRef: ElementRef;
+  @ViewChild('messagesRef') set messagesRef(content: ElementRef) {
+    this._messagesRef = content;
+  }
+  get messagesRef(): ElementRef {
+    return this._messagesRef;
+  }
 
   messages: Message[] = [];
   newMessage: boolean;
@@ -45,7 +48,6 @@ export class TextingComponent implements OnInit, AfterViewChecked {
               private userService: UserService,
               private rosterService: RosterService,
               private audioService: AudioService,
-              private authGuard: AuthGuard,
               private constants: ConstantsService) {
   }
 
@@ -76,7 +78,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
     };
-    this.uploader.onSuccessItem = (item: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
+    this.uploader.onSuccessItem = (item: FileItem, response: string) => {
       const body = JSON.parse(response);
       if (!body.ok) {
         Utils.handleError(body.comment);
@@ -93,7 +95,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     const selectedUser = this.rosterService.selectedUser;
     const user = this.userService.user;
     const id: string = new GUID().toString();
-    const habarshiText: HabarshiText = new HabarshiText(item.file.name, body.full_url, body.preview_url);
+    const habarshiText: HabarshiFile = new HabarshiFile(item.file.name, body.actor, body.object);
     return new Message(user.jid, id, user.jid, new Date().getTime(), habarshiText.toString(),
       new Date(), selectedUser.jid);
   }
@@ -132,6 +134,9 @@ export class TextingComponent implements OnInit, AfterViewChecked {
 
   private
   scrollBottom() {
+    if (this.messagesRef == null) {
+      return;
+    }
     let nativeElement = this.messagesRef.nativeElement;
     if (this.newMessage || this.initScroll) {
       nativeElement.scrollTop = nativeElement.scrollTop +
@@ -203,6 +208,10 @@ export class TextingComponent implements OnInit, AfterViewChecked {
       return 'red';
     }
     return '';
+  }
+
+  isLoggedIn(){
+    return this.userService.loggedIn;
   }
 
 }

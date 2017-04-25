@@ -6,6 +6,8 @@ import {ConstantsService} from "../shared/constants.service";
 import {Utils} from "../util/util";
 import {Store} from "../util/store";
 import {QueryParamsService} from "./query-params.service";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {RosterService} from "./roster.service";
 
 @Injectable()
 export class UserService implements OnInit {
@@ -15,7 +17,10 @@ export class UserService implements OnInit {
 
   @Output() userLoggedInEvent = new EventEmitter<User>();
 
-  constructor(private http: Http, private query: QueryParamsService, private constants: ConstantsService) {
+  constructor(private http: Http,
+              private rosterService:RosterService,
+              private query: QueryParamsService,
+              private constants: ConstantsService) {
     this.loggedIn = !!Store.get(this.constants.SESSION_KEY);
   }
 
@@ -46,6 +51,50 @@ export class UserService implements OnInit {
         this.extractUser(resp);
         this.loggedIn = true;
       }).catch(Utils.handleError);
+  }
+
+  join() {
+    if (!this.loggedIn) {
+      return new EmptyObservable();
+    }
+    const session: string = Store.get(this.constants.SESSION_KEY);
+    const buddy = this.rosterService.selectedUser;
+    if (buddy == null) {
+      return new EmptyObservable();
+    }
+    const params: string = [
+      `session=${session}`,
+      `to=${buddy.jid}`
+    ].join('&');
+    const queryUrl = `${this.query.getServerUrl()}/v1/chat/join?${params}`;
+    return this.http.get(queryUrl).map((resp: Response) => {
+      const body = resp.json();
+      if (!body.ok) {
+        throw new Error(body.comment);
+      }
+    }).catch(Utils.handleError);
+  }
+
+  leave() {
+    if (!this.loggedIn) {
+      return new EmptyObservable();
+    }
+    const session: string = Store.get(this.constants.SESSION_KEY);
+    const buddy = this.rosterService.selectedUser;
+    if (buddy == null) {
+      return new EmptyObservable();
+    }
+    const params: string = [
+      `session=${session}`,
+      `jid=${buddy.jid}`
+    ].join('&');
+    const queryUrl = `${this.query.getServerUrl()}/v1/chat/leave?${params}`;
+    return this.http.get(queryUrl).map((resp: Response) => {
+      const body = resp.json();
+      if (!body.ok) {
+        throw new Error(body.comment);
+      }
+    }).catch(Utils.handleError);
   }
 
   logout(): Observable<void> {

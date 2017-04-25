@@ -10,23 +10,31 @@
         <i class="fa fa-check  fa-stack-1x" style="margin-left:-4px"></i>
       </span>
     </p>
-    <div *ngIf="!habarshiText; else habarshiMessage" [innerHTML]="message.text"></div>
-    <ng-template #habarshiMessage>
-      <ng-template [ngIf]="habarshiText.type.startsWith('video/webm')">
-        <div class="audio">
-          <audio [src]="habarshiText.full_url" controls></audio>
+    <div [ngSwitch]="habarshiMessageType">
+      <div *ngSwitchCase="HabarshiMessage.FILE">
+        <ng-template [ngIf]="habarshiFile.type.startsWith('video/webm')">
+          <div class="audio">
+            <audio [src]="habarshiFile.full_url" controls></audio>
+          </div>
+        </ng-template>
+        <ng-template [ngIf]="habarshiFile.type.startsWith('image')">
+          <div class="image">
+            <a [href]="habarshiFile.full_url" target="_blank"><img [src]="habarshiFile.preview_url"/></a>
+          </div>
+        </ng-template>
+        <ng-template [ngIf]="!habarshiFile.type.startsWith('video/webm') && !habarshiFile.type.startsWith('image')">
+          <div class="doc">
+            <a [href]="habarshiFile.full_url" target="_blank">{{habarshiFile.file_name}}</a>
+          </div>
+        </ng-template>
+      </div>
+      <div *ngSwitchCase="HabarshiMessage.ROBOT">
+        <div>Пользователь {{habarshiRobot.actor}} {{ habarshiRobot.action == 'bye' ? 'покинул' : 'вошел в' }} комнату
         </div>
-      </ng-template>
-      <ng-template [ngIf]="habarshiText.type.startsWith('image')">
-        <div class="image">
-          <a [href]="habarshiText.full_url" target="_blank"><img [src]="habarshiText.preview_url"/></a>
-        </div>
-      </ng-template>
-      <ng-template [ngIf]="!habarshiText.type.startsWith('video/webm') && !habarshiText.type.startsWith('image')">
-        <div class="doc">
-          <a [href]="habarshiText.full_url" target="_blank">{{habarshiText.file_name}}</a>
-        </div>
-      </ng-template>
-    </ng-template>
+      </div>
+      <div *ngSwitchDefault>
+        <div [innerHTML]="message.text"></div>
+      </div>
+    </div>
   </div>
 </div>

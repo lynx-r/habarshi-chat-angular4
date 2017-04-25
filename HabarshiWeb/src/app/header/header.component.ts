@@ -43,10 +43,21 @@ export class HeaderComponent implements OnInit {
       .subscribe(user => {
         this.user = user;
         this.errorMessage = '';
+        // JOIN TO GROUP CHAT
+        this.userService.join().subscribe(() => {
+        }, error => this.errorMessage = error);
       }, error => this.errorMessage = error);
   }
 
   logout() {
+    this.userService.leave().subscribe(() => {
+      this.doLogout()
+    }, error => {
+      this.doLogout();
+    });
+  }
+
+  private doLogout() {
     this.userService.logout()
       .subscribe(() => {
           this.user = null;

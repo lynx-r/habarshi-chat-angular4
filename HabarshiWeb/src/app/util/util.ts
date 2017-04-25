@@ -1,7 +1,7 @@
 import {Observable} from "rxjs/Observable";
 import "rxjs/add/observable/throw";
 import {Message} from "../model/message.model";
-import {MessageType} from "../shared/message-type.enum";
+import {MessageType} from "../model/message-type.enum";
 
 export class Utils {
 
