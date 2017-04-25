@@ -13,12 +13,16 @@ export class AudioService {
   @Output() blobReady = new EventEmitter<Blob>();
 
   constructor() {
-    navigator.getUserMedia(this.constraints, (stream) => {
-      this.mediaRecorder = new MediaRecorder(stream);
-      this.mediaRecorder.ondataavailable = (e) => {
-        this.blobReady.emit(e.data);
-      };
-    }, Utils.handleError);
+    if (AudioService.isSupportRecording()) {
+      navigator.mediaDevices.getUserMedia(this.constraints).then((stream) => {
+        this.mediaRecorder = new MediaRecorder(stream);
+        this.mediaRecorder.ondataavailable = (e) => {
+          this.blobReady.emit(e.data);
+        };
+      }, Utils.handleError);
+    } else {
+
+    }
   }
 
   toggle(): Promise<any> {

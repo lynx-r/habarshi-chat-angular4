@@ -17,9 +17,11 @@ export class User {
   username: string;
   web: string;
   session: string;
+  room: boolean;
 
-  constructor(session: string, username: string) {
+  constructor(session: string, username: string, room?: boolean) {
     this.session = session;
     this.username = username;
+    this.room = room;
   }
 }

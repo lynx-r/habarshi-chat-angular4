@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../model/user.model";
 import {UserService} from "../service/user.service";
 import {Observable} from 'rxjs/Rx';
-import {TextingComponent} from "../texting/texting.component";
+import "rxjs/add/observable/timer";
 
 @Component({
   selector: 'app-header',
@@ -19,12 +19,14 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     if (this.userService.loggedIn) {
-      this.userService.sessionConfig()
-        .subscribe(user => {
-            this.user = user;
-            this.errorMessage = '';
-          }, error => this.errorMessage
-        );
+      Observable.timer(500).subscribe(() => {
+        this.userService.sessionConfig()
+          .subscribe(user => {
+              this.user = user;
+              this.errorMessage = '';
+            }, error => this.errorMessage
+          );
+      });
     }
   }
 

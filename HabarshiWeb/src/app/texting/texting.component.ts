@@ -15,6 +15,8 @@ import {Utils} from "../util/util";
 import {AudioService} from "../service/audio.service";
 import {log} from "util";
 import {Subscription} from "rxjs/Subscription";
+import {ActivatedRoute} from "@angular/router";
+import {AuthGuard} from "../auth.guard";
 
 @Component({
   selector: 'app-texting',
@@ -43,6 +45,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
               private userService: UserService,
               private rosterService: RosterService,
               private audioService: AudioService,
+              private authGuard: AuthGuard,
               private constants: ConstantsService) {
   }
 
@@ -52,15 +55,15 @@ export class TextingComponent implements OnInit, AfterViewChecked {
       this.initFileUploader();
       Observable.timer(1000, this.constants.REFRESH_MESSAGES_MILLISEC)
         .subscribe(() => this.refreshMessages());
-      Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
-        .subscribe(() => {
-          this.rosterService.getRoster()
-            .subscribe((roster) => {
-              this.roster = roster;
-              this.getMessages();
-              this.userService.user = this.rosterService.users[this.userService.user.username];
-            });
-        });
+        Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
+          .subscribe(() => {
+            this.rosterService.getRoster()
+              .subscribe((roster) => {
+                this.roster = roster;
+                this.getMessages();
+                this.userService.user = this.rosterService.users[this.userService.user.username];
+              });
+          });
     });
   }
 

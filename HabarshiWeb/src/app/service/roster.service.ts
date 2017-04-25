@@ -8,17 +8,29 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import {Roster} from "../model/roster.model";
 import {UserService} from "./user.service";
+import {ActivatedRoute, Params} from "@angular/router";
+import {AuthGuard} from "../auth.guard";
+import {QueryParamsService} from "./query-params.service";
 
 @Injectable()
 export class RosterService {
 
-  public roster: Roster[];
-  public users: Map<string, User> = new Map<string, User>();
-  public selectedUser: User;
+  roster: Roster[];
+  users: Map<string, User> = new Map<string, User>();
+  selectedUser: User;
 
-  constructor(private http: Http, private userService: UserService, private constants: ConstantsService) {
-    this.selectedUser = new User(null, '1');
-    this.selectedUser.jid = '1@conference.habarshi.com';
+  constructor(private http: Http, private query: QueryParamsService, private constants: ConstantsService) {
+    const queryParams = Store.get(constants.QUERY_PARAMS);
+    this.createBuddy(queryParams);
+  }
+
+  public createBuddy(queryParams: Params) {
+    if (queryParams == null) {
+      throw new Error(`Не верная ссылка`);
+    }
+    const to = queryParams.to;
+    this.selectedUser = new User(null, to, true);
+    this.selectedUser.jid = to;
   }
 
   getRoster() {
@@ -26,7 +38,7 @@ export class RosterService {
     if (session == null) {
       return;
     }
-    const queryUrl = `${this.constants.SERVER_URL}/user/roster?session=${session}`;
+    const queryUrl = `${this.query.getServerUrl()}/user/roster?session=${session}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => {
         this.extractRoster(resp);

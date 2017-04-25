@@ -5,6 +5,7 @@ import {Http, Response} from "@angular/http";
 import {ConstantsService} from "../shared/constants.service";
 import {Utils} from "../util/util";
 import {Store} from "../util/store";
+import {QueryParamsService} from "./query-params.service";
 
 @Injectable()
 export class UserService implements OnInit {
@@ -14,7 +15,7 @@ export class UserService implements OnInit {
 
   @Output() userLoggedInEvent = new EventEmitter<User>();
 
-  constructor(private http: Http, private constants: ConstantsService) {
+  constructor(private http: Http, private query: QueryParamsService, private constants: ConstantsService) {
     this.loggedIn = !!Store.get(this.constants.SESSION_KEY);
   }
 
@@ -23,7 +24,7 @@ export class UserService implements OnInit {
 
   sessionConfig(): Observable<User> {
     const session = Store.get(this.constants.SESSION_KEY);
-    const queryUrl = `${this.constants.SERVER_URL}/session-config?session=${session}`;
+    const queryUrl = `${this.query.getServerUrl()}/session-config?session=${session}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => {
         this.extractUser(resp);
@@ -39,7 +40,7 @@ export class UserService implements OnInit {
       `username=${username}`,
       `password=${passwd}`
     ].join('&');
-    const queryUrl = `${this.constants.SERVER_URL}/auth/1?${params}`;
+    const queryUrl = `${this.query.getServerUrl()}/auth/1?${params}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => {
         this.extractUser(resp);
@@ -52,7 +53,7 @@ export class UserService implements OnInit {
       return;
     }
     const session: string = Store.get(this.constants.SESSION_KEY);
-    const queryUrl = `${this.constants.SERVER_URL}/logout?session=${session}`;
+    const queryUrl = `${this.query.getServerUrl()}/logout?session=${session}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => this.loggedIn = false)
       .catch(Utils.handleError)

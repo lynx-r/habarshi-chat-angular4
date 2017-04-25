@@ -10,13 +10,15 @@ import {UserService} from "./user.service";
 import {ServerStatus} from "../model/server-status.enum";
 import {RosterService} from "./roster.service";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {QueryParamsService} from "./query-params.service";
 
 @Injectable()
 export class TextingService {
 
   constructor(private http: Http,
               private userService: UserService,
-              private usersService: RosterService,
+              private rosterService: RosterService,
+              private query: QueryParamsService,
               private constants: ConstantsService) {
   }
 
@@ -28,7 +30,7 @@ export class TextingService {
       `id=${message.id}`,
       `to=${message.to}`
     ].join('&');
-    let queryUrl = `${this.constants.SERVER_URL}/v1/chat/send?${params}`;
+    let queryUrl = `${this.query.getServerUrl()}/v1/chat/send?${params}`;
     return this.http.get(queryUrl)
       .map(this.extractMessage)
       .catch(Utils.handleError);
@@ -44,12 +46,15 @@ export class TextingService {
     if (session == null) {
       return new EmptyObservable();
     }
-    const buddy = this.usersService.selectedUser;
+    const buddy = this.rosterService.selectedUser;
+    if (buddy == null) {
+      return new EmptyObservable();
+    }
     let params: string = `session=${session}&with=${buddy.jid}`;
     if (after != null) {
       params = params.concat(`&after=${after}`);
     }
-    const queryUrl = `${this.constants.SERVER_URL}/user/mam?${params}`;
+    const queryUrl = `${this.query.getServerUrl()}/user/mam?${params}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => {
         return this.extractMessages(resp);
@@ -79,7 +84,7 @@ export class TextingService {
       `session=${session}`,
       `ids=${ids}`
     ].join('&');
-    const queryUrl = `${this.constants.SERVER_URL}/user/mam_ack?${params}`;
+    const queryUrl = `${this.query.getServerUrl()}/user/mam_ack?${params}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => {
         const body = resp.json();
