@@ -34,22 +34,29 @@ export class MessageComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.userService.user;
+    const username = this.message.from.split('@')[0];
+    const users: Map<string, User> = this.rosterService.users;
     if (this.message.text.startsWith(this.constants.HABARSHI_HEADER)) {
       if (this.message.from == this.constants.ROBOT_ROOMS) {
         this.habarshiRobot = HabarshiRobot.fromText(this.message.text);
         this.habarshiMessageType = HabarshiMessageType.ROBOT;
         this.messageType = MessageType.SERVICE;
+        this.fullName(users, this.habarshiRobot.actor);
       } else {
         this.habarshiFile = HabarshiFile.fromText(this.message.text);
         this.habarshiMessageType = HabarshiMessageType.FILE;
         this.messageType = Utils.getMessageType(this.message, this.user.jid);
+        this.fullName(users, username);
       }
     } else {
       this.habarshiMessageType = HabarshiMessageType.TEXT;
       this.messageType = Utils.getMessageType(this.message, this.user.jid);
+      this.fullName(users, username);
     }
-    const users: Map<string, User> = this.rosterService.users;
-    let userFromRoster = users[this.message.from.split('@')[0]];
+  }
+
+  private fullName(users: Map<string, User>, username: string) {
+    let userFromRoster = users[username];
     if (userFromRoster != null) {
       this.fromFull = userFromRoster.name;
     } else {

@@ -29,7 +29,7 @@
         </ng-template>
       </div>
       <div *ngSwitchCase="HabarshiMessage.ROBOT">
-        <div>Пользователь {{habarshiRobot.actor}} {{ habarshiRobot.action == 'bye' ? 'покинул' : 'вошел в' }} комнату
+        <div>Пользователь {{fromFull}} {{ habarshiRobot.action == 'bye' ? 'покинул(а)' : 'вошел(а) в' }} комнату
         </div>
       </div>
       <div *ngSwitchDefault>

@@ -23,8 +23,15 @@ import {Subscription} from "rxjs/Subscription";
 })
 export class TextingComponent implements OnInit, AfterViewChecked {
 
+  _messageRef: ElementRef;
+  @ViewChild('messageRef') set messageRef(content: ElementRef) {
+    this._messageRef = content;
+  };
+  get messageRef(): ElementRef {
+    return this._messageRef;
+  }
+
   _messagesRef: ElementRef;
-  @ViewChild('messageRef') messageRef: ElementRef;
   @ViewChild('messagesRef') set messagesRef(content: ElementRef) {
     this._messagesRef = content;
   }
@@ -95,7 +102,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     const selectedUser = this.rosterService.selectedUser;
     const user = this.userService.user;
     const id: string = new GUID().toString();
-    const habarshiText: HabarshiFile = new HabarshiFile(item.file.name, body.actor, body.object);
+    const habarshiText: HabarshiFile = new HabarshiFile(item.file.name, body.full_url, body.preview_url);
     return new Message(user.jid, id, user.jid, new Date().getTime(), habarshiText.toString(),
       new Date(), selectedUser.jid);
   }
