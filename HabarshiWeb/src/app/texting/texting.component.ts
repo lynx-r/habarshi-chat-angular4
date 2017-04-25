@@ -24,6 +24,8 @@ import {Subscription} from "rxjs/Subscription";
 export class TextingComponent implements OnInit, AfterViewChecked {
 
   _messageRef: ElementRef;
+  private blinkTitle: boolean;
+  private blinkSubscription: Subscription;
   @ViewChild('messageRef') set messageRef(content: ElementRef) {
     this._messageRef = content;
   };
@@ -126,6 +128,22 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   refreshMessages() {
     if (this.messages.length == 0) {
       return;
+    }
+    if (this.newMessage) {
+      if (!document.hasFocus()) {
+        this.blinkSubscription = Observable.timer(0, 1000).subscribe(() => {
+          if (this.blinkTitle) {
+            document.title = 'Новое сообщение';
+            this.blinkTitle = false;
+          } else {
+            document.title = 'Habarshi';
+            this.blinkTitle = true;
+          }
+        });
+        document.title = 'Habarshi';
+      } else {
+        this.blinkSubscription.unsubscribe();
+      }
     }
     const after = this.messages[this.messages.length - 1].id;
     this.textingService.getMessages(after).subscribe((latest) => {

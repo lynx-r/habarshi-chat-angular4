@@ -22,10 +22,8 @@ export class Utils {
   public static getMessageType(message: Message, originFrom: string): MessageType {
     if (message.from == originFrom) {
       return MessageType.OUT;
-    } else if (message.to == originFrom) {
-      return MessageType.IN;
     } else {
-      return MessageType.SERVICE;
+      return MessageType.IN;
     }
   }
 
