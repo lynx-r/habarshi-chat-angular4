@@ -11,6 +11,7 @@ import "rxjs/add/observable/timer";
 })
 export class HeaderComponent implements OnInit {
 
+  anonym = 0;
   user: User;
   errorMessage;
 

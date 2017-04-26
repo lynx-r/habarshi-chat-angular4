@@ -7,6 +7,7 @@
   color: white;
 }
 
-.auth-form {
-  width: 50%;
+.link {
+  cursor: pointer;
+  color: white !important;
 }
