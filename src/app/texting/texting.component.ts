@@ -23,40 +23,16 @@ import {Subscription} from "rxjs/Subscription";
 })
 export class TextingComponent implements OnInit, AfterViewChecked {
 
-  _messageRef: ElementRef;
   private blinkTitle: boolean;
   private blinkSubscription: Subscription;
-  private doBlink: boolean;
   private latestMessages: Message[] = [];
   refreshMessageSubscribtion: Subscription;
   private beforeDays: number = 1;
   private getForPeriod: boolean;
 
-  @ViewChild('messageRef') set messageRef(content: ElementRef) {
-    this._messageRef = content;
-  };
-
-  get messageRef(): ElementRef {
-    return this._messageRef;
-  }
-
-  _messagesRef: ElementRef;
-  @ViewChild('messagesRef') set messagesRef(content: ElementRef) {
-    this._messagesRef = content;
-  }
-
-  get messagesRef(): ElementRef {
-    return this._messagesRef;
-  }
-
-  _uploadFileRef: ElementRef;
-  @ViewChild('uploadFileRef') set uploadFileRef(content: ElementRef) {
-    this._uploadFileRef = content;
-  }
-
-  get uploadFileRef(): ElementRef {
-    return this._uploadFileRef;
-  }
+  @ViewChild('messageRef') messageRef: ElementRef;
+  @ViewChild('messagesRef') messagesRef: ElementRef;
+  @ViewChild('uploadFileRef') uploadFileRef: ElementRef;
 
   messages: Message[] = [];
   newMessage: boolean;
