@@ -29,6 +29,8 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   private doBlink: boolean;
   private latestMessages: Message[] = [];
   refreshMessageSubscribtion: Subscription;
+  private beforeDays: number = 1;
+  private getForPeriod: boolean;
 
   @ViewChild('messageRef') set messageRef(content: ElementRef) {
     this._messageRef = content;
@@ -87,6 +89,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
       this.userService.userLoggedOutEvent.subscribe(() => {
         this.refreshMessageSubscribtion.unsubscribe();
         this.refreshRosterSubscription.unsubscribe();
+        this.messages = [];
       })
     });
     this.messageRef.nativeElement.innerText = '';
@@ -195,6 +198,19 @@ export class TextingComponent implements OnInit, AfterViewChecked {
       if (nativeElement.scrollTop > 0) {
         this.initScroll = false;
       }
+    }
+    if (nativeElement.scrollTop == 0 && this.messages.length > 0 && !this.getForPeriod) {
+      const before = this.messages[0].id;
+      this.textingService.getMessagesForPeriod(before, this.beforeDays).subscribe((beforeMessages)=>{
+        if (beforeMessages.length == 0) {
+          return;
+        }
+        this.messages = beforeMessages.concat(this.messages);
+        this.getForPeriod = false;
+        nativeElement.scrollTop = 1;
+      });
+      this.getForPeriod = true;
+      this.beforeDays++;
     }
   }
 

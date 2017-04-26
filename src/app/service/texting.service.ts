@@ -43,6 +43,14 @@ export class TextingService {
   }
 
   getMessages(after?: string): Observable<Message[]> {
+    return this.getAllMessages(null, null, after);
+  }
+
+  getMessagesForPeriod(before: string, days: number) {
+    return this.getAllMessages(before, days, null);
+  }
+
+  private getAllMessages(before: string, days: number, after: string): Observable<Message[]> {
     const session = this.userService.getSession();
     if (session == null) {
       return new EmptyObservable();
@@ -54,6 +62,12 @@ export class TextingService {
     let params: string = `session=${session}&with=${buddy.jid}`;
     if (after != null) {
       params = params.concat(`&after=${after}`);
+    }
+    if (before != null) {
+      params = params.concat(`&before=${before}`);
+    }
+    if (days != null) {
+      params = params.concat(`&days=${days}`);
     }
     const queryUrl = `${this.query.getServerUrl()}/user/mam?${params}`;
     return this.http.get(queryUrl)

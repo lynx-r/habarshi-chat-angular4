@@ -19,7 +19,7 @@ export class UserService implements OnInit {
   @Output() userLoggedOutEvent = new EventEmitter<void>();
 
   constructor(private http: Http,
-              private rosterService:RosterService,
+              private rosterService: RosterService,
               private query: QueryParamsService,
               private constants: ConstantsService) {
     this.loggedIn = !!Store.get(this.constants.SESSION_KEY);
@@ -34,6 +34,7 @@ export class UserService implements OnInit {
     return this.http.get(queryUrl)
       .map((resp: Response) => {
         this.extractUser(resp);
+        this.userLoggedInEvent.emit(this.user);
         this.loggedIn = true;
       }).catch(Utils.handleError)
   }
@@ -61,13 +62,12 @@ export class UserService implements OnInit {
     }
     const serverUrl = this.query.getServerUrl();
     let params: string = `name=${name}`;
-    if (!fullname) {
+    if (fullname != null) {
       params = params.concat(`&fullname=${fullname}`);
     }
     const queryUrl = `${serverUrl}/anonymous/1?${params}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => {
-        console.log(resp);
         this.extractUser(resp);
         this.loggedIn = true;
       }).catch(Utils.handleError);
@@ -92,6 +92,7 @@ export class UserService implements OnInit {
       if (!body.ok) {
         throw new Error(body.comment);
       }
+      this.userLoggedInEvent.emit(this.user);
     }).catch(Utils.handleError);
   }
 
@@ -125,7 +126,7 @@ export class UserService implements OnInit {
     const queryUrl = `${this.query.getServerUrl()}/logout?session=${session}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => {
-      this.loggedIn = false;
+        this.loggedIn = false;
         this.userLoggedOutEvent.emit();
       })
       .catch(Utils.handleError)
@@ -142,12 +143,21 @@ export class UserService implements OnInit {
       this.loggedIn = false;
       this.user = null;
     }
-    this.user = new User(body.session, body.username);
+    let portfolio = body.portfolio;
+    if (!portfolio) {
+      this.user = new User(body.session, body.username);
+    } else {
+      this.user = new User(body.session, portfolio.username);
+      this.user.anonymous = true;
+      this.user.fullname = portfolio.fullname;
+      this.user.name = portfolio.name;
+    }
     Store.put(this.constants.SESSION_KEY, this.user.session);
-    this.userLoggedInEvent.emit(this.user);
 
-    const uploadUrl = `http://${body.uploads.address}:${body.uploads.port}/upload`;
-    Store.put(this.constants.SERVER_UPLOAD_URL, uploadUrl);
+    if (body.uploads != null) {
+      const uploadUrl = `http://${body.uploads.address}:${body.uploads.port}/upload`;
+      Store.put(this.constants.SERVER_UPLOAD_URL, uploadUrl);
+    }
     return this.user;
   }
 

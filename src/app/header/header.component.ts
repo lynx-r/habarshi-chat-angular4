@@ -12,7 +12,6 @@ import "rxjs/add/observable/timer";
 export class HeaderComponent implements OnInit {
 
   anonym = 0;
-  user: User;
   errorMessage;
 
   constructor(private userService: UserService) {
@@ -23,7 +22,6 @@ export class HeaderComponent implements OnInit {
       Observable.timer(500).subscribe(() => {
         this.userService.sessionConfig()
           .subscribe(user => {
-              this.user = user;
               this.errorMessage = '';
             }, error => this.errorMessage
           );
@@ -42,7 +40,6 @@ export class HeaderComponent implements OnInit {
     }
     this.userService.auth(username.value, passwd.value)
       .subscribe(user => {
-        this.user = user;
         this.errorMessage = '';
         // JOIN TO GROUP CHAT
         this.userService.join().subscribe(() => {
@@ -57,7 +54,6 @@ export class HeaderComponent implements OnInit {
     }
     this.userService.create(name.value, fullname.value)
       .subscribe(user => {
-        this.user = user;
         this.errorMessage = '';
         // JOIN TO GROUP CHAT
         this.userService.join().subscribe(() => {
@@ -76,11 +72,9 @@ export class HeaderComponent implements OnInit {
   private doLogout() {
     this.userService.logout()
       .subscribe(() => {
-          this.user = null;
           this.errorMessage = '';
         }, error => this.errorMessage = error
       );
-    localStorage.clear();
   }
 
 }

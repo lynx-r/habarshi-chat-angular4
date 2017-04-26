@@ -38,6 +38,9 @@ export class RosterService {
     if (session == null) {
       return;
     }
+    if (this.selectedUser == null) {
+      this.createBuddy();
+    }
     const queryUrl = `${this.query.getServerUrl()}/user/roster?session=${session}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => {
