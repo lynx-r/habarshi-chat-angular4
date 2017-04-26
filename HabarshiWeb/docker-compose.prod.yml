@@ -2,11 +2,10 @@ version: '3'
 
 services:
 
-  dev:
-    container_name: ${PROJECT_NAME}_dev
+  prod:
+    container_name: habarshi-web_prod
     build:
       context: .
-      dockerfile: Dockerfile-dev
       args:
         - CI_BUILD_ID=${CI_BUILD_ID}
         - CI_BUILD_REF=${CI_BUILD_REF}
@@ -14,17 +13,12 @@ services:
         - CI_BUILD_TIME=${CI_BUILD_TIME}
         - CI_REGISTRY_IMAGE=${CI_REGISTRY_IMAGE}
         - CI_PROJECT_NAME=${CI_PROJECT_NAME}
-    # we use image for faster developing with `npm install` already run
-    image: ${DOCKER_IMAGE_DEV:-${DOCKER_IMAGE_DEV}}
-    command: bash -c "yarn run start"
+    image: ${DOCKER_IMAGE_PROD:-teracy/angular-boilerplate:develop}
     environment:
-      NODE_ENV: development
-      VIRTUAL_HOST: ${DOMAIN_DEV}
+      VIRTUAL_HOST: ab.teracy.dev
       HTTPS_METHOD: noredirect # support both http and https
-    volumes:
-      - .:/var/www/angular
     ports:
-      - "4200"
+      - "80"
     restart: unless-stopped
     # to get this work with https://github.com/jwilder/nginx-proxy
     # related: https://github.com/jwilder/nginx-proxy/issues/305
