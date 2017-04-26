@@ -49,6 +49,15 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     return this._messagesRef;
   }
 
+  _uploadFileRef: ElementRef;
+  @ViewChild('uploadFileRef') set uploadFileRef(content: ElementRef) {
+    this._uploadFileRef = content;
+  }
+
+  get uploadFileRef(): ElementRef {
+    return this._uploadFileRef;
+  }
+
   messages: Message[] = [];
   newMessage: boolean;
   initScroll: boolean = true;
@@ -191,12 +200,14 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     let nativeElement = this.messagesRef.nativeElement;
     if (this.newMessage || this.initScroll) {
       nativeElement.scrollTop = nativeElement.scrollTop +
-        nativeElement.scrollHeight * 2;
+        nativeElement.scrollHeight;
       if (document.hasFocus()) {
         this.newMessage = false;
       }
       if (nativeElement.scrollTop > 0) {
-        this.initScroll = false;
+        Observable.timer(2000).subscribe(() => {
+          this.initScroll = false;
+        });
       }
     }
     if (nativeElement.scrollTop == 0 && this.messages.length > 0 && !this.getForPeriod) {
@@ -230,6 +241,19 @@ export class TextingComponent implements OnInit, AfterViewChecked {
         },
         error => this.errorMessage = error
       );
+  }
+
+  onSelectFile() {
+    this.uploadFileRef.nativeElement.click();
+  }
+
+  onChangeFileUpload() {
+    let file = this.uploadFileRef.nativeElement.files[0];
+    if (file == null) {
+      return;
+    }
+    this.uploader.addToQueue([file]);
+    this.uploader.uploadAll();
   }
 
   private messageSent(data, message: Message) {
