@@ -4,11 +4,12 @@ import {Observable} from 'rxjs/Observable';
 import {ConstantsService} from "./shared/constants.service";
 import * as _ from "lodash";
 import {Store} from "./util/store";
+import {RosterService} from "./service/roster.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor(private constants: ConstantsService) {
+  constructor(private rosterService: RosterService, private constants: ConstantsService) {
   }
 
   canActivate(next: ActivatedRouteSnapshot,
@@ -18,6 +19,7 @@ export class AuthGuard implements CanActivate {
       Store.put(this.constants.QUERY_PARAMS, next.queryParams);
       if (next.queryParams.api != null) {
         Store.put(this.constants.SERVER_URL, next.queryParams.api);
+        this.rosterService.createBuddy();
       }
     }
     return true;

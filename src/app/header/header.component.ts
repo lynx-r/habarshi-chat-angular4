@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.userService.leave().subscribe(() => {
-      this.doLogout()
+      this.doLogout();
     }, error => {
       this.doLogout();
     });
@@ -64,6 +64,7 @@ export class HeaderComponent implements OnInit {
           this.errorMessage = '';
         }, error => this.errorMessage = error
       );
+    localStorage.clear();
   }
 
 }

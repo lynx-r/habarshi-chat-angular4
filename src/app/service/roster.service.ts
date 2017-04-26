@@ -20,13 +20,13 @@ export class RosterService {
   selectedUser: User;
 
   constructor(private http: Http, private query: QueryParamsService, private constants: ConstantsService) {
-    const queryParams = Store.get(constants.QUERY_PARAMS);
-    this.createBuddy(queryParams);
   }
 
-  public createBuddy(queryParams: Params) {
+  public createBuddy() {
+    const queryParams = Store.get(this.constants.QUERY_PARAMS);
     if (queryParams == null) {
-      throw new Error(`Не верная ссылка`);
+      Utils.handleError('Некорректная ссылка');
+      return;
     }
     const to = queryParams.to;
     this.selectedUser = new User(null, to, true);

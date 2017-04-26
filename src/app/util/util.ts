@@ -16,6 +16,8 @@ export class Utils {
       errMsg = error.message ? error.message : error.toString();
     }
     console.error(errMsg);
+    alert(errMsg);
+    localStorage.clear();
     return Observable.throw(errMsg);
   }
 

@@ -41,11 +41,15 @@ export class UserService implements OnInit {
     if (this.loggedIn) {
       return Observable.of(this.user);
     }
+    const serverUrl = this.query.getServerUrl();
+    if (serverUrl == null) {
+      throw new Error('Некорректная ссылка');
+    }
     const params: string = [
       `username=${username}`,
       `password=${passwd}`
     ].join('&');
-    const queryUrl = `${this.query.getServerUrl()}/auth/1?${params}`;
+    const queryUrl = `${serverUrl}/auth/1?${params}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => {
         this.extractUser(resp);
