@@ -1,0 +1,51 @@
+<main class="container">
+  <div class="row">
+    <div class="offset-3 col-6">
+      <div [hidden]="!isLoggedIn()">
+        <div [hidden]="messages.length == 0">
+          <div #messagesRef
+               class="form-control messages"
+               title="Сообщения"
+               ng2FileDrop
+               [uploader]="uploader"
+               [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
+               (fileOver)="onFileOver($event)">
+            <app-message *ngFor="let msg of messages" [message]="msg"></app-message>
+          </div>
+          <div class="input-group">
+            <div #messageRef type="text"
+                 contenteditable="true"
+                 tabindex="0"
+                 class="form-control contenteditable"
+                 (keypress)="onSendMessage($event)"
+                 (blur)="onBlur()"
+                 (focus)="onFocus()"
+                 data-placeholder="Введите ваше сообщение">
+            </div>
+            <span class="input-group-btn">
+            <button (click)="onSendAudioMessage()" class="btn btn-default" [style.background-color]="getRed()"><i
+              class="fa fa-microphone"></i></button>
+        </span>
+            <span class="input-group-btn">
+            <input id="uploadFile" name="file" type="file" class="hidden-xs-up ">
+            <button id="attachButton" class="btn btn-default">
+                <i id="attachIcon" class="fa fa-paperclip"></i></button>
+        </span>
+            <span class="input-group-btn">
+            <button (click)="onSendMessage()"
+                    class="btn btn-primary"><img src="../../assets/images/send_amber.png" class="img-fluid"
+                                                 style="width: 19px;"/></button>
+        </span>
+          </div>
+
+        </div>
+        <div [hidden]="messages.length != 0">
+          Загрузка сообщений…
+        </div>
+      </div>
+      <div [hidden]="isLoggedIn()">
+        Пожалуйста авторизуйтесь
+      </div>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,51 @@
+.messages {
+  height: 70vh;
+  overflow: auto;
+}
+
+.messages.hover {
+  background-color: rgba(0, 173, 255, 0.27);
+}
+.messages.drop {
+  background-color: dodgerblue;
+}
+#attachButton.error {
+  background-color: red;
+}
+
+#recordAudioPanel {
+  position: absolute;
+  right: 90px;
+  bottom: 40px;
+  background-color: rgba(128, 128, 128, 0.18);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+#closeRecordAudioPanel {
+  margin-top: 8px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.red, .red:hover, .red:focus {
+  background-color: red;
+}
+
+.nv-file-over {
+  background-color: rgba(14, 238, 35, 0.22);
+}
+
+div.contenteditable:empty:before {
+  content: attr(data-placeholder);
+  color: gray;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 6px;
+  width: 100%;
+  height: 100%;
+}
+div.contenteditable:empty:after {
+  content: '\200B';
+}
