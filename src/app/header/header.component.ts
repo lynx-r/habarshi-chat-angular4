@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {User} from "../model/user.model";
 import {UserService} from "../service/user.service";
 import {Observable} from 'rxjs/Rx';
@@ -50,10 +50,25 @@ export class HeaderComponent implements OnInit {
       }, error => this.errorMessage = error);
   }
 
+  create(name: HTMLInputElement, fullname: HTMLInputElement) {
+    if (!name.value) {
+      this.errorMessage = 'Укажите ваше имя';
+      return;
+    }
+    this.userService.create(name.value, fullname.value)
+      .subscribe(user => {
+        this.user = user;
+        this.errorMessage = '';
+        // JOIN TO GROUP CHAT
+        this.userService.join().subscribe(() => {
+        }, error => this.errorMessage = error);
+      }, error => this.errorMessage = error);
+  }
+
   logout() {
     this.userService.leave().subscribe(() => {
       this.doLogout();
-    }, error => {
+    }, () => {
       this.doLogout();
     });
   }

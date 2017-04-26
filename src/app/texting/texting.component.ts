@@ -28,6 +28,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   private blinkSubscription: Subscription;
   private doBlink: boolean;
   private latestMessages: Message[] = [];
+  refreshMessageSubscribtion: Subscription;
 
   @ViewChild('messageRef') set messageRef(content: ElementRef) {
     this._messageRef = content;
@@ -58,6 +59,8 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   private toggleRed: boolean;
   private toggleRedSubscription: Subscription;
 
+  refreshRosterSubscription: Subscription;
+
   constructor(private textingService: TextingService,
               private userService: UserService,
               private rosterService: RosterService,
@@ -69,9 +72,9 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     this.userService.userLoggedInEvent.subscribe(() => {
       // after login we have upload_url in store
       this.initFileUploader();
-      Observable.timer(1000, this.constants.REFRESH_MESSAGES_MILLISEC)
+      this.refreshMessageSubscribtion = Observable.timer(1000, this.constants.REFRESH_MESSAGES_MILLISEC)
         .subscribe(() => this.refreshMessages());
-      Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
+      this.refreshRosterSubscription = Observable.timer(0, this.constants.REFRESH_ROSTER_MILLISEC)
         .subscribe(() => {
           this.rosterService.getRoster()
             .subscribe((roster) => {
@@ -81,6 +84,10 @@ export class TextingComponent implements OnInit, AfterViewChecked {
             });
         });
       this.onBlur();
+      this.userService.userLoggedOutEvent.subscribe(() => {
+        this.refreshMessageSubscribtion.unsubscribe();
+        this.refreshRosterSubscription.unsubscribe();
+      })
     });
     this.messageRef.nativeElement.innerText = '';
   }

@@ -9,7 +9,7 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <div class="d-flex justify-content-end col-md-12">
-        <div *ngIf="!isLoggedIn(); else logout" >
+        <div *ngIf="!isLoggedIn(); else logoutDiv" >
           <a [hidden]="anonym != 0 && anonym != 2" (click)="anonym = 1" class="link">Новый пользователь</a>
           <a [hidden]="anonym != 0 && anonym != 1" (click)="anonym = 2" class="btn btn-secondary">Уже зарегистрирован</a>
           <div [ngSwitch]="anonym" style="display: inline-block;">
@@ -19,7 +19,7 @@
               <input #fullname type="text" name="fullname" class="form-control" title="Фамилия"
                      placeholder="Фамилия">
               <span class="input-group-btn">
-              <button (click)="create(username, passwd)" type="submit"
+              <button (click)="create(name, fullname)" type="submit"
                       class="btn btn-secondary pull-right">Создать</button>
               </span>
             </div>
@@ -34,7 +34,7 @@
             </div>
           </div>
         </div>
-        <ng-template #logout>
+        <ng-template #logoutDiv>
           <div>
             <button (click)="logout()" class="btn btn-secondary">Выйти</button>
           </div>

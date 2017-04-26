@@ -16,6 +16,7 @@ export class UserService implements OnInit {
   public user: User;
 
   @Output() userLoggedInEvent = new EventEmitter<User>();
+  @Output() userLoggedOutEvent = new EventEmitter<void>();
 
   constructor(private http: Http,
               private rosterService:RosterService,
@@ -49,6 +50,24 @@ export class UserService implements OnInit {
     const queryUrl = `${serverUrl}/auth/1?${params}`;
     return this.http.get(queryUrl)
       .map((resp: Response) => {
+        this.extractUser(resp);
+        this.loggedIn = true;
+      }).catch(Utils.handleError);
+  }
+
+  create(name: string, fullname: string): Observable<User> {
+    if (this.loggedIn) {
+      return Observable.of(this.user);
+    }
+    const serverUrl = this.query.getServerUrl();
+    let params: string = `name=${name}`;
+    if (!fullname) {
+      params = params.concat(`&fullname=${fullname}`);
+    }
+    const queryUrl = `${serverUrl}/anonymous/1?${params}`;
+    return this.http.get(queryUrl)
+      .map((resp: Response) => {
+        console.log(resp);
         this.extractUser(resp);
         this.loggedIn = true;
       }).catch(Utils.handleError);
@@ -105,7 +124,10 @@ export class UserService implements OnInit {
     const session: string = Store.get(this.constants.SESSION_KEY);
     const queryUrl = `${this.query.getServerUrl()}/logout?session=${session}`;
     return this.http.get(queryUrl)
-      .map((resp: Response) => this.loggedIn = false)
+      .map((resp: Response) => {
+      this.loggedIn = false;
+        this.userLoggedOutEvent.emit();
+      })
       .catch(Utils.handleError)
   }
 
