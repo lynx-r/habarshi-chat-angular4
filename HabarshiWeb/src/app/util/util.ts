@@ -19,8 +19,8 @@ export class Utils {
     return Observable.throw(errMsg);
   }
 
-  public static getMessageType(message: Message, originFrom: string): MessageType {
-    if (message.from == originFrom) {
+  public static getMessageType(message: Message, originFromJid: string): MessageType {
+    if (message.from == originFromJid) {
       return MessageType.OUT;
     } else {
       return MessageType.IN;

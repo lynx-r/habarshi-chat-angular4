@@ -27,6 +27,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   private blinkTitle: boolean;
   private blinkSubscription: Subscription;
   private doBlink: boolean;
+  private latestMessages: Message[] = [];
 
   @ViewChild('messageRef') set messageRef(content: ElementRef) {
     this._messageRef = content;
@@ -50,7 +51,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   initScroll: boolean = true;
   errorMessage: string;
   roster: Roster[];
-  private latestMessages: Message[] = [];
+  private statusMessages: Message[] = [];
   uploader: FileUploader;
   private fileUploaderOptions: FileUploaderOptions;
   hasBaseDropZoneOver: boolean = false;
@@ -102,6 +103,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     document.title = this.constants.TITLE;
     if (this.blinkSubscription) {
       this.blinkSubscription.unsubscribe();
+      this.textingService.markMessages(this.latestMessages, this.constants.ACKNOWLEDGED);
     }
   }
 
@@ -147,7 +149,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
         messages => {
           this.messages = messages;
           this.errorMessage = '';
-          this.latestMessages = messages.slice();
+          this.statusMessages = messages.slice();
         }, error => this.errorMessage = error
       );
   }
@@ -161,11 +163,13 @@ export class TextingComponent implements OnInit, AfterViewChecked {
     this.textingService.getMessages(after).subscribe((latest) => {
       if (latest.length != 0) {
         this.messages = this.messages.concat(latest);
+        this.latestMessages = latest;
         this.newMessage = true;
+        this.textingService.markMessages(latest, this.constants.RECEIVED);
       }
     });
-    this.textingService.updateMessageStatuses(this.latestMessages, this.messages).subscribe((messages) => {
-      this.latestMessages = messages;
+    this.textingService.updateMessageStatuses(this.statusMessages, this.messages).subscribe((messages) => {
+      this.statusMessages = messages;
     });
   }
 
@@ -208,7 +212,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
   private messageSent(data, message: Message) {
     if (data.ok) {
       this.messages.push(message);
-      this.latestMessages.push(message);
+      this.statusMessages.push(message);
       this.messageRef.nativeElement.innerText = '';
       this.errorMessage = '';
     } else {

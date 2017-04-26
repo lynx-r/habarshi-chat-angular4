@@ -14,6 +14,9 @@ export class ConstantsService {
   readonly ROBOT_ROOMS: string = 'robot.rooms@habarshi.com';
   readonly TITLE: string = 'Habarshi';
   readonly TITLE_NEW_MESSAGE: string = 'Новое сообщение';
+  readonly RECEIVED: string = 'received';
+  readonly ACKNOWLEDGED: string = 'acknowledged';
+  readonly MARKABLE: string = 'markable';
 
   constructor() { }
 

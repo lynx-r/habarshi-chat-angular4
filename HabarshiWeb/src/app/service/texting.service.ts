@@ -11,6 +11,7 @@ import {ServerStatus} from "../model/server-status.enum";
 import {RosterService} from "./roster.service";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 import {QueryParamsService} from "./query-params.service";
+import {MessageType} from "../model/message-type.enum";
 
 @Injectable()
 export class TextingService {
@@ -95,7 +96,7 @@ export class TextingService {
           let msgs = originMessages.filter((m) => m.id == id);
           if (msgs.length == 1) {
             msgs[0].marker = marker;
-            if (marker == 'acknowledged' || marker == 'markable') {
+            if (marker == this.constants.ACKNOWLEDGED || marker == this.constants.MARKABLE) {
               const index = latestMessages.indexOf(msgs[0]);
               latestMessages.splice(index, 1);
             }
@@ -106,4 +107,33 @@ export class TextingService {
       .catch(Utils.handleError);
   }
 
+  markMessages(latestMessages: Message[], marker: string) {
+    if (latestMessages.length == 0) {
+      return new EmptyObservable();
+    }
+    const session = this.userService.getSession();
+    for (let message of latestMessages) {
+      if (message.marker == this.constants.ACKNOWLEDGED
+        || Utils.getMessageType(message, this.userService.user.jid) == MessageType.OUT) {
+        continue;
+      }
+      const params = [
+        `session=${session}`,
+        `message_id=${message.id}`,
+        `marker=${marker}`,
+        `to=${message.to}`
+      ].join('&');
+      const queryUrl = `${this.query.getServerUrl()}/v1/chat/marker?${params}`;
+      this.http.get(queryUrl)
+        .map((resp: Response) => {
+          const body = resp.json();
+          console.log(body);
+          if (!body.ok) {
+            throw new Error(body.comment);
+          }
+        })
+        .catch(Utils.handleError)
+        .subscribe();
+    }
+  }
 }
