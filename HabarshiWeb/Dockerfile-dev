@@ -2,9 +2,9 @@ FROM teracy/angular-cli:1.0.0-rc.2
 
 LABEL authors="hoatle <hoatle@teracy.com>"
 
-RUN mkdir -p /opt/app
+RUN mkdir -p /var/www/angular
 
-ENV TERM=xterm APP=/opt/app
+ENV TERM=xterm APP=/var/www/angular
 
 # add more arguments from CI to the image so that `$ env` should reveal more info
 ARG CI_BUILD_ID

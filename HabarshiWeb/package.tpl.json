@@ -21,7 +21,6 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "@types/mime": "0.0.29",
-    "@types/moment": "^2.13.0",
     "@types/webaudioapi": "0.0.27",
     "core-js": "^2.4.1",
     "ng2-file-upload": "^1.2.1",
