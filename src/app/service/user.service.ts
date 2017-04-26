@@ -42,9 +42,6 @@ export class UserService implements OnInit {
       return Observable.of(this.user);
     }
     const serverUrl = this.query.getServerUrl();
-    if (serverUrl == null) {
-      throw new Error('Некорректная ссылка');
-    }
     const params: string = [
       `username=${username}`,
       `password=${passwd}`
