@@ -1,8 +1,8 @@
 <main class="container">
   <div class="row">
     <div class="offset-3 col-6">
-      <div *ngIf="isLoggedIn(); else pleaseAuth">
-        <div *ngIf="messages.length != 0; else loading">
+      <div [hidden]="!isLoggedIn()">
+        <div [hidden]="messages.length == 0">
           <div #messagesRef
                class="form-control messages"
                title="Сообщения"
@@ -16,11 +16,11 @@
             <div #messageRef type="text"
                  contenteditable="true"
                  tabindex="0"
-                 class="form-control"
+                 class="form-control contenteditable"
                  (keypress)="onSendMessage($event)"
                  (blur)="onBlur()"
                  (focus)="onFocus()"
-                 placeholder="Введите ваше сообщение">
+                 data-placeholder="Введите ваше сообщение">
             </div>
             <span class="input-group-btn">
             <button (click)="onSendAudioMessage()" class="btn btn-default" [style.background-color]="getRed()"><i
@@ -39,13 +39,13 @@
           </div>
 
         </div>
-        <ng-template #loading>
-          Загрузка…
-        </ng-template>
+        <div [hidden]="messages.length != 0">
+          Загрузка сообщений…
+        </div>
       </div>
-      <ng-template #pleaseAuth>
+      <div [hidden]="isLoggedIn()">
         Пожалуйста авторизуйтесь
-      </ng-template>
+      </div>
     </div>
   </div>
 </main>

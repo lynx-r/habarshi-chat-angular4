@@ -79,7 +79,9 @@ export class TextingComponent implements OnInit, AfterViewChecked {
               this.userService.user = this.rosterService.users[this.userService.user.username];
             });
         });
+      this.onBlur();
     });
+    this.messageRef.nativeElement.innerText = '';
   }
 
   onBlur() {
@@ -187,7 +189,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
 
   onSendMessage(event: KeyboardEvent) {
     const text = this.messageRef.nativeElement.innerHTML;
-    if (!text || event != null && event.keyCode != 13 || event.keyCode == 13 && event.shiftKey) {
+    if (!text || event != null && (event.keyCode != 13 || event.keyCode == 13 && event.shiftKey)) {
       return;
     }
     const selectedUser = this.rosterService.selectedUser;
