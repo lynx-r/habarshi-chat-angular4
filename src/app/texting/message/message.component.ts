@@ -60,7 +60,7 @@ export class MessageComponent implements OnInit {
     if (userFromRoster != null) {
       this.fromFull = userFromRoster.name;
     } else {
-      this.fromFull = '';
+      this.fromFull = 'аноним';
     }
   }
 
