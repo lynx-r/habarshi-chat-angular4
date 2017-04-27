@@ -1612,7 +1612,7 @@ var UserService = (function () {
             this.loggedIn = false;
             this.user = null;
         }
-        var uploadUrl = "//" + body.uploads.address + ":" + body.uploads.port + "/upload";
+        var uploadUrl = "http://" + body.uploads.address + ":" + body.uploads.port + "/upload";
         this.user = new __WEBPACK_IMPORTED_MODULE_1__model_user_model__["a" /* User */](body.session, body.username, uploadUrl);
         __WEBPACK_IMPORTED_MODULE_6__util_store__["a" /* Store */].put(this.constants.SESSION_KEY, this.user.session);
         return this.user;
