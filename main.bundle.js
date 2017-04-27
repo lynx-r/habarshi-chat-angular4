@@ -560,18 +560,18 @@ var ConstantsService = (function () {
     function ConstantsService() {
         this.SERVER_URL = 'serverurl';
         this.DATE_FORMAT = 'h:mm, d MMM YYYY';
-        this.DATE_DAY_FORMAT = 'h:mm';
         this.SESSION_KEY = 'session';
         this.REFRESH_ROSTER_MILLISEC = 60 * 1000;
         this.REFRESH_MESSAGES_MILLISEC = 2500;
         this.QUERY_PARAMS = 'queryparams';
-        this.HABARSHI_HEADER = '<HabarshiServiceMessage>';
+        this.HABARSHI_SERVICE_MESSAGE = '<HabarshiServiceMessage>';
         this.ROBOT_ROOMS = 'robot.rooms@habarshi.com';
         this.TITLE = 'Habarshi';
         this.TITLE_NEW_MESSAGE = 'Новое сообщение';
         this.RECEIVED = 'received';
         this.ACKNOWLEDGED = 'acknowledged';
         this.MARKABLE = 'markable';
+        this.UPLOAD_PROTOCOL = 'https';
     }
     return ConstantsService;
 }());
@@ -1172,7 +1172,7 @@ var MessageComponent = (function () {
         this.user = this.userService.user;
         var username = this.message.from.split('@')[0];
         var users = this.rosterService.users;
-        if (this.message.text.startsWith(this.constants.HABARSHI_HEADER)) {
+        if (this.message.text.startsWith(this.constants.HABARSHI_SERVICE_MESSAGE)) {
             if (this.message.from == this.constants.ROBOT_ROOMS) {
                 this.habarshiRobot = __WEBPACK_IMPORTED_MODULE_8__model_habarshi_robot_model__["a" /* HabarshiRobot */].fromText(this.message.text);
                 this.habarshiMessageType = __WEBPACK_IMPORTED_MODULE_9__model_habarshi_message_type_enum__["a" /* HabarshiMessageType */].ROBOT;
@@ -1537,7 +1537,7 @@ var UserService = (function () {
             this.loggedIn = false;
             this.user = null;
         }
-        var uploadUrl = "http://" + body.uploads.address + ":" + body.uploads.port + "/upload";
+        var uploadUrl = this.constants.UPLOAD_PROTOCOL + "://" + body.uploads.address + ":" + body.uploads.port + "/upload";
         this.user = new __WEBPACK_IMPORTED_MODULE_1__model_user_model__["a" /* User */](body.session, body.username, uploadUrl);
         __WEBPACK_IMPORTED_MODULE_6__util_store__["a" /* Store */].put(this.constants.SESSION_KEY, this.user.session);
         return this.user;
@@ -1940,7 +1940,7 @@ module.exports = "<div style=\"overflow: hidden;\">\n  <div class=\"message {{'m
 /***/ 374:
 /***/ (function(module, exports) {
 
-module.exports = "<main class=\"container\">\n  <div class=\"row\">\n    <div class=\"offset-3 col-6\">\n      <div [hidden]=\"!isLoggedIn()\">\n        <div [hidden]=\"messages.length == 0\">\n          <div #messagesRef\n               class=\"form-control messages\"\n               title=\"Сообщения\"\n               ng2FileDrop\n               (focus)=\"onFocus()\"\n               [uploader]=\"uploader\"\n               [ngClass]=\"{'nv-file-over': hasBaseDropZoneOver}\"\n               (fileOver)=\"onFileOver($event)\">\n            <app-message *ngFor=\"let msg of messages\" [message]=\"msg\"></app-message>\n          </div>\n          <div class=\"input-group\">\n            <div #messageRef type=\"text\"\n                 contenteditable=\"true\"\n                 tabindex=\"0\"\n                 class=\"form-control contenteditable\"\n                 (keypress)=\"onSendMessage($event)\"\n                 (blur)=\"onBlur()\"\n                 (focus)=\"onFocus()\"\n                 data-placeholder=\"Введите ваше сообщение\">\n            </div>\n            <span class=\"input-group-btn\">\n            <button (click)=\"onSendAudioMessage()\" class=\"btn btn-default\" [style.background-color]=\"getRed()\"><i\n              class=\"fa fa-microphone\"></i></button>\n        </span>\n            <span class=\"input-group-btn\">\n            <input #uploadFileRef (change)=\"onChangeFileUpload()\" name=\"file\" type=\"file\" class=\"hidden-xs-up \">\n            <button (click)=\"onSelectFile()\" class=\"btn btn-default\">\n                <i id=\"attachIcon\" class=\"fa fa-paperclip\"></i></button>\n        </span>\n            <span class=\"input-group-btn\">\n            <button (click)=\"onSendMessage()\"\n                    class=\"btn btn-primary\"><img src=\"/habarshi-chat-angular4/assets/images/send_amber.png\" class=\"img-fluid\"\n                                                 style=\"width: 19px;\"/></button>\n        </span>\n          </div>\n\n        </div>\n        <div [hidden]=\"messages.length != 0\">\n          Загрузка сообщений…\n        </div>\n      </div>\n      <div [hidden]=\"isLoggedIn()\">\n        Пожалуйста, авторизуйтесь или войдите анонимно…\n      </div>\n    </div>\n  </div>\n</main>\n"
+module.exports = "<main class=\"container\">\n  <div class=\"row\">\n    <div class=\"offset-3 col-6\">\n      <div [hidden]=\"!isLoggedIn()\">\n        <div [hidden]=\"messages.length == 0\">\n          <div #messagesRef\n               class=\"form-control messages\"\n               title=\"Сообщения\"\n               ng2FileDrop\n               (focus)=\"onFocus()\"\n               [uploader]=\"uploader\"\n               [ngClass]=\"{'nv-file-over': hasBaseDropZoneOver}\"\n               (fileOver)=\"onFileOver($event)\">\n            <app-message *ngFor=\"let msg of messages\" [message]=\"msg\"></app-message>\n          </div>\n          <div class=\"input-group\">\n            <div #messageRef type=\"text\"\n                 contenteditable=\"true\"\n                 tabindex=\"0\"\n                 class=\"form-control contenteditable\"\n                 (keypress)=\"onSendMessage($event)\"\n                 (blur)=\"onBlur()\"\n                 (focus)=\"onFocus()\"\n                 data-placeholder=\"Введите ваше сообщение\">\n            </div>\n            <span class=\"input-group-btn\">\n            <button (click)=\"onSendAudioMessage()\" class=\"btn btn-default\" [style.background-color]=\"getRed()\"><i\n              class=\"fa fa-microphone\"></i></button>\n        </span>\n            <span class=\"input-group-btn\">\n            <input #uploadFileRef (change)=\"onChangeFileUpload()\" name=\"file\" type=\"file\" class=\"hidden-xs-up \">\n            <button (click)=\"onSelectFile()\" class=\"btn btn-default\">\n                <i id=\"attachIcon\" class=\"fa fa-paperclip\"></i></button>\n        </span>\n            <span class=\"input-group-btn\">\n            <button (click)=\"onSendMessage()\"\n                    class=\"btn btn-primary\"><img src=\"../../assets/images/send_amber.png\" class=\"img-fluid\"\n                                                 style=\"width: 19px;\"/></button>\n        </span>\n          </div>\n\n        </div>\n        <div [hidden]=\"messages.length != 0\">\n          Загрузка сообщений…\n        </div>\n      </div>\n      <div [hidden]=\"isLoggedIn()\">\n        Пожалуйста, авторизуйтесь или войдите анонимно…\n      </div>\n    </div>\n  </div>\n</main>\n"
 
 /***/ }),
 
