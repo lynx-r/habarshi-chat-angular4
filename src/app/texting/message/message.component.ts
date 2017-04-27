@@ -36,7 +36,7 @@ export class MessageComponent implements OnInit {
     this.user = this.userService.user;
     const username = this.message.from.split('@')[0];
     const users: Map<string, User> = this.rosterService.users;
-    if (this.message.text.startsWith(this.constants.HABARSHI_HEADER)) {
+    if (this.message.text.startsWith(this.constants.HABARSHI_SERVICE_MESSAGE)) {
       if (this.message.from == this.constants.ROBOT_ROOMS) {
         this.habarshiRobot = HabarshiRobot.fromText(this.message.text);
         this.habarshiMessageType = HabarshiMessageType.ROBOT;

@@ -143,7 +143,7 @@ export class UserService implements OnInit {
       this.loggedIn = false;
       this.user = null;
     }
-    const uploadUrl = `http://${body.uploads.address}:${body.uploads.port}/upload`;
+    const uploadUrl = `${this.constants.UPLOAD_PROTOCOL}://${body.uploads.address}:${body.uploads.port}/upload`;
     this.user = new User(body.session, body.username, uploadUrl);
     Store.put(this.constants.SESSION_KEY, this.user.session);
 
