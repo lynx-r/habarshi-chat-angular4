@@ -4,6 +4,43 @@ webpackJsonp([1,4],{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mime__ = __webpack_require__(364);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mime___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mime__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HabarshiFile; });
+
+var HabarshiFile = (function () {
+    function HabarshiFile(file_name, full_url, preview_url) {
+        this.file_name = file_name;
+        this.full_url = full_url;
+        this.preview_url = preview_url;
+        this.type = __WEBPACK_IMPORTED_MODULE_0_mime__["lookup"](full_url);
+    }
+    HabarshiFile.fromText = function (text) {
+        var rx = /<file_name>\|<([^>]*)>,<full_url>\|<([^>]*)>(?:,<preview_url>\|<([^>]*)>)?/g;
+        var match = rx.exec(text);
+        if (!match) {
+            console.log(text);
+            return null;
+        }
+        var file_name = match[1];
+        var full_url = match[2];
+        var preview_url = match[3];
+        return new this(file_name, full_url, preview_url);
+    };
+    HabarshiFile.prototype.toString = function () {
+        return "<HabarshiServiceMessage><file_name>|<" + this.file_name + ">,<full_url>|<" + this.full_url + ">,<preview_url>|<" + this.preview_url + ">";
+    };
+    return HabarshiFile;
+}());
+
+//# sourceMappingURL=habarshi-file.model.js.map
+
+/***/ }),
+
+/***/ 101:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return User; });
 var User = (function () {
     function User(session, username, uploads, room) {
@@ -19,26 +56,26 @@ var User = (function () {
 
 /***/ }),
 
-/***/ 101:
+/***/ 102:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_catch__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_catch__ = __webpack_require__(89);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_catch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(90);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__model_message_model__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__shared_constants_service__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__util_util__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__user_service__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__model_server_status_enum__ = __webpack_require__(171);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__roster_service__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_observable_EmptyObservable__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__model_message_model__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__shared_constants_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__util_util__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__user_service__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__model_server_status_enum__ = __webpack_require__(297);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__roster_service__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_observable_EmptyObservable__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_observable_EmptyObservable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_rxjs_observable_EmptyObservable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__query_params_service__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__model_message_type_enum__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__query_params_service__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__model_message_type_enum__ = __webpack_require__(66);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TextingService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -185,7 +222,6 @@ var TextingService = (function () {
             this.http.get(queryUrl)
                 .map(function (resp) {
                 var body = resp.json();
-                console.log(body);
                 if (!body.ok) {
                     throw new Error(body.comment);
                 }
@@ -206,26 +242,26 @@ var _a, _b, _c, _d, _e;
 
 /***/ }),
 
-/***/ 102:
+/***/ 103:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_texting_service__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__service_user_service__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_message_model__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util_guid__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__service_roster_service__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_texting_service__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__service_user_service__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_message_model__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util_guid__ = __webpack_require__(300);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__service_roster_service__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_Observable__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__shared_constants_service__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_observable_timer__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__shared_constants_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_observable_timer__ = __webpack_require__(88);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_observable_timer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_add_observable_timer__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ng2_file_upload__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ng2_file_upload__ = __webpack_require__(242);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ng2_file_upload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_ng2_file_upload__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__model_habarshi_file_model__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__util_util__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__service_audio_service__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__model_habarshi_file_model__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__util_util__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__service_audio_service__ = __webpack_require__(298);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TextingComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -275,7 +311,9 @@ var TextingComponent = (function () {
                 _this.rosterService.getRoster()
                     .subscribe(function (roster) {
                     _this.roster = roster;
-                    _this.getMessages();
+                    if (_this.initScroll) {
+                        _this.getMessages();
+                    }
                     _this.userService.user = _this.rosterService.users[_this.userService.user.username];
                 });
             });
@@ -387,15 +425,16 @@ var TextingComponent = (function () {
                 });
             }
         }
-        if (nativeElement.scrollTop == 0 && this.messages.length > 0 && !this.getForPeriod) {
+        if (nativeElement.scrollTop < nativeElement.scrollHeight / 2 && this.messages.length > 0 && !this.getForPeriod) {
             var before = this.messages[0].id;
             this.textingService.getMessagesForPeriod(before, this.beforeDays).subscribe(function (beforeMessages) {
                 if (beforeMessages.length == 0) {
+                    _this.beforeDays = 0;
                     return;
                 }
                 _this.messages = beforeMessages.concat(_this.messages);
                 _this.getForPeriod = false;
-                nativeElement.scrollTop = 1;
+                // nativeElement.scrollTop = nativeElement.scrollHeight / 2;
             });
             this.getForPeriod = true;
             this.beforeDays++;
@@ -489,8 +528,8 @@ __decorate([
 TextingComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'app-texting',
-        template: __webpack_require__(245),
-        styles: [__webpack_require__(233)],
+        template: __webpack_require__(374),
+        styles: [__webpack_require__(361)],
         providers: [__WEBPACK_IMPORTED_MODULE_12__service_audio_service__["a" /* AudioService */], __WEBPACK_IMPORTED_MODULE_1__service_texting_service__["a" /* TextingService */]]
     }),
     __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__service_texting_service__["a" /* TextingService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_texting_service__["a" /* TextingService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__service_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__service_user_service__["a" /* UserService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_5__service_roster_service__["a" /* RosterService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__service_roster_service__["a" /* RosterService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_12__service_audio_service__["a" /* AudioService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__service_audio_service__["a" /* AudioService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_7__shared_constants_service__["a" /* ConstantsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__shared_constants_service__["a" /* ConstantsService */]) === "function" && _h || Object])
@@ -501,7 +540,98 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ 156:
+/***/ 23:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConstantsService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var ConstantsService = (function () {
+    function ConstantsService() {
+        this.SERVER_URL = 'serverurl';
+        this.DATE_FORMAT = 'h:mm, d MMM YYYY';
+        this.DATE_DAY_FORMAT = 'h:mm';
+        this.SESSION_KEY = 'session';
+        this.REFRESH_ROSTER_MILLISEC = 60 * 1000;
+        this.REFRESH_MESSAGES_MILLISEC = 2500;
+        this.QUERY_PARAMS = 'queryparams';
+        this.HABARSHI_HEADER = '<HabarshiServiceMessage>';
+        this.ROBOT_ROOMS = 'robot.rooms@habarshi.com';
+        this.TITLE = 'Habarshi';
+        this.TITLE_NEW_MESSAGE = 'Новое сообщение';
+        this.RECEIVED = 'received';
+        this.ACKNOWLEDGED = 'acknowledged';
+        this.MARKABLE = 'markable';
+    }
+    return ConstantsService;
+}());
+ConstantsService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+    __metadata("design:paramtypes", [])
+], ConstantsService);
+
+//# sourceMappingURL=constants.service.js.map
+
+/***/ }),
+
+/***/ 26:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_observable_throw__ = __webpack_require__(245);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_observable_throw___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_observable_throw__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_message_type_enum__ = __webpack_require__(66);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Utils; });
+
+
+
+var Utils = (function () {
+    function Utils() {
+    }
+    Utils.handleError = function (error) {
+        // In a real world app, you might use a remote logging infrastructure
+        var errMsg;
+        if (error instanceof Response) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            errMsg = error.status + " - " + (error.statusText || '') + " " + err;
+        }
+        else {
+            errMsg = error.message ? error.message : error.toString();
+        }
+        console.error(errMsg);
+        alert(errMsg);
+        localStorage.clear();
+        return __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__["Observable"].throw(errMsg);
+    };
+    Utils.getMessageType = function (message, originFromJid) {
+        if (message.from == originFromJid) {
+            return __WEBPACK_IMPORTED_MODULE_2__model_message_type_enum__["a" /* MessageType */].OUT;
+        }
+        else {
+            return __WEBPACK_IMPORTED_MODULE_2__model_message_type_enum__["a" /* MessageType */].IN;
+        }
+    };
+    return Utils;
+}());
+
+//# sourceMappingURL=util.js.map
+
+/***/ }),
+
+/***/ 282:
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -510,20 +640,20 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 156;
+webpackEmptyContext.id = 282;
 
 
 /***/ }),
 
-/***/ 157:
+/***/ 283:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(166);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(292);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(301);
 
 
 
@@ -539,15 +669,15 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dyna
 
 /***/ }),
 
-/***/ 164:
+/***/ 290:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(163);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__texting_texting_component__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__auth_guard__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(289);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__texting_texting_component__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__auth_guard__ = __webpack_require__(99);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -593,11 +723,13 @@ AppRoutingModule = __decorate([
 
 /***/ }),
 
-/***/ 165:
+/***/ 291:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -606,17 +738,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
+
 var AppComponent = (function () {
     function AppComponent() {
         this.title = 'app works!';
     }
+    AppComponent.prototype.ngOnInit = function () {
+        __WEBPACK_IMPORTED_MODULE_1_moment__["locale"]('ru-ru');
+    };
     return AppComponent;
 }());
 AppComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'app-root',
-        template: __webpack_require__(241),
-        styles: [__webpack_require__(229)]
+        template: __webpack_require__(370),
+        styles: [__webpack_require__(357)]
     })
 ], AppComponent);
 
@@ -624,28 +760,30 @@ AppComponent = __decorate([
 
 /***/ }),
 
-/***/ 166:
+/***/ 292:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(161);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(165);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__texting_texting_component__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__texting_message_message_component__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__header_header_component__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__footer_footer_component__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__service_texting_service__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__service_user_service__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_constants_service__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__service_roster_service__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_ng2_file_upload__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(287);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(291);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__texting_texting_component__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__texting_message_message_component__ = __webpack_require__(299);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__header_header_component__ = __webpack_require__(294);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__footer_footer_component__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__service_texting_service__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__service_user_service__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_constants_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__service_roster_service__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_ng2_file_upload__ = __webpack_require__(242);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_ng2_file_upload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_ng2_file_upload__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__app_routing_module__ = __webpack_require__(164);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__auth_guard__ = __webpack_require__(98);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__service_query_params_service__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__app_routing_module__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__auth_guard__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__service_query_params_service__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_angular2_moment__ = __webpack_require__(302);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_angular2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17_angular2_moment__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -653,6 +791,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -690,7 +829,8 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* ReactiveFormsModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* HttpModule */],
             __WEBPACK_IMPORTED_MODULE_13_ng2_file_upload__["FileUploadModule"],
-            __WEBPACK_IMPORTED_MODULE_14__app_routing_module__["a" /* AppRoutingModule */]
+            __WEBPACK_IMPORTED_MODULE_14__app_routing_module__["a" /* AppRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_17_angular2_moment__["MomentModule"]
         ],
         providers: [__WEBPACK_IMPORTED_MODULE_15__auth_guard__["a" /* AuthGuard */], __WEBPACK_IMPORTED_MODULE_11__shared_constants_service__["a" /* ConstantsService */], __WEBPACK_IMPORTED_MODULE_16__service_query_params_service__["a" /* QueryParamsService */], __WEBPACK_IMPORTED_MODULE_9__service_texting_service__["a" /* TextingService */], __WEBPACK_IMPORTED_MODULE_10__service_user_service__["a" /* UserService */], __WEBPACK_IMPORTED_MODULE_12__service_roster_service__["a" /* RosterService */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]]
@@ -701,7 +841,7 @@ AppModule = __decorate([
 
 /***/ }),
 
-/***/ 167:
+/***/ 293:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -727,8 +867,8 @@ var FooterComponent = (function () {
 FooterComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'app-footer',
-        template: __webpack_require__(242),
-        styles: [__webpack_require__(230)]
+        template: __webpack_require__(371),
+        styles: [__webpack_require__(358)]
     }),
     __metadata("design:paramtypes", [])
 ], FooterComponent);
@@ -737,15 +877,15 @@ FooterComponent = __decorate([
 
 /***/ }),
 
-/***/ 168:
+/***/ 294:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_user_service__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__(247);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_user_service__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__(376);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_observable_timer__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_observable_timer__ = __webpack_require__(88);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_observable_timer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_observable_timer__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HeaderComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -831,8 +971,8 @@ var HeaderComponent = (function () {
 HeaderComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'app-header',
-        template: __webpack_require__(243),
-        styles: [__webpack_require__(231)]
+        template: __webpack_require__(372),
+        styles: [__webpack_require__(359)]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_user_service__["a" /* UserService */]) === "function" && _a || Object])
 ], HeaderComponent);
@@ -842,7 +982,7 @@ var _a;
 
 /***/ }),
 
-/***/ 169:
+/***/ 295:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -857,7 +997,7 @@ var HabarshiMessageType;
 
 /***/ }),
 
-/***/ 170:
+/***/ 296:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -869,7 +1009,7 @@ var HabarshiRobot = (function () {
         this.object = object;
     }
     HabarshiRobot.fromText = function (text) {
-        var rx = /<action>\|<([^>]+)>,[\n\s]*<actor>\|<([^>]+)>,[\n\s]*<object>\|<([^>]+)>/g;
+        var rx = /<action>\|<([^>]*)>,[\n\s]*<actor>\|<([^>]*)>,[\n\s]*<object>\|<([^>]*)>/g;
         var match = rx.exec(text);
         var file_name = match[1];
         var full_url = match[2];
@@ -886,7 +1026,7 @@ var HabarshiRobot = (function () {
 
 /***/ }),
 
-/***/ 171:
+/***/ 297:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -903,12 +1043,12 @@ var ServerStatus = (function () {
 
 /***/ }),
 
-/***/ 172:
+/***/ 298:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_util__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_util__ = __webpack_require__(26);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AudioService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -985,20 +1125,20 @@ var AudioService_1;
 
 /***/ }),
 
-/***/ 173:
+/***/ 299:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__model_message_model__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__service_user_service__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_message_type_enum__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_constants_service__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__util_util__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__service_roster_service__ = __webpack_require__(29);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__model_habarshi_file_model__ = __webpack_require__(99);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__model_habarshi_robot_model__ = __webpack_require__(170);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__model_habarshi_message_type_enum__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__model_message_model__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__service_user_service__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_message_type_enum__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_constants_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__util_util__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__service_roster_service__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__model_habarshi_file_model__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__model_habarshi_robot_model__ = __webpack_require__(296);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__model_habarshi_message_type_enum__ = __webpack_require__(295);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessageComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1070,8 +1210,8 @@ __decorate([
 MessageComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'app-message',
-        template: __webpack_require__(244),
-        styles: [__webpack_require__(232)]
+        template: __webpack_require__(373),
+        styles: [__webpack_require__(360)]
     }),
     __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__service_user_service__["a" /* UserService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__service_user_service__["a" /* UserService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_6__service_roster_service__["a" /* RosterService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__service_roster_service__["a" /* RosterService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__shared_constants_service__["a" /* ConstantsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__shared_constants_service__["a" /* ConstantsService */]) === "function" && _d || Object])
 ], MessageComponent);
@@ -1081,285 +1221,21 @@ var _a, _b, _c, _d;
 
 /***/ }),
 
-/***/ 174:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GUID; });
-var GUID = (function () {
-    function GUID(str) {
-        this.str = str || GUID.getNewGUIDString();
-    }
-    GUID.prototype.toString = function () {
-        return this.str;
-    };
-    GUID.getNewGUIDString = function () {
-        // your favourite guid generation function could go here
-        // ex: http://stackoverflow.com/a/8809472/188246
-        var d = new Date().getTime();
-        if (window.performance && typeof window.performance.now === "function") {
-            d += performance.now(); //use high-precision timer if available
-        }
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = (d + Math.random() * 16) % 16 | 0;
-            d = Math.floor(d / 16);
-            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-        });
-    };
-    return GUID;
-}());
-
-//# sourceMappingURL=guid.js.map
-
-/***/ }),
-
-/***/ 175:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return environment; });
-// The file contents for the current environment will overwrite these during build.
-// The build system defaults to the dev environment which uses `environment.ts`, but if you do
-// `ng build --env=prod` then `environment.prod.ts` will be used instead.
-// The list of which env maps to which file can be found in `.angular-cli.json`.
-// The file contents for the current environment will overwrite these during build.
-var environment = {
-    production: false
-};
-//# sourceMappingURL=environment.js.map
-
-/***/ }),
-
-/***/ 22:
+/***/ 30:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConstantsService; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-var ConstantsService = (function () {
-    function ConstantsService() {
-        this.SERVER_URL = 'serverurl';
-        this.DATE_FORMAT = 'h:mm, EEEE d';
-        this.SESSION_KEY = 'session';
-        this.REFRESH_ROSTER_MILLISEC = 60 * 1000;
-        this.REFRESH_MESSAGES_MILLISEC = 2500;
-        this.QUERY_PARAMS = 'queryparams';
-        this.HABARSHI_HEADER = '<HabarshiServiceMessage>';
-        this.ROBOT_ROOMS = 'robot.rooms@habarshi.com';
-        this.TITLE = 'Habarshi';
-        this.TITLE_NEW_MESSAGE = 'Новое сообщение';
-        this.RECEIVED = 'received';
-        this.ACKNOWLEDGED = 'acknowledged';
-        this.MARKABLE = 'markable';
-    }
-    return ConstantsService;
-}());
-ConstantsService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [])
-], ConstantsService);
-
-//# sourceMappingURL=constants.service.js.map
-
-/***/ }),
-
-/***/ 229:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(28)();
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 230:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(28)();
-// imports
-
-
-// module
-exports.push([module.i, "footer {\n  background-color: #e6e6e6;\n  width: 100%;\n  overflow: hidden;\n}\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 231:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(28)();
-// imports
-
-
-// module
-exports.push([module.i, ".navbar {\n  background-color: red;\n  margin-bottom: 40px;\n}\n\n.navbar-brand {\n  color: white;\n}\n\n.link {\n  cursor: pointer;\n  color: white !important;\n}\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 232:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(28)();
-// imports
-
-
-// module
-exports.push([module.i, ".message {\n  padding: 10px;\n  margin-bottom: 10px;\n  border-radius: 6px;\n}\n\n/* message types */\n.msg-IN {\n  max-width: 70vh;\n  background: rgba(255, 0, 0, 0.4);\n}\n\n.msg-OUT {\n  max-width: 90vh;\n  background: rgba(200, 200, 200, 0.4);\n  float: right;\n  text-align: right;\n}\n\n.msg-SERVICE {\n  text-align: center;\n  font-size: small;\n  font-style: italic;\n}\n\n/* statuses */\n.check-success, .received.acknowledged .check-success {\n  display: none;\n}\n\n.double-check-success {\n  display: none;\n}\n\n.acknowledged .double-check-success {\n  display: inline-block;\n}\n\n.received .check-success {\n  display: inline-block;\n}\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 233:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(28)();
-// imports
-
-
-// module
-exports.push([module.i, ".messages {\n  height: 70vh;\n  overflow: auto;\n}\n\n.messages.hover {\n  background-color: rgba(0, 173, 255, 0.27);\n}\n.messages.drop {\n  background-color: dodgerblue;\n}\n#attachButton.error {\n  background-color: red;\n}\n\n#recordAudioPanel {\n  position: absolute;\n  right: 90px;\n  bottom: 40px;\n  background-color: rgba(128, 128, 128, 0.18);\n  padding: 8px;\n  border-radius: 8px;\n}\n\n#closeRecordAudioPanel {\n  margin-top: 8px;\n  margin-left: 8px;\n  cursor: pointer;\n}\n\n.red, .red:hover, .red:focus {\n  background-color: red;\n}\n\n.nv-file-over {\n  background-color: rgba(14, 238, 35, 0.22);\n}\n\ndiv.contenteditable:empty:before {\n  content: attr(data-placeholder);\n  color: gray;\n  position: absolute;\n  top: 0;\n  left: 0;\n  padding: 6px;\n  width: 100%;\n  height: 100%;\n}\ndiv.contenteditable:empty:after {\n  content: '\\200B';\n}\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
-/***/ 241:
-/***/ (function(module, exports) {
-
-module.exports = "<app-header></app-header>\n<router-outlet></router-outlet>\n<app-footer></app-footer>\n"
-
-/***/ }),
-
-/***/ 242:
-/***/ (function(module, exports) {
-
-module.exports = "<footer>\n  <p class=\"float-right\">\n    <small>© HABARSHI Ltd.</small>\n  </p>\n</footer>\n"
-
-/***/ }),
-
-/***/ 243:
-/***/ (function(module, exports) {
-
-module.exports = "<header>\n  <nav class=\"navbar navbar-toggleable-md navbar-light bg-faded\">\n    <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-toggle=\"collapse\"\n            data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\"\n            aria-label=\"Toggle navigation\">\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n    <a class=\"navbar-brand\" href=\"#\">HABARSHI</a>\n\n    <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n      <div class=\"d-flex justify-content-end col-md-12\">\n        <div *ngIf=\"!isLoggedIn(); else logoutDiv\" >\n          <a [hidden]=\"anonym != 0 && anonym != 2\" (click)=\"anonym = 1\" class=\"link\">Новый пользователь</a>\n          <a [hidden]=\"anonym != 0 && anonym != 1\" (click)=\"anonym = 2\" class=\"btn btn-secondary\">Уже зарегистрирован</a>\n          <div [ngSwitch]=\"anonym\" style=\"display: inline-block;\">\n            <div *ngSwitchCase=\"1\" class=\"input-group auth-form\">\n              <input #name type=\"text\" name=\"name\" class=\"form-control\" title=\"Имя\"\n                     required=\"required\" placeholder=\"Имя\">\n              <input #fullname type=\"text\" name=\"fullname\" class=\"form-control\" title=\"Фамилия\"\n                     placeholder=\"Фамилия\">\n              <span class=\"input-group-btn\">\n              <button (click)=\"create(name, fullname)\" type=\"submit\"\n                      class=\"btn btn-secondary pull-right\">Создать</button>\n              </span>\n            </div>\n            <div *ngSwitchCase=\"2\" class=\"input-group auth-form\">\n              <input #username type=\"text\" name=\"name\" class=\"form-control\" title=\"Логин\"\n                     required=\"required\" placeholder=\"Логин\">\n              <input #passwd type=\"password\" name=\"passwd\" class=\"form-control\" title=\"Пароль\"\n                     required=\"required\" placeholder=\"Пароль\">\n              <span class=\"input-group-btn\">\n              <button (click)=\"auth(username, passwd)\" type=\"submit\" class=\"btn btn-secondary pull-right\">Войти</button>\n              </span>\n            </div>\n          </div>\n        </div>\n        <ng-template #logoutDiv>\n          <div>\n            <button (click)=\"logout()\" class=\"btn btn-secondary\">Выйти</button>\n          </div>\n        </ng-template>\n      </div>\n    </div>\n  </nav>\n</header>\n"
-
-/***/ }),
-
-/***/ 244:
-/***/ (function(module, exports) {
-
-module.exports = "<div style=\"overflow: hidden;\">\n  <div class=\"message {{'msg-' + MessageType[messageType]}} {{message.marker}}\">\n    <p><b> {{ messageType == MessageType.IN ? fromFull : (messageType == MessageType.OUT ? 'Я' : message.jid) }}</b>\n      {{ message.time | date: dateFormat}}\n      <span class=\"fa-lg check-success\">\n        <i class=\"fa fa-check\" style=\"margin-left:4px\"></i>\n        </span>\n      <span class=\"fa-stack fa-lg double-check-success\">\n        <i class=\"fa fa-check fa-stack-1x\" style=\"margin-left:4px\"></i>\n        <i class=\"fa fa-check  fa-stack-1x\" style=\"margin-left:-4px\"></i>\n      </span>\n    </p>\n    <div [ngSwitch]=\"habarshiMessageType\">\n      <div *ngSwitchCase=\"HabarshiMessage.FILE\">\n        <ng-template [ngIf]=\"habarshiFile.type.startsWith('video/webm')\">\n          <div class=\"audio\">\n            <audio [src]=\"habarshiFile.full_url\" controls></audio>\n          </div>\n        </ng-template>\n        <ng-template [ngIf]=\"habarshiFile.type.startsWith('image')\">\n          <div class=\"image\">\n            <a [href]=\"habarshiFile.full_url\" target=\"_blank\"><img [src]=\"habarshiFile.preview_url\"/></a>\n          </div>\n        </ng-template>\n        <ng-template [ngIf]=\"!habarshiFile.type.startsWith('video/webm') && !habarshiFile.type.startsWith('image')\">\n          <div class=\"doc\">\n            <a [href]=\"habarshiFile.full_url\" target=\"_blank\">{{habarshiFile.file_name}}</a>\n          </div>\n        </ng-template>\n      </div>\n      <div *ngSwitchCase=\"HabarshiMessage.ROBOT\">\n        <div>Пользователь {{fromFull}} {{ habarshiRobot.action == 'bye' ? 'покинул(а)' : 'вошел(а) в' }} комнату\n        </div>\n      </div>\n      <div *ngSwitchDefault>\n        <div [innerHTML]=\"message.text\"></div>\n      </div>\n    </div>\n  </div>\n</div>\n"
-
-/***/ }),
-
-/***/ 245:
-/***/ (function(module, exports) {
-
-module.exports = "<main class=\"container\">\n  <div class=\"row\">\n    <div class=\"offset-3 col-6\">\n      <div [hidden]=\"!isLoggedIn()\">\n        <div [hidden]=\"messages.length == 0\">\n          <div #messagesRef\n               class=\"form-control messages\"\n               title=\"Сообщения\"\n               ng2FileDrop\n               (focus)=\"onFocus()\"\n               [uploader]=\"uploader\"\n               [ngClass]=\"{'nv-file-over': hasBaseDropZoneOver}\"\n               (fileOver)=\"onFileOver($event)\">\n            <app-message *ngFor=\"let msg of messages\" [message]=\"msg\"></app-message>\n          </div>\n          <div class=\"input-group\">\n            <div #messageRef type=\"text\"\n                 contenteditable=\"true\"\n                 tabindex=\"0\"\n                 class=\"form-control contenteditable\"\n                 (keypress)=\"onSendMessage($event)\"\n                 (blur)=\"onBlur()\"\n                 (focus)=\"onFocus()\"\n                 data-placeholder=\"Введите ваше сообщение\">\n            </div>\n            <span class=\"input-group-btn\">\n            <button (click)=\"onSendAudioMessage()\" class=\"btn btn-default\" [style.background-color]=\"getRed()\"><i\n              class=\"fa fa-microphone\"></i></button>\n        </span>\n            <span class=\"input-group-btn\">\n            <input #uploadFileRef (change)=\"onChangeFileUpload()\" name=\"file\" type=\"file\" class=\"hidden-xs-up \">\n            <button (click)=\"onSelectFile()\" class=\"btn btn-default\">\n                <i id=\"attachIcon\" class=\"fa fa-paperclip\"></i></button>\n        </span>\n            <span class=\"input-group-btn\">\n            <button (click)=\"onSendMessage()\"\n                    class=\"btn btn-primary\"><img src=\"/habarshi-chat-angular4/assets/images/send_amber.png\" class=\"img-fluid\"\n                                                 style=\"width: 19px;\"/></button>\n        </span>\n          </div>\n\n        </div>\n        <div [hidden]=\"messages.length != 0\">\n          Загрузка сообщений…\n        </div>\n      </div>\n      <div [hidden]=\"isLoggedIn()\">\n        Пожалуйста, авторизуйтесь или войдите анонимно…\n      </div>\n    </div>\n  </div>\n</main>\n"
-
-/***/ }),
-
-/***/ 25:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_observable_throw__ = __webpack_require__(120);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_observable_throw___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_observable_throw__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_message_type_enum__ = __webpack_require__(65);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Utils; });
-
-
-
-var Utils = (function () {
-    function Utils() {
-    }
-    Utils.handleError = function (error) {
-        // In a real world app, you might use a remote logging infrastructure
-        var errMsg;
-        if (error instanceof Response) {
-            var body = error.json() || '';
-            var err = body.error || JSON.stringify(body);
-            errMsg = error.status + " - " + (error.statusText || '') + " " + err;
-        }
-        else {
-            errMsg = error.message ? error.message : error.toString();
-        }
-        console.error(errMsg);
-        alert(errMsg);
-        localStorage.clear();
-        return __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__["Observable"].throw(errMsg);
-    };
-    Utils.getMessageType = function (message, originFromJid) {
-        if (message.from == originFromJid) {
-            return __WEBPACK_IMPORTED_MODULE_2__model_message_type_enum__["a" /* MessageType */].OUT;
-        }
-        else {
-            return __WEBPACK_IMPORTED_MODULE_2__model_message_type_enum__["a" /* MessageType */].IN;
-        }
-    };
-    return Utils;
-}());
-
-//# sourceMappingURL=util.js.map
-
-/***/ }),
-
-/***/ 29:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__model_user_model__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_store__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_constants_service__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_http__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__util_util__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_catch__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__model_user_model__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_store__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_constants_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_http__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__util_util__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_catch__ = __webpack_require__(89);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_catch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_map__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_map__ = __webpack_require__(90);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__query_params_service__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__query_params_service__ = __webpack_require__(49);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RosterService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1448,22 +1324,71 @@ var _a, _b, _c;
 
 /***/ }),
 
-/***/ 33:
+/***/ 300:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GUID; });
+var GUID = (function () {
+    function GUID(str) {
+        this.str = str || GUID.getNewGUIDString();
+    }
+    GUID.prototype.toString = function () {
+        return this.str;
+    };
+    GUID.getNewGUIDString = function () {
+        // your favourite guid generation function could go here
+        // ex: http://stackoverflow.com/a/8809472/188246
+        var d = new Date().getTime();
+        if (window.performance && typeof window.performance.now === "function") {
+            d += performance.now(); //use high-precision timer if available
+        }
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = (d + Math.random() * 16) % 16 | 0;
+            d = Math.floor(d / 16);
+            return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+    };
+    return GUID;
+}());
+
+//# sourceMappingURL=guid.js.map
+
+/***/ }),
+
+/***/ 301:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return environment; });
+// The file contents for the current environment will overwrite these during build.
+// The build system defaults to the dev environment which uses `environment.ts`, but if you do
+// `ng build --env=prod` then `environment.prod.ts` will be used instead.
+// The list of which env maps to which file can be found in `.angular-cli.json`.
+// The file contents for the current environment will overwrite these during build.
+var environment = {
+    production: false
+};
+//# sourceMappingURL=environment.js.map
+
+/***/ }),
+
+/***/ 34:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__model_user_model__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__model_user_model__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_constants_service__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__util_util__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__util_store__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__query_params_service__ = __webpack_require__(48);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_observable_EmptyObservable__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_constants_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__util_util__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__util_store__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__query_params_service__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_observable_EmptyObservable__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_observable_EmptyObservable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_observable_EmptyObservable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__roster_service__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__roster_service__ = __webpack_require__(30);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1640,14 +1565,393 @@ var _a, _b, _c, _d;
 
 /***/ }),
 
-/***/ 48:
+/***/ 357:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(29)();
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 358:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(29)();
+// imports
+
+
+// module
+exports.push([module.i, "footer {\n  background-color: #e6e6e6;\n  width: 100%;\n  overflow: hidden;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 359:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(29)();
+// imports
+
+
+// module
+exports.push([module.i, ".navbar {\n  background-color: red;\n  margin-bottom: 40px;\n}\n\n.navbar-brand {\n  color: white;\n}\n\n.link {\n  cursor: pointer;\n  color: white !important;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 360:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(29)();
+// imports
+
+
+// module
+exports.push([module.i, ".message {\n  padding: 10px;\n  margin-bottom: 10px;\n  border-radius: 6px;\n}\n\n/* message types */\n.msg-IN {\n  max-width: 70vh;\n  background: rgba(255, 0, 0, 0.4);\n}\n\n.msg-OUT {\n  max-width: 90vh;\n  background: rgba(200, 200, 200, 0.4);\n  float: right;\n  text-align: right;\n}\n\n.msg-SERVICE {\n  background: rgba(130, 200, 125, 0.4);\n  text-align: center;\n  font-size: small;\n  font-style: italic;\n}\n\n/* statuses */\n.check-success, .received.acknowledged .check-success {\n  display: none;\n}\n\n.double-check-success {\n  display: none;\n}\n\n.acknowledged .double-check-success {\n  display: inline-block;\n}\n\n.received .check-success {\n  display: inline-block;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 361:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(29)();
+// imports
+
+
+// module
+exports.push([module.i, ".messages {\n  height: 70vh;\n  overflow: auto;\n}\n\n.messages.hover {\n  background-color: rgba(0, 173, 255, 0.27);\n}\n.messages.drop {\n  background-color: dodgerblue;\n}\n#attachButton.error {\n  background-color: red;\n}\n\n#recordAudioPanel {\n  position: absolute;\n  right: 90px;\n  bottom: 40px;\n  background-color: rgba(128, 128, 128, 0.18);\n  padding: 8px;\n  border-radius: 8px;\n}\n\n#closeRecordAudioPanel {\n  margin-top: 8px;\n  margin-left: 8px;\n  cursor: pointer;\n}\n\n.red, .red:hover, .red:focus {\n  background-color: red;\n}\n\n.nv-file-over {\n  background-color: rgba(14, 238, 35, 0.22);\n}\n\ndiv.contenteditable:empty:before {\n  content: attr(data-placeholder);\n  color: gray;\n  position: absolute;\n  top: 0;\n  left: 0;\n  padding: 6px;\n  width: 100%;\n  height: 100%;\n}\ndiv.contenteditable:empty:after {\n  content: '\\200B';\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 365:
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./af": 124,
+	"./af.js": 124,
+	"./ar": 131,
+	"./ar-dz": 125,
+	"./ar-dz.js": 125,
+	"./ar-kw": 126,
+	"./ar-kw.js": 126,
+	"./ar-ly": 127,
+	"./ar-ly.js": 127,
+	"./ar-ma": 128,
+	"./ar-ma.js": 128,
+	"./ar-sa": 129,
+	"./ar-sa.js": 129,
+	"./ar-tn": 130,
+	"./ar-tn.js": 130,
+	"./ar.js": 131,
+	"./az": 132,
+	"./az.js": 132,
+	"./be": 133,
+	"./be.js": 133,
+	"./bg": 134,
+	"./bg.js": 134,
+	"./bn": 135,
+	"./bn.js": 135,
+	"./bo": 136,
+	"./bo.js": 136,
+	"./br": 137,
+	"./br.js": 137,
+	"./bs": 138,
+	"./bs.js": 138,
+	"./ca": 139,
+	"./ca.js": 139,
+	"./cs": 140,
+	"./cs.js": 140,
+	"./cv": 141,
+	"./cv.js": 141,
+	"./cy": 142,
+	"./cy.js": 142,
+	"./da": 143,
+	"./da.js": 143,
+	"./de": 146,
+	"./de-at": 144,
+	"./de-at.js": 144,
+	"./de-ch": 145,
+	"./de-ch.js": 145,
+	"./de.js": 146,
+	"./dv": 147,
+	"./dv.js": 147,
+	"./el": 148,
+	"./el.js": 148,
+	"./en-au": 149,
+	"./en-au.js": 149,
+	"./en-ca": 150,
+	"./en-ca.js": 150,
+	"./en-gb": 151,
+	"./en-gb.js": 151,
+	"./en-ie": 152,
+	"./en-ie.js": 152,
+	"./en-nz": 153,
+	"./en-nz.js": 153,
+	"./eo": 154,
+	"./eo.js": 154,
+	"./es": 156,
+	"./es-do": 155,
+	"./es-do.js": 155,
+	"./es.js": 156,
+	"./et": 157,
+	"./et.js": 157,
+	"./eu": 158,
+	"./eu.js": 158,
+	"./fa": 159,
+	"./fa.js": 159,
+	"./fi": 160,
+	"./fi.js": 160,
+	"./fo": 161,
+	"./fo.js": 161,
+	"./fr": 164,
+	"./fr-ca": 162,
+	"./fr-ca.js": 162,
+	"./fr-ch": 163,
+	"./fr-ch.js": 163,
+	"./fr.js": 164,
+	"./fy": 165,
+	"./fy.js": 165,
+	"./gd": 166,
+	"./gd.js": 166,
+	"./gl": 167,
+	"./gl.js": 167,
+	"./gom-latn": 168,
+	"./gom-latn.js": 168,
+	"./he": 169,
+	"./he.js": 169,
+	"./hi": 170,
+	"./hi.js": 170,
+	"./hr": 171,
+	"./hr.js": 171,
+	"./hu": 172,
+	"./hu.js": 172,
+	"./hy-am": 173,
+	"./hy-am.js": 173,
+	"./id": 174,
+	"./id.js": 174,
+	"./is": 175,
+	"./is.js": 175,
+	"./it": 176,
+	"./it.js": 176,
+	"./ja": 177,
+	"./ja.js": 177,
+	"./jv": 178,
+	"./jv.js": 178,
+	"./ka": 179,
+	"./ka.js": 179,
+	"./kk": 180,
+	"./kk.js": 180,
+	"./km": 181,
+	"./km.js": 181,
+	"./kn": 182,
+	"./kn.js": 182,
+	"./ko": 183,
+	"./ko.js": 183,
+	"./ky": 184,
+	"./ky.js": 184,
+	"./lb": 185,
+	"./lb.js": 185,
+	"./lo": 186,
+	"./lo.js": 186,
+	"./lt": 187,
+	"./lt.js": 187,
+	"./lv": 188,
+	"./lv.js": 188,
+	"./me": 189,
+	"./me.js": 189,
+	"./mi": 190,
+	"./mi.js": 190,
+	"./mk": 191,
+	"./mk.js": 191,
+	"./ml": 192,
+	"./ml.js": 192,
+	"./mr": 193,
+	"./mr.js": 193,
+	"./ms": 195,
+	"./ms-my": 194,
+	"./ms-my.js": 194,
+	"./ms.js": 195,
+	"./my": 196,
+	"./my.js": 196,
+	"./nb": 197,
+	"./nb.js": 197,
+	"./ne": 198,
+	"./ne.js": 198,
+	"./nl": 200,
+	"./nl-be": 199,
+	"./nl-be.js": 199,
+	"./nl.js": 200,
+	"./nn": 201,
+	"./nn.js": 201,
+	"./pa-in": 202,
+	"./pa-in.js": 202,
+	"./pl": 203,
+	"./pl.js": 203,
+	"./pt": 205,
+	"./pt-br": 204,
+	"./pt-br.js": 204,
+	"./pt.js": 205,
+	"./ro": 206,
+	"./ro.js": 206,
+	"./ru": 207,
+	"./ru.js": 207,
+	"./sd": 208,
+	"./sd.js": 208,
+	"./se": 209,
+	"./se.js": 209,
+	"./si": 210,
+	"./si.js": 210,
+	"./sk": 211,
+	"./sk.js": 211,
+	"./sl": 212,
+	"./sl.js": 212,
+	"./sq": 213,
+	"./sq.js": 213,
+	"./sr": 215,
+	"./sr-cyrl": 214,
+	"./sr-cyrl.js": 214,
+	"./sr.js": 215,
+	"./ss": 216,
+	"./ss.js": 216,
+	"./sv": 217,
+	"./sv.js": 217,
+	"./sw": 218,
+	"./sw.js": 218,
+	"./ta": 219,
+	"./ta.js": 219,
+	"./te": 220,
+	"./te.js": 220,
+	"./tet": 221,
+	"./tet.js": 221,
+	"./th": 222,
+	"./th.js": 222,
+	"./tl-ph": 223,
+	"./tl-ph.js": 223,
+	"./tlh": 224,
+	"./tlh.js": 224,
+	"./tr": 225,
+	"./tr.js": 225,
+	"./tzl": 226,
+	"./tzl.js": 226,
+	"./tzm": 228,
+	"./tzm-latn": 227,
+	"./tzm-latn.js": 227,
+	"./tzm.js": 228,
+	"./uk": 229,
+	"./uk.js": 229,
+	"./ur": 230,
+	"./ur.js": 230,
+	"./uz": 232,
+	"./uz-latn": 231,
+	"./uz-latn.js": 231,
+	"./uz.js": 232,
+	"./vi": 233,
+	"./vi.js": 233,
+	"./x-pseudo": 234,
+	"./x-pseudo.js": 234,
+	"./yo": 235,
+	"./yo.js": 235,
+	"./zh-cn": 236,
+	"./zh-cn.js": 236,
+	"./zh-hk": 237,
+	"./zh-hk.js": 237,
+	"./zh-tw": 238,
+	"./zh-tw.js": 238
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 365;
+
+
+/***/ }),
+
+/***/ 370:
+/***/ (function(module, exports) {
+
+module.exports = "<app-header></app-header>\n<router-outlet></router-outlet>\n<app-footer></app-footer>\n"
+
+/***/ }),
+
+/***/ 371:
+/***/ (function(module, exports) {
+
+module.exports = "<footer>\n  <p class=\"float-right\">\n    <small>© HABARSHI Ltd.</small>\n  </p>\n</footer>\n"
+
+/***/ }),
+
+/***/ 372:
+/***/ (function(module, exports) {
+
+module.exports = "<header>\n  <nav class=\"navbar navbar-toggleable-md navbar-light bg-faded\">\n    <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-toggle=\"collapse\"\n            data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\"\n            aria-label=\"Toggle navigation\">\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n    <a class=\"navbar-brand\" href=\"#\">HABARSHI</a>\n\n    <div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\n      <div class=\"d-flex justify-content-end col-md-12\">\n        <div *ngIf=\"!isLoggedIn(); else logoutDiv\" >\n          <a [hidden]=\"anonym != 0 && anonym != 2\" (click)=\"anonym = 1\" class=\"link\">Новый пользователь</a>\n          <a [hidden]=\"anonym != 0 && anonym != 1\" (click)=\"anonym = 2\" class=\"btn btn-secondary\">Уже зарегистрирован</a>\n          <div [ngSwitch]=\"anonym\" style=\"display: inline-block;\">\n            <div *ngSwitchCase=\"1\" class=\"input-group auth-form\">\n              <input #name type=\"text\" name=\"name\" class=\"form-control\" title=\"Имя\"\n                     required=\"required\" placeholder=\"Имя\">\n              <input #fullname type=\"text\" name=\"fullname\" class=\"form-control\" title=\"Фамилия\"\n                     placeholder=\"Фамилия\">\n              <span class=\"input-group-btn\">\n              <button (click)=\"create(name, fullname)\" type=\"submit\"\n                      class=\"btn btn-secondary pull-right\">Создать</button>\n              </span>\n            </div>\n            <div *ngSwitchCase=\"2\" class=\"input-group auth-form\">\n              <input #username type=\"text\" name=\"name\" class=\"form-control\" title=\"Логин\"\n                     required=\"required\" placeholder=\"Логин\">\n              <input #passwd type=\"password\" name=\"passwd\" class=\"form-control\" title=\"Пароль\"\n                     required=\"required\" placeholder=\"Пароль\">\n              <span class=\"input-group-btn\">\n              <button (click)=\"auth(username, passwd)\" type=\"submit\" class=\"btn btn-secondary pull-right\">Войти</button>\n              </span>\n            </div>\n          </div>\n        </div>\n        <ng-template #logoutDiv>\n          <div>\n            <button (click)=\"logout()\" class=\"btn btn-secondary\">Выйти</button>\n          </div>\n        </ng-template>\n      </div>\n    </div>\n  </nav>\n</header>\n"
+
+/***/ }),
+
+/***/ 373:
+/***/ (function(module, exports) {
+
+module.exports = "<div style=\"overflow: hidden;\">\n  <div class=\"message {{'msg-' + MessageType[messageType]}} {{message.marker}}\">\n    <p>\n      <b> {{ messageType == MessageType.IN ? fromFull : (messageType == MessageType.OUT ? 'Я' : message.jid) }}</b>\n      {{ message.time | amCalendar }}\n      <span [hidden]=\"messageType == MessageType.SERVICE\">\n        <span class=\"fa-lg check-success\">\n          <i class=\"fa fa-check\" style=\"margin-left:4px\"></i>\n          </span>\n        <span class=\"fa-stack fa-lg double-check-success\">\n          <i class=\"fa fa-check fa-stack-1x\" style=\"margin-left:4px\"></i>\n          <i class=\"fa fa-check  fa-stack-1x\" style=\"margin-left:-4px\"></i>\n        </span>\n      </span>\n    </p>\n    <div [ngSwitch]=\"habarshiMessageType\">\n      <div *ngSwitchCase=\"HabarshiMessage.FILE\">\n        <ng-template [ngIf]=\"habarshiFile.type.startsWith('video/webm')\">\n          <div class=\"audio\">\n            <audio [src]=\"habarshiFile.full_url\" controls></audio>\n          </div>\n        </ng-template>\n        <ng-template [ngIf]=\"habarshiFile.type.startsWith('image')\">\n          <div class=\"image\">\n            <a [href]=\"habarshiFile.full_url\" target=\"_blank\"><img [src]=\"habarshiFile.preview_url\"/></a>\n          </div>\n        </ng-template>\n        <ng-template [ngIf]=\"!habarshiFile.type.startsWith('video/webm') && !habarshiFile.type.startsWith('image')\">\n          <div class=\"doc\">\n            <a [href]=\"habarshiFile.full_url\" target=\"_blank\">{{habarshiFile.file_name}}</a>\n          </div>\n        </ng-template>\n      </div>\n      <div *ngSwitchCase=\"HabarshiMessage.ROBOT\">\n        <div>Пользователь {{fromFull}} {{ habarshiRobot.action == 'bye' ? 'покинул(а)' :\n          (habarshiRobot.action == 'create' ? 'создал' : 'вошел(а) в') }} комнату\n        </div>\n      </div>\n      <div *ngSwitchDefault>\n        <div [innerHTML]=\"message.text\"></div>\n      </div>\n    </div>\n  </div>\n</div>\n"
+
+/***/ }),
+
+/***/ 374:
+/***/ (function(module, exports) {
+
+module.exports = "<main class=\"container\">\n  <div class=\"row\">\n    <div class=\"offset-3 col-6\">\n      <div [hidden]=\"!isLoggedIn()\">\n        <div [hidden]=\"messages.length == 0\">\n          <div #messagesRef\n               class=\"form-control messages\"\n               title=\"Сообщения\"\n               ng2FileDrop\n               (focus)=\"onFocus()\"\n               [uploader]=\"uploader\"\n               [ngClass]=\"{'nv-file-over': hasBaseDropZoneOver}\"\n               (fileOver)=\"onFileOver($event)\">\n            <app-message *ngFor=\"let msg of messages\" [message]=\"msg\"></app-message>\n          </div>\n          <div class=\"input-group\">\n            <div #messageRef type=\"text\"\n                 contenteditable=\"true\"\n                 tabindex=\"0\"\n                 class=\"form-control contenteditable\"\n                 (keypress)=\"onSendMessage($event)\"\n                 (blur)=\"onBlur()\"\n                 (focus)=\"onFocus()\"\n                 data-placeholder=\"Введите ваше сообщение\">\n            </div>\n            <span class=\"input-group-btn\">\n            <button (click)=\"onSendAudioMessage()\" class=\"btn btn-default\" [style.background-color]=\"getRed()\"><i\n              class=\"fa fa-microphone\"></i></button>\n        </span>\n            <span class=\"input-group-btn\">\n            <input #uploadFileRef (change)=\"onChangeFileUpload()\" name=\"file\" type=\"file\" class=\"hidden-xs-up \">\n            <button (click)=\"onSelectFile()\" class=\"btn btn-default\">\n                <i id=\"attachIcon\" class=\"fa fa-paperclip\"></i></button>\n        </span>\n            <span class=\"input-group-btn\">\n            <button (click)=\"onSendMessage()\"\n                    class=\"btn btn-primary\"><img src=\"/habarshi-chat-angular4/assets/images/send_amber.png\" class=\"img-fluid\"\n                                                 style=\"width: 19px;\"/></button>\n        </span>\n          </div>\n\n        </div>\n        <div [hidden]=\"messages.length != 0\">\n          Загрузка сообщений…\n        </div>\n      </div>\n      <div [hidden]=\"isLoggedIn()\">\n        Пожалуйста, авторизуйтесь или войдите анонимно…\n      </div>\n    </div>\n  </div>\n</main>\n"
+
+/***/ }),
+
+/***/ 49:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_constants_service__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_store__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_util__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_constants_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_store__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_util__ = __webpack_require__(26);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return QueryParamsService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1686,7 +1990,7 @@ var _a;
 
 /***/ }),
 
-/***/ 49:
+/***/ 50:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1716,15 +2020,15 @@ var Store = (function () {
 
 /***/ }),
 
-/***/ 508:
+/***/ 636:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(157);
+module.exports = __webpack_require__(283);
 
 
 /***/ }),
 
-/***/ 65:
+/***/ 66:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1739,7 +2043,7 @@ var MessageType;
 
 /***/ }),
 
-/***/ 66:
+/***/ 67:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1763,16 +2067,16 @@ var Message = (function () {
 
 /***/ }),
 
-/***/ 98:
+/***/ 99:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_constants_service__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(235);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_constants_service__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(363);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_store__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__service_roster_service__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_store__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__service_roster_service__ = __webpack_require__(30);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthGuard; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1814,44 +2118,7 @@ AuthGuard = __decorate([
 var _a, _b;
 //# sourceMappingURL=auth.guard.js.map
 
-/***/ }),
-
-/***/ 99:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mime__ = __webpack_require__(236);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mime___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mime__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HabarshiFile; });
-
-var HabarshiFile = (function () {
-    function HabarshiFile(file_name, full_url, preview_url) {
-        this.file_name = file_name;
-        this.full_url = full_url;
-        this.preview_url = preview_url;
-        this.type = __WEBPACK_IMPORTED_MODULE_0_mime__["lookup"](full_url);
-    }
-    HabarshiFile.fromText = function (text) {
-        var rx = /<file_name>\|<([^>]+)>,<full_url>\|<([^>]+)>(?:,<preview_url>\|<([^>]+)>)?/g;
-        var match = rx.exec(text);
-        if (!match) {
-            console.log(text);
-            return null;
-        }
-        var file_name = match[1];
-        var full_url = match[2];
-        var preview_url = match[3];
-        return new this(file_name, full_url, preview_url);
-    };
-    HabarshiFile.prototype.toString = function () {
-        return "<HabarshiServiceMessage><file_name>|<" + this.file_name + ">,<full_url>|<" + this.full_url + ">,<preview_url>|<" + this.preview_url + ">";
-    };
-    return HabarshiFile;
-}());
-
-//# sourceMappingURL=habarshi-file.model.js.map
-
 /***/ })
 
-},[508]);
+},[636]);
 //# sourceMappingURL=main.bundle.js.map

@@ -1,15 +1,15 @@
 webpackJsonp([2,4],{
 
-/***/ 159:
+/***/ 285:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(228);
+var content = __webpack_require__(356);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(505)(content, {});
+var update = __webpack_require__(634)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -27,22 +27,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 228:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(28)();
-// imports
-
-
-// module
-exports.push([module.i, "/* Sticky footer styles\n-------------------------------------------------- */\nhtml {\n  position: relative;\n  min-height: 100%;\n}\nbody {\n  /* Margin bottom by footer height */\n  margin-bottom: 60px;\n}\nfooter {\n  position: absolute;\n  bottom: 0;\n  width: 100%;\n  /* Set the fixed height of the footer here */\n  height: 60px;\n  line-height: 60px; /* Vertically center the text there */\n  background-color: #f5f5f5;\n}\n\n\n/* Custom page CSS\n-------------------------------------------------- */\n/* Not required for template or sticky footer method. */\n\n.container {\n  width: auto;\n  padding: 0 15px;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ 28:
+/***/ 29:
 /***/ (function(module, exports) {
 
 /*
@@ -99,7 +84,22 @@ module.exports = function() {
 
 /***/ }),
 
-/***/ 505:
+/***/ 356:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(29)();
+// imports
+
+
+// module
+exports.push([module.i, "/* Sticky footer styles\n-------------------------------------------------- */\nhtml {\n  position: relative;\n  min-height: 100%;\n}\nbody {\n  /* Margin bottom by footer height */\n  margin-bottom: 60px;\n}\nfooter {\n  position: absolute;\n  bottom: 0;\n  width: 100%;\n  /* Set the fixed height of the footer here */\n  height: 60px;\n  line-height: 60px; /* Vertically center the text there */\n  background-color: #f5f5f5;\n}\n\n\n/* Custom page CSS\n-------------------------------------------------- */\n/* Not required for template or sticky footer method. */\n\n.container {\n  width: auto;\n  padding: 0 15px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 634:
 /***/ (function(module, exports) {
 
 /*
@@ -352,13 +352,13 @@ function updateLink(linkElement, obj) {
 
 /***/ }),
 
-/***/ 510:
+/***/ 638:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(159);
+module.exports = __webpack_require__(285);
 
 
 /***/ })
 
-},[510]);
+},[638]);
 //# sourceMappingURL=styles.bundle.js.map
