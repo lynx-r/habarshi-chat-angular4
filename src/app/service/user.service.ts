@@ -143,21 +143,10 @@ export class UserService implements OnInit {
       this.loggedIn = false;
       this.user = null;
     }
-    let portfolio = body.portfolio;
-    if (!portfolio) {
-      this.user = new User(body.session, body.username);
-    } else {
-      this.user = new User(body.session, portfolio.username);
-      this.user.anonymous = true;
-      this.user.fullname = portfolio.fullname;
-      this.user.name = portfolio.name;
-    }
+    const uploadUrl = `//${body.uploads.address}:${body.uploads.port}/upload`;
+    this.user = new User(body.session, body.username, uploadUrl);
     Store.put(this.constants.SESSION_KEY, this.user.session);
 
-    if (body.uploads != null) {
-      const uploadUrl = `http://${body.uploads.address}:${body.uploads.port}/upload`;
-      Store.put(this.constants.SERVER_UPLOAD_URL, uploadUrl);
-    }
     return this.user;
   }
 

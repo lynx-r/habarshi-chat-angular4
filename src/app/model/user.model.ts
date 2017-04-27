@@ -17,11 +17,13 @@ export class User {
   username: string;
   web: string;
   session: string;
+  uploads: string;
   room: boolean;
 
-  constructor(session: string, username: string, room?: boolean) {
+  constructor(session: string, username: string, uploads: string, room?: boolean) {
     this.session = session;
     this.username = username;
+    this.uploads = uploads;
     this.room = room;
   }
 }

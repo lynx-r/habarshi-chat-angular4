@@ -104,7 +104,7 @@ export class TextingComponent implements OnInit, AfterViewChecked {
 
   private initFileUploader() {
     this.fileUploaderOptions = {
-      url: Store.get(this.constants.SERVER_UPLOAD_URL),
+      url: this.userService.user.uploads,
       autoUpload: true
     };
     this.uploader = new FileUploader(this.fileUploaderOptions);

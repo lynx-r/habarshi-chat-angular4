@@ -33,12 +33,13 @@ export class HeaderComponent implements OnInit {
     return this.userService.loggedIn;
   }
 
-  auth(username: HTMLInputElement, passwd: HTMLInputElement) {
-    if (!(username.value && passwd.value)) {
+  auth(usernameEl: HTMLInputElement, passwd: HTMLInputElement) {
+    const username = usernameEl.value.trim();
+    if (!(username && passwd.value)) {
       this.errorMessage = 'Укажите логин и пароль';
       return;
     }
-    this.userService.auth(username.value, passwd.value)
+    this.userService.auth(username, passwd.value)
       .subscribe(user => {
         this.errorMessage = '';
         // JOIN TO GROUP CHAT
@@ -47,12 +48,14 @@ export class HeaderComponent implements OnInit {
       }, error => this.errorMessage = error);
   }
 
-  create(name: HTMLInputElement, fullname: HTMLInputElement) {
-    if (!name.value) {
+  create(nameEl: HTMLInputElement, fullnameEl: HTMLInputElement) {
+    const name = nameEl.value.trim();
+    if (!name) {
       this.errorMessage = 'Укажите ваше имя';
       return;
     }
-    this.userService.create(name.value, fullname.value)
+    const fullname = fullnameEl.value.trim();
+    this.userService.create(name, fullname)
       .subscribe(user => {
         this.errorMessage = '';
         // JOIN TO GROUP CHAT

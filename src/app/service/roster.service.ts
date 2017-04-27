@@ -29,7 +29,7 @@ export class RosterService {
       return;
     }
     const to = queryParams.to;
-    this.selectedUser = new User(null, to, true);
+    this.selectedUser = new User(null, to, null, true);
     this.selectedUser.jid = to;
   }
 
