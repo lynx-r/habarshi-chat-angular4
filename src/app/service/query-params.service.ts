@@ -1,20 +1,37 @@
-import { Injectable } from '@angular/core';
-import {ConstantsService} from "../shared/constants.service";
-import {Store} from "../util/store";
+import {Injectable} from '@angular/core';
 import {Utils} from "../util/util";
 
 @Injectable()
 export class QueryParamsService {
 
-  constructor(private constants: ConstantsService) { }
+  constructor() {
+  }
 
   getServerUrl() {
-    const domain = Store.get(this.constants.SERVER_URL);
-    if (domain == null) {
+    const params = this.getParams();
+    if (params == null) {
       Utils.handleError('Некорректная ссылка');
       return;
     }
-    return `https://${domain}`;
+    if (params['api'] == null) {
+      Utils.handleError('Укажите параметр api');
+      return
+    }
+    if (params['to'] == null) {
+      Utils.handleError('Укажите параметр to');
+      return
+    }
+    return `https://${params['api']}`;
+  }
+
+  getParams() {
+    let href = location.href;
+    return href.substring(href.indexOf('?') + 1)
+      .split('&')
+      .reduce((p1, p2) => {
+        p1[p2.split('=')[0]] = decodeURIComponent(p2.split('=')[1]);
+        return p1;
+      }, {});
   }
 
 }

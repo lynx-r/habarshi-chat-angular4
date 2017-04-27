@@ -20,16 +20,16 @@
                      placeholder="Фамилия">
               <span class="input-group-btn">
               <button (click)="create(name, fullname)" type="submit"
-                      class="btn btn-secondary pull-right">Создать</button>
+                      class="btn btn-primary pull-right">Создать</button>
               </span>
             </div>
             <div *ngSwitchCase="2" class="input-group auth-form">
               <input #username type="text" name="name" class="form-control" title="Логин"
                      required="required" placeholder="Логин">
-              <input #passwd type="password" name="passwd" class="form-control" title="Пароль"
+              <input #passwd type="password" (keyup.enter)="auth(username, passwd)" name="passwd" class="form-control" title="Пароль"
                      required="required" placeholder="Пароль">
               <span class="input-group-btn">
-              <button (click)="auth(username, passwd)" type="submit" class="btn btn-secondary pull-right">Войти</button>
+              <button (click)="auth(username, passwd)" type="submit" class="btn btn-primary pull-right">Войти</button>
               </span>
             </div>
           </div>

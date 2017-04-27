@@ -7,9 +7,6 @@ import {Utils} from "../util/util";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import {Roster} from "../model/roster.model";
-import {UserService} from "./user.service";
-import {ActivatedRoute, Params} from "@angular/router";
-import {AuthGuard} from "../auth.guard";
 import {QueryParamsService} from "./query-params.service";
 
 @Injectable()
@@ -20,15 +17,16 @@ export class RosterService {
   selectedUser: User;
 
   constructor(private http: Http, private query: QueryParamsService, private constants: ConstantsService) {
+    this.createBuddy();
   }
 
   public createBuddy() {
-    const queryParams = Store.get(this.constants.QUERY_PARAMS);
+    const queryParams = this.query.getParams();
     if (queryParams == null) {
       Utils.handleError('Некорректная ссылка');
       return;
     }
-    const to = queryParams.to;
+    const to = queryParams['to'];
     this.selectedUser = new User(null, to, null, true);
     this.selectedUser.jid = to;
   }

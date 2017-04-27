@@ -12,12 +12,14 @@ export class Utils {
       const body = error.json() || '';
       const err = (<any>body).error || JSON.stringify(body);
       errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+      alert(errMsg);
+      location.reload(true);
+      return;
     } else {
-      errMsg = error.message ? error.message : error.toString();
+      errMsg = error.message ? error.message : 'Ваш интернет не работает';
     }
     console.error(errMsg);
     alert(errMsg);
-    localStorage.clear();
     return Observable.throw(errMsg);
   }
 
