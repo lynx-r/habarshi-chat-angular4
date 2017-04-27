@@ -66,7 +66,9 @@ export class TextingComponent implements OnInit, AfterViewChecked {
           this.rosterService.getRoster()
             .subscribe((roster) => {
               this.roster = roster;
-              this.getMessages();
+              if (this.initScroll) {
+                this.getMessages();
+              }
               this.userService.user = this.rosterService.users[this.userService.user.username];
             });
         });
@@ -186,15 +188,16 @@ export class TextingComponent implements OnInit, AfterViewChecked {
         });
       }
     }
-    if (nativeElement.scrollTop == 0 && this.messages.length > 0 && !this.getForPeriod) {
+    if (nativeElement.scrollTop < nativeElement.scrollHeight / 2 && this.messages.length > 0 && !this.getForPeriod) {
       const before = this.messages[0].id;
       this.textingService.getMessagesForPeriod(before, this.beforeDays).subscribe((beforeMessages)=>{
         if (beforeMessages.length == 0) {
+          this.beforeDays = 0;
           return;
         }
         this.messages = beforeMessages.concat(this.messages);
         this.getForPeriod = false;
-        nativeElement.scrollTop = 1;
+        // nativeElement.scrollTop = nativeElement.scrollHeight / 2;
       });
       this.getForPeriod = true;
       this.beforeDays++;

@@ -13,10 +13,10 @@ import {UserService} from "./service/user.service";
 import {ConstantsService} from "./shared/constants.service";
 import {RosterService} from "./service/roster.service";
 import {FileUploadModule} from "ng2-file-upload";
-import {ActivatedRoute} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
 import {AuthGuard} from "./auth.guard";
 import {QueryParamsService} from "./service/query-params.service";
+import {MomentModule} from "angular2-moment";
 
 @NgModule({
   declarations: [
@@ -32,7 +32,8 @@ import {QueryParamsService} from "./service/query-params.service";
     ReactiveFormsModule,
     HttpModule,
     FileUploadModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MomentModule
   ],
   providers: [AuthGuard, ConstantsService, QueryParamsService, TextingService, UserService, RosterService],
   bootstrap: [AppComponent]

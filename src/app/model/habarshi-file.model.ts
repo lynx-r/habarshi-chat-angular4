@@ -15,7 +15,7 @@ export class HabarshiFile {
   }
 
   static fromText(text: string) {
-    const rx = /<file_name>\|<([^>]+)>,<full_url>\|<([^>]+)>(?:,<preview_url>\|<([^>]+)>)?/g;
+    const rx = /<file_name>\|<([^>]*)>,<full_url>\|<([^>]*)>(?:,<preview_url>\|<([^>]*)>)?/g;
     const match = rx.exec(text);
     if (!match) {
       console.log(text);

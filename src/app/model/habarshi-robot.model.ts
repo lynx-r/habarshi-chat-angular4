@@ -13,7 +13,7 @@ export class HabarshiRobot {
   }
 
   static fromText(text: string) {
-    const rx = /<action>\|<([^>]+)>,[\n\s]*<actor>\|<([^>]+)>,[\n\s]*<object>\|<([^>]+)>/g;
+    const rx = /<action>\|<([^>]*)>,[\n\s]*<actor>\|<([^>]*)>,[\n\s]*<object>\|<([^>]*)>/g;
     const match = rx.exec(text);
     const file_name = match[1];
     const full_url = match[2];
